@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <cstring>
 
-Graph::Graph(const char *_dir) {
+Graph::Graph(const char *_dir, uint32_t BUCKET_BITS) {
     dir = string(_dir);
 
     n = m = e = 0;
@@ -262,12 +262,12 @@ void Graph::read_graph() {
     }
     infile.close();
     
-    double ttt = 0;
-    for(uint32_t i = 0;i<n;i++){
-        if(vertex_len[i] == 1) ttt++;
+    // double ttt = 0;
+    // for(uint32_t i = 0;i<n;i++){
+    //     if(vertex_len[i] == 1) ttt++;
 
-    }
-    cout<<"ttt:"<<ttt/(double)n<<endl;
+    // }
+    // cout<<"ttt:"<<ttt/(double)n<<endl;
 
     cout<<"read edges over"<<endl;
     
@@ -288,7 +288,7 @@ void Graph::read_graph() {
         hashMaps[i] = new HashMap(len);
         
     }
-     memset(pairwise_adgvex_nei_num_i_minHash, 0, sizeof(uint32_t)*n);
+    memset(pairwise_adgvex_nei_num_i_minHash, 0, sizeof(uint32_t)*n);
     
     // for(uint32_t i = 0;i<e;i++){
     //     uint32_t len = 0;
@@ -311,7 +311,7 @@ void Graph::triangle_enum(){
     startTime = clock();//计时开始
     to_pairwise();
     endTime = clock();//计时结束
-    cout << "The to_pairwise time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "The to_pairwise time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << endl;
     
     
     int *visit_out = new int[n];
@@ -351,8 +351,6 @@ void Graph::triangle_enum(){
                     
                     if(type == 3) type_et+=tri_num/common_num;
                     else if(type == 4) type_et+=tri_num;
-
-
                 }
             }
         }
@@ -363,18 +361,20 @@ void Graph::triangle_enum(){
     delete[] visit_out_pos;
     visit_out_pos = NULL;
     
-   for(int i = 0;i<5;i++){
-        cout<<type_num[i]<<endl;
+    for(int i = 0;i<5;i++){
+        cout<<"type-"<<i<<": "<<type_num[i]<<endl;
     }
 
-    cout<<type_et<<endl;
+    // cout<<type_et<<endl;
 
-    for(uint32_t i = 0;i<n;i++){
-        if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
-    }
+    // type_et = 0;
 
-    cout<<type_et<<endl;
-    cout<<all_tri_num<<endl;
+    // for(uint32_t i = 0;i<n;i++){
+    //     if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
+    // }
+
+    // cout<<type_et<<endl;
+    // cout<<all_tri_num<<endl;
 
 }
 
@@ -442,7 +442,7 @@ void Graph::triangle_enum2(){
     
     
     for(int i = 0;i<5;i++){
-        cout<<type_num[i]<<endl;
+        cout<<"type-"<<i<<": "<<type_num[i]<<endl;
     }
 
     cout<<type_et<<endl;
@@ -556,7 +556,7 @@ void Graph::triangle_enum3(){
     delete[] visit_out_pos;
     visit_out_pos = NULL;
     
-   for(int i = 0;i<5;i++){
+    for(int i = 0;i<5;i++){
         cout<<type_num[i]<<endl;
     }
 
@@ -668,7 +668,7 @@ void Graph::triangle_enum4(){
     delete[] visit_out_pos;
     visit_out_pos = NULL;
     
-   for(int i = 0;i<5;i++){
+    for(int i = 0;i<5;i++){
         cout<<type_num[i]<<endl;
     }
 
@@ -887,7 +887,7 @@ void Graph::to_pairwise(){
     
     for(uint32_t i = 0;i<n;i++){
         out_edge_start[i+1] = out_edge_start[i];
-       
+        
         
         for(uint32_t j = 0; j<pairwise_adgvex_start[i][0]; j++){
             
@@ -1035,7 +1035,7 @@ void Graph::to_pairwise_minHash(){
     
     for(uint32_t i = 0;i<n;i++){
         out_edge_start[i+1] = out_edge_start[i];
-       
+    
         
         for(uint32_t j = 0; j<pairwise_adgvex_start_minHash[i][0]; j++){
 
@@ -1152,7 +1152,7 @@ void Graph::to_pairwise_minHash2(){
     
     for(uint32_t i = 0;i<n;i++){
         out_edge_start[i+1] = out_edge_start[i];
-       
+
         
         for(uint32_t j = 0; j<pairwise_adgvex_start_minHash[i][0]; j++){
             

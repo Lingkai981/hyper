@@ -39,6 +39,8 @@ class Graph {
 private:
     string dir; //input graph directory
     uint32_t n, e, m; //number of nodes and edges of the graph
+
+    uint32_t Reservoir_size;
     
     uint32_t max_e;
 
@@ -101,7 +103,7 @@ private:
     
 
 public:
-    Graph(const char *_dir) ;
+    Graph(const char *_dir, uint32_t BUCKET_BITS) ;
     ~Graph() ;
 
     void read_graph();

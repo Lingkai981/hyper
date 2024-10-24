@@ -1,0 +1,92 @@
+(base) njustdb@desc-X12DAi-N6:/home/data/mlk/code/hyper$ ./run.sh tags-stack
+49999 14458875 42920549
+read degree over
+read edges over
+read graph over
+The read_graph time is: 4.25554s
+The to_pairwise_minHash part 1 time is: 0.777076s
+The to_pairwise_minHash part 2 time is: 8.07059s
+The to_pairwise_minHash part 3 time is: 0.123802s
+vertices_pairwise_edge_num:105586872
+The to_pairwise time is: 8.97154
+type-0: 94663
+type-1: 1801670119
+type-2: 5456381006121
+type-3: 695661153784872
+type-4: 29928307714972
+The triangle_enum time is: 166.971s
+
+
+(base) njustdb@desc-X12DAi-N6:/home/data/mlk/code/hyper$ ./run.sh dblp
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.29299s
+The to_pairwise_minHash part 1 time is: 0.217902s
+The to_pairwise_minHash part 2 time is: 0.675211s
+The to_pairwise_minHash part 3 time is: 0.356137s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.24932
+type-0: 5653613
+type-1: 26560525
+type-2: 83728195
+type-3: 110291323
+type-4: 17725997
+The triangle_enum time is: 3.19792s
+
+
+(base) njustdb@desc-X12DAi-N6:/home/data/mlk/code/hyper$ ./run.sh NDC
+5557 112405 207853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.02675s
+The to_pairwise_minHash part 1 time is: 0.004013s
+The to_pairwise_minHash part 2 time is: 0.050289s
+The to_pairwise_minHash part 3 time is: 0.001279s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.055604
+type-0: 128495
+type-1: 7823850
+type-2: 116112375
+type-3: 137817284100
+type-4: 541848569
+The triangle_enum time is: 0.261804s
+
+
+(base) njustdb@desc-X12DAi-N6:/home/data/mlk/code/hyper$ ./run.sh threads-stack
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 6.65775s
+The to_pairwise_minHash part 1 time is: 0.724912s
+The to_pairwise_minHash part 2 time is: 1.6873s
+The to_pairwise_minHash part 3 time is: 1.10933s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.52163
+type-0: 9467946
+type-1: 20198999
+type-2: 29223840
+type-3: 7472219099
+type-4: 3032030614
+The triangle_enum time is: 22.4472s
+
+(base) njustdb@desc-X12DAi-N6:/home/data/mlk/code/hyper$ ./run.sh walmart
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.158959s
+The to_pairwise_minHash part 1 time is: 0.026594s
+The to_pairwise_minHash part 2 time is: 0.136089s
+The to_pairwise_minHash part 3 time is: 0.054759s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.21749
+type-0: 7359138
+type-1: 9674841
+type-2: 47247081
+type-3: 4024407703
+type-4: 232600573
+The triangle_enum time is: 1.53351s
