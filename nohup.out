@@ -1,0 +1,39 @@
+Reservoir_size:1024
+5557 112405 207853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.035177
+The to_pairwise_minHash part 1 time is: 0.00498s
+The to_pairwise_minHash part 2 time is: 0.06112s
+The to_pairwise_minHash part 3 time is: 0.001967s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068125
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.326755
+Reservoir_size:1024
+type-1: 1990261
+type-2: 150123149
+type-3: 11304094730
+The stream_value_local time is: 1.45627
+type-1 error: 0
+type-2 error: 0.0458908
+type-3 error: -0.020069
+Reservoir_size:1024
+type-1: 1990261
+type-2: 156344138
+type-3: 10554215161
+The stream_value_local2 time is: 781.987
+type-1 error: 0
+type-2 error: 0.0892317
+type-3 error: -0.0850747
+Reservoir_size:1024
+type-1: 2028175
+type-2: 272419317
+type-3: 19487796581
+The stream_value_global time is: 0.045297
+type-1 error: 0.0190498
+type-2 error: 0.897914
+type-3 error: 0.689361

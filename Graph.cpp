@@ -1,13 +1,11 @@
-//
-//  Graph.cpp
-//  hypergraph_tri_count
-//
-//  Created by LingkaiMeng on 2024/3/21.
-//
-
 #include "Graph.hpp"
+#include <algorithm>
+
+#include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <vector>
+
 
 Graph::Graph(const char *_dir, uint32_t BUCKET_BITS) {
     dir = string(_dir);
@@ -51,6 +49,11 @@ Graph::Graph(const char *_dir, uint32_t BUCKET_BITS) {
     out_edge_edges = NULL;
     out_edge_edges_start = NULL;
     pairwise_adgvex_nei_num_minHash = NULL;
+    Reservoir_size = pow(2, BUCKET_BITS);
+    sample_pairwise_adgvex = NULL;
+    sample_vertices = NULL;
+
+    cout<<"Reservoir_size:"<<Reservoir_size<<endl;
 }
 
 Graph::~Graph() {
@@ -136,6 +139,11 @@ Graph::~Graph() {
         delete[] vertices;
         vertices = NULL;
     }
+
+    if(sample_vertices != NULL) {
+        delete[] sample_vertices;
+        sample_vertices = NULL;
+    }
     
     if(pairwise_adgvex != NULL) {
         delete[] pairwise_adgvex;
@@ -191,6 +199,10 @@ Graph::~Graph() {
         pairwise_adgvex_nei_num_i_minHash = NULL;
     }
 
+    if(sample_pairwise_adgvex != NULL) {
+        delete[] sample_pairwise_adgvex;
+        sample_pairwise_adgvex = NULL;
+    }
 }
 
 void Graph::read_graph() {
@@ -206,6 +218,7 @@ void Graph::read_graph() {
     if(hyperedges == NULL) hyperedges = new uint32_t[m];
     if(hyperedges_start == NULL) hyperedges_start = new uint32_t[e+1];
     if(vertices == NULL) vertices = new vector<uint32_t>[n];
+    if(sample_vertices == NULL) sample_vertices = new vector<uint32_t>[n];
     if(pairwise_adgvex == NULL) pairwise_adgvex = new vector<pairwise_edge>[n];
     if(pairwise_adgvex_start == NULL) pairwise_adgvex_start = new vector<uint32_t>[n];
     if(pairwise_adgvex2 == NULL) pairwise_adgvex2 = new vector<pairwise_edge>[n];
@@ -214,18 +227,22 @@ void Graph::read_graph() {
     if(pairwise_adgvex_minHash == NULL) pairwise_adgvex_minHash = new vector<pairwise_edge>[n];
     if(pairwise_adgvex_start_minHash == NULL) pairwise_adgvex_start_minHash = new vector<uint32_t>[n];
     if(pairwise_adgvex_nei_num_minHash == NULL) pairwise_adgvex_nei_num_minHash = new vector<uint32_t>[n];
-    hashMaps.resize(n);
+    if(sample_pairwise_adgvex == NULL) sample_pairwise_adgvex = new vector<pairwise_edge>[n];
+
     pairwise_adgvex_nei_num_i_minHash = new uint32_t[n];
     if(out_degree == NULL) out_degree = new uint32_t[n];
 
     common_vertices.resize(n);
+    all_hyperedges.resize(e);
+    sample_hyperedges.resize(e);
+    sample_hyperedges_fixed.resize(e);
     
     
     
-    // if(pairwise_edge_adgvex == NULL) pairwise_edge_adgvex = new vector<pairwise_edge>[e];
-    // if(pairwise_edge_adgvex_start == NULL) pairwise_edge_adgvex_start = new vector<uint32_t>[e];
+    if(pairwise_edge_adgvex == NULL) pairwise_edge_adgvex = new vector<pairwise_edge>[e];
+    if(pairwise_edge_adgvex_start == NULL) pairwise_edge_adgvex_start = new vector<uint32_t>[e];
     
-    // // if(hyperedges_to_vectices == NULL) hyperedges_to_vectices = new pairwise_edge[m*200];
+    // if(hyperedges_to_vectices == NULL) hyperedges_to_vectices = new pairwise_edge[m*200];
     // if(intersection_start == NULL) intersection_start = new uint32_t[m*200];
     // if(intersection_start_len == NULL) intersection_start_len = new uint32_t[m*200];
     // if(hyperedges_to_vectices_start == NULL) hyperedges_to_vectices_start = new uint32_t[e+1];
@@ -255,12 +272,18 @@ void Graph::read_graph() {
     for(uint32_t i = 0; i<e; i++){
         for(uint32_t j = 0; j < hyperedge_len[i]; j++){
             infile >> hyperedges[hyperedges_i];
+            all_hyperedges[i].push_back(hyperedges[hyperedges_i]);
             vertices[hyperedges[hyperedges_i]].push_back(i);
             vertex_len[hyperedges[hyperedges_i]]++;
             hyperedges_i++;
         }
     }
     infile.close();
+
+    for(int i = 0;i<e;i++){
+        sort(hyperedges+hyperedges_start[i], hyperedges+hyperedges_start[i+1]);
+        sort(all_hyperedges[i].begin(), all_hyperedges[i].end());
+    }
     
     // double ttt = 0;
     // for(uint32_t i = 0;i<n;i++){
@@ -277,6 +300,7 @@ void Graph::read_graph() {
             len+=hyperedge_len[vertices[i][j]]-1;
         }
         pairwise_adgvex[i].reserve(len);
+        sample_pairwise_adgvex[i].reserve(len);
         pairwise_adgvex_start[i].resize(len+2);
 
         pairwise_adgvex2[i].reserve(len);
@@ -285,10 +309,16 @@ void Graph::read_graph() {
         pairwise_adgvex_minHash[i].resize(len);
         pairwise_adgvex_start_minHash[i].resize(len+2);
         pairwise_adgvex_nei_num_minHash[i].resize(len);
-        hashMaps[i] = new HashMap(len);
+
+        sample_vertices[i].reserve(vertices[i].size());
+    
         
     }
     memset(pairwise_adgvex_nei_num_i_minHash, 0, sizeof(uint32_t)*n);
+    RS_sample_edge.reserve(e);
+    RS_sample_edge_num.reserve(e);
+    sample_pairwise_adgvex_local = new HyperedgeData(n);
+    sample_pairwise_adgvex_global = new HyperedgeData(n);
     
     // for(uint32_t i = 0;i<e;i++){
     //     uint32_t len = 0;
@@ -304,7 +334,7 @@ void Graph::read_graph() {
 }
 
 
-void Graph::triangle_enum(){
+vector<uint64_t> Graph::triangle_enum(){
 
     clock_t startTime,endTime;
 
@@ -321,13 +351,13 @@ void Graph::triangle_enum(){
     
     uint64_t all_tri_num = 0;
     
-    vector<uint64_t> type_num(5,0);
+    vector<uint64_t> type_num(3,0);
     uint64_t type_et = 0;
     uint32_t type = 0, tri_num = 0, common_num = 0;
+
+    uint32_t type1_num, type2_num;
     
     for(uint32_t i = 0; i<n;i++){
-//        cout<<i<<endl;
-//         cout<<out_edge_start[i+1] - out_edge_start[i] <<endl;
         for(uint32_t j = out_edge_start[i]; j<out_edge_start[i+1]; j++){
 
             if(out_edges[j].vertex == n) continue;
@@ -343,14 +373,11 @@ void Graph::triangle_enum(){
                 if(out_edges[k].vertex == n) continue;
                 if(visit_out[out_edges[k].vertex] == i+1){
 
-                    judge_tri_type(i, out_edges[j].pos, out_edges[j].vertex, out_edges[k].pos, i, visit_out_pos[out_edges[k].vertex], type, tri_num, common_num);
-                    // judge_tri_type_minHash(i, out_edges_minHash[j].pos, out_edges_minHash[j].vertex, out_edges_minHash[k].pos, i, visit_out_pos[out_edges_minHash[k].vertex], type, tri_num, common_num);
-                    
-                    all_tri_num+=tri_num;
-                    type_num[type]+=tri_num;
-                    
-                    if(type == 3) type_et+=tri_num/common_num;
-                    else if(type == 4) type_et+=tri_num;
+                    judge_tri_type_2(i, out_edges[j].pos, out_edges[j].vertex, out_edges[k].pos, i, visit_out_pos[out_edges[k].vertex], type1_num, type2_num, common_num);
+                    // all_tri_num+=tri_num;
+                    // type_num[type]+=tri_num;
+                    type_num[1]+=type1_num;
+                    type_num[2]+=type2_num;
                 }
             }
         }
@@ -360,349 +387,23 @@ void Graph::triangle_enum(){
     visit_out = NULL;
     delete[] visit_out_pos;
     visit_out_pos = NULL;
+
+    type_num[0] = 0;
+
+    for(uint32_t i = 0; i< e;i++) if(hyperedges_start[i+1] - hyperedges_start[i] > 2) type_num[0]+=((hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i]-1)*(hyperedges_start[i+1] - hyperedges_start[i]-2))/6;
+
     
-    for(int i = 0;i<5;i++){
+    for(int i = 0;i<3;i++){
         cout<<"type-"<<i<<": "<<type_num[i]<<endl;
     }
 
-    // cout<<type_et<<endl;
-
-    // type_et = 0;
-
-    // for(uint32_t i = 0;i<n;i++){
-    //     if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
-    // }
-
-    // cout<<type_et<<endl;
-    // cout<<all_tri_num<<endl;
+    
+    return type_num;
 
 }
 
-void Graph::triangle_enum2(){
-
-    clock_t startTime,endTime;
-
-    startTime = clock();//计时开始
-    to_pairwise_minHash2();
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-    
-    
-    int *visit_out = new int[n];
-    memset(visit_out, 0, sizeof(int)*n);
-    int *visit_out_pos = new int[n];
-    memset(visit_out_pos, 0, sizeof(int)*n);
-    int *visit_out_nei_num = new int[n];
-    memset(visit_out_nei_num, 0, sizeof(int)*n);
-    
-    uint64_t all_tri_num = 0;
-    
-    vector<uint64_t> type_num(5,0);
-    uint64_t type_et = 0;
-    uint32_t type = 0, tri_num = 0, common_num = 0;
-    
-    for(uint32_t i = 0; i<n;i++){
-//        cout<<i<<endl;
-//         cout<<out_edge_start[i+1] - out_edge_start[i] <<endl;
-        for(uint32_t j = out_edge_start[i]; j<out_edge_start[i+1]; j++){
-
-            if(out_edges[j].vertex == n) continue;
-            
-            visit_out[out_edges[j].vertex] = i+1;
-            visit_out_pos[out_edges[j].vertex] = out_edges[j].pos;
-            visit_out_nei_num[out_edges[j].vertex] = out_edges[j].neighbor_num;
-        }
-
-
-        for(uint32_t j = out_edge_start[i]; j < out_edge_start[i+1]; j++){
-            if(out_edges[j].vertex == n) continue;
-            for(uint32_t k = out_edge_start[out_edges[j].vertex]; k < out_edge_start[out_edges[j].vertex+1]; k++){
-                if(out_edges[k].vertex == n) continue;
-                if(visit_out[out_edges[k].vertex] == i+1){
-
-                    judge_tri_type_minHash(i, out_edges[j].pos,out_edges[j].neighbor_num, out_edges[j].vertex, out_edges[k].pos, out_edges[k].neighbor_num, i, visit_out_pos[out_edges[k].vertex], visit_out_nei_num[out_edges[k].vertex], type, tri_num, common_num);
-                    
-                    all_tri_num+=tri_num;
-                    type_num[type]+=tri_num;
-                    
-                    if(type == 3) type_et+=tri_num/common_num;
-                    else if(type == 4) type_et+=tri_num;
-
-
-                }
-            }
-        }
-    }
-    
-    delete[] visit_out;
-    visit_out = NULL;
-    delete[] visit_out_pos;
-    visit_out_pos = NULL;
-    
-    
-    
-    for(int i = 0;i<5;i++){
-        cout<<"type-"<<i<<": "<<type_num[i]<<endl;
-    }
-
-    cout<<type_et<<endl;
-
-    for(uint32_t i = 0;i<n;i++){
-        if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
-    }
-
-    cout<<type_et<<endl;
-    cout<<all_tri_num<<endl;
-
-}
-void Graph::triangle_enum3(){
-
-    clock_t startTime,endTime;
-
-    startTime = clock();//计时开始
-    to_pairwise_minHash3();
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-    
-    
-    int *visit_out = new int[n];
-    memset(visit_out, 0, sizeof(int)*n);
-    int *visit_out_pos = new int[n];
-    memset(visit_out_pos, 0, sizeof(int)*n);
-    int *visit_out_nei_num = new int[n];
-    memset(visit_out_nei_num, 0, sizeof(int)*n);
-    
-    uint64_t all_tri_num = 0, all_tri_num_ = 0;
-    
-    vector<uint64_t> type_num(5,0), type_num_(5,0);
-    uint64_t type_et = 0, type_et_ = 0;
-    uint32_t type = 0, tri_num = 0, common_num = 0;
-    float common_ = 0;
-    float del = 0;
-    
-    for(uint32_t i = 0; i<n;i++){
-//        cout<<i<<endl;
-//         cout<<out_edge_start[i+1] - out_edge_start[i] <<endl;
-        for(uint32_t j = out_edge_start_minHash[i]; j<out_edge_start_minHash[i+1]; j++){
-
-            if(out_edges_minHash[j].vertex == n) continue;
-            
-            visit_out[out_edges_minHash[j].vertex] = i+1;
-            visit_out_pos[out_edges_minHash[j].vertex] = out_edges_minHash[j].pos;
-            visit_out_nei_num[out_edges_minHash[j].vertex] = out_edges_minHash[j].neighbor_num;
-        }
-
-
-        for(uint32_t j = out_edge_start_minHash[i]; j < out_edge_start_minHash[i+1]; j++){
-            if(out_edges_minHash[j].vertex == n){
-                del++;
-                continue;
-            }
-            for(uint32_t k = out_edge_start_minHash[out_edges_minHash[j].vertex]; k < out_edge_start_minHash[out_edges_minHash[j].vertex+1]; k++){
-                if(out_edges_minHash[k].vertex == n){
-                    del++;
-                    continue;
-
-                }
-                if(visit_out[out_edges_minHash[k].vertex] == i+1){
-                    common_++;
-
-                    // multiple = min(min(out_degree[i]/(out_edge_start_minHash[i+1] - out_edge_start_minHash[i]), ))
-                    // if(multiple>1)
-                    // cout<<multiple<<endl;
-
-                    // judge_tri_type(i, out_edges[j].pos, out_edges[j].vertex, out_edges[k].pos, i, visit_out_pos[out_edges[k].vertex], type, tri_num, common_num);
-                    judge_tri_type_minHash(i, out_edges_minHash[j].pos,out_edges_minHash[j].neighbor_num, out_edges_minHash[j].vertex, out_edges_minHash[k].pos, out_edges_minHash[k].neighbor_num, i, visit_out_pos[out_edges_minHash[k].vertex], visit_out_nei_num[out_edges_minHash[k].vertex], type, tri_num, common_num);
-
-                    
-                    
-                    all_tri_num_+=tri_num;
-                    type_num_[type]+=tri_num;
-                    
-                    if(type == 3) type_et_+=tri_num/common_num;
-                    else if(type == 4) type_et_+=tri_num;
-
-
-                }
-            }
-
-            // int multiple = (int)((double)(out_degree[i] + out_degree[out_edges_minHash[j].vertex]- common_)/(double)(out_edge_start_minHash[i+1] - out_edge_start_minHash[i] + out_edge_start_minHash[out_edges_minHash[j].vertex+1] - out_edge_start_minHash[out_edges_minHash[j].vertex] - common_ ));
-
-            float similarity = common_/(float)(out_edge_start_minHash[i+1] - out_edge_start_minHash[i] + out_edge_start_minHash[out_edges_minHash[j].vertex+1] - out_edge_start_minHash[out_edges_minHash[j].vertex] - del - common_);
-
-            float multiple = ((float)(((float)(out_degree[i] + out_degree[out_edges_minHash[j].vertex]))*similarity)/(similarity+1))/common_;
-
-            int multiple_ = max((int)multiple, 1);
-
-            all_tri_num+=all_tri_num_*multiple_;
-            all_tri_num_ = 0;
-            for(int ii = 0;ii<5;ii++){
-                type_num[ii]+=type_num_[ii]*multiple_;
-                type_num_[ii] = 0;
-            }
-            type_et+=type_et_*multiple_;
-            type_et_ = 0;
-            common_ = 0;
-            del = 0;
-
-                    
-
-
-        }
-    }
-    
-    delete[] visit_out;
-    visit_out = NULL;
-    delete[] visit_out_pos;
-    visit_out_pos = NULL;
-    
-    for(int i = 0;i<5;i++){
-        cout<<type_num[i]<<endl;
-    }
-
-    cout<<type_et<<endl;
-
-    for(uint32_t i = 0;i<n;i++){
-        if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
-    }
-
-    cout<<type_et<<endl;
-    cout<<all_tri_num<<endl;
-}
-
-
-void Graph::triangle_enum4(){
-
-    clock_t startTime,endTime;
-
-    startTime = clock();//计时开始
-    to_pairwise_minHash4();
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-    
-    
-    int *visit_out = new int[n];
-    memset(visit_out, 0, sizeof(int)*n);
-    int *visit_out_pos = new int[n];
-    memset(visit_out_pos, 0, sizeof(int)*n);
-    
-    uint64_t all_tri_num = 0, all_tri_num_ = 0;
-    
-    vector<uint64_t> type_num(5,0), type_num_(5,0);
-    uint64_t type_et = 0, type_et_ = 0;
-    uint32_t type = 0, tri_num = 0, common_num = 0;
-    float common_ = 0;
-    float del = 0;
-    
-    for(uint32_t i = 0; i<n;i++){
-//        cout<<i<<endl;
-//         cout<<out_edge_start[i+1] - out_edge_start[i] <<endl;
-        for(uint32_t j = out_edge_start_minHash[i]; j<out_edge_start_minHash[i+1]; j++){
-
-            if(out_edges_minHash[j].vertex == n) continue;
-            
-            visit_out[out_edges_minHash[j].vertex] = i+1;
-            visit_out_pos[out_edges_minHash[j].vertex] = out_edges_minHash[j].pos;
-            
-        }
-
-
-        for(uint32_t j = out_edge_start_minHash[i]; j < out_edge_start_minHash[i+1]; j++){
-            if(out_edges_minHash[j].vertex == n){
-                del++;
-                continue;
-            }
-            for(uint32_t k = out_edge_start_minHash[out_edges_minHash[j].vertex]; k < out_edge_start_minHash[out_edges_minHash[j].vertex+1]; k++){
-                if(out_edges_minHash[k].vertex == n){
-                    del++;
-                    continue;
-
-                }
-                if(visit_out[out_edges_minHash[k].vertex] == i+1){
-                    common_++;
-
-                    // multiple = min(min(out_degree[i]/(out_edge_start_minHash[i+1] - out_edge_start_minHash[i]), ))
-                    // if(multiple>1)
-                    // cout<<multiple<<endl;
-
-                    judge_tri_type_minHash2(i, out_edges_minHash[j].pos, out_edges_minHash[j].vertex, out_edges_minHash[k].pos, i, visit_out_pos[out_edges_minHash[k].vertex], type, tri_num, common_num);
-                    // judge_tri_type_minHash(i, out_edges_minHash[j].pos,out_edges_minHash[j].neighbor_num, out_edges_minHash[j].vertex, out_edges_minHash[k].pos, out_edges_minHash[k].neighbor_num, i, visit_out_pos[out_edges_minHash[k].vertex], visit_out_nei_num[out_edges_minHash[k].vertex], type, tri_num, common_num);
-
-                    
-                    
-                    all_tri_num_+=tri_num;
-                    type_num_[type]+=tri_num;
-                    
-                    if(type == 3) type_et_+=tri_num/common_num;
-                    else if(type == 4) type_et_+=tri_num;
-
-
-                }
-            }
-
-            float similarity = common_/(float)(out_edge_start_minHash[i+1] - out_edge_start_minHash[i] + out_edge_start_minHash[out_edges_minHash[j].vertex+1] - out_edge_start_minHash[out_edges_minHash[j].vertex] - del - common_);
-
-            float multiple = ((float)(((float)(out_degree[i] + out_degree[out_edges_minHash[j].vertex]))*similarity)/(similarity+1))/common_;
-            
-
-            int multiple_ = max((int)multiple, 1);
-
-            all_tri_num+=all_tri_num_*multiple_;
-            all_tri_num_ = 0;
-            for(int ii = 0;ii<5;ii++){
-                type_num[ii]+=type_num_[ii]*multiple_;
-                type_num_[ii] = 0;
-            }
-            type_et+=type_et_*multiple_;
-            type_et_ = 0;
-            common_ = 0;
-            del = 0;
-
-        }
-
-        
-    }
-    
-    delete[] visit_out;
-    visit_out = NULL;
-    delete[] visit_out_pos;
-    visit_out_pos = NULL;
-    
-    for(int i = 0;i<5;i++){
-        cout<<type_num[i]<<endl;
-    }
-
-    cout<<type_et<<endl;
-
-    for(uint32_t i = 0;i<n;i++){
-        if(vertex_len[i] > 2) type_et+=vertex_len[i]*(vertex_len[i]-1)*(vertex_len[i]-2)/6;
-    }
-
-    cout<<type_et<<endl;
-    cout<<all_tri_num<<endl;
-}
 
 void Graph::hyperedge_triangle_enum(){
-    // uint64_t et_num = 0;
-
-    // for(uint32_t i = 0;i<n;i++){
-    //     if(vertex_len[i]<3) continue;
-    //     cout<<i<<endl;
-    //     for(uint32_t j = 0;j<vertex_len[i];j++){
-    //         for(uint32_t k = j+ 1;k<vertex_len[i];k++){
-    //             for(uint32_t l = k+1;l < vertex_len[i];l++){
-    //                 et_num++;
-    //             }
-    //         }
-    //     }
-    // }
-
-    // cout<<"et_num:"<<et_num<<endl;
-    
-
-    // return;
-
-
 
     clock_t startTime,endTime;
 
@@ -710,7 +411,7 @@ void Graph::hyperedge_triangle_enum(){
     to_hyperedge_based_pairwise();
     endTime = clock();//计时结束
     cout << "The to_hyperedge_based_pairwise time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-    return;
+    // return;
     
     startTime = clock();//计时开始
     out_edge_edges = new out_edge_vertex_pos[pairwise_edge_num];
@@ -771,59 +472,6 @@ void Graph::hyperedge_triangle_enum(){
     
 }
 
-void Graph::triangle_count(){
-    to_hyperedge_based_pairwise2();
-    
-    int common_j_k;
-    int common_j_l;
-    int common_k_l;
-    int common_j_k_l;
-
-    uint64_t type3 = 0;
-    uint64_t type2 = 0;
-    uint64_t type1 = 0;
-    uint64_t type0 = 0;
-    
-    uint64_t type3_ = 0;
-    uint64_t type2_ = 0;
-
-    for(uint32_t i = 0;i<e;i++){
-        //        cout<<i<<endl;
-        if(hyperedge_len[i] < 3) continue;
-        for(uint32_t j = hyperedges_to_vectices_start[i]; j<hyperedges_to_vectices_start[i+1];j++){
-            if(intersection_start_len[j] >= hyperedge_len[i]) continue;
-            type2_ = 0;
-            for(uint32_t k = j+1; k < hyperedges_to_vectices_start[i+1]; k++){
-                if(intersection_start_len[k] >= hyperedge_len[i]) continue;
-                common_j_k = two_interaction_num(hyperedges_to_vectices + intersection_start[j], intersection_start_len[j], hyperedges_to_vectices + intersection_start[k], intersection_start_len[k]);
-                if(common_j_k > 0 && common_j_k < intersection_start_len[j] && common_j_k < intersection_start_len[k]){
-                    type3_ = 0;
-                    for(uint32_t l = k+1; l < hyperedges_to_vectices_start[i+1]; l++){
-                        if(intersection_start_len[l] >= hyperedge_len[i]) continue;
-                        common_j_l = two_interaction_num(hyperedges_to_vectices + intersection_start[j], intersection_start_len[j], hyperedges_to_vectices + intersection_start[l], intersection_start_len[l]);
-                        common_k_l = two_interaction_num(hyperedges_to_vectices + intersection_start[k], intersection_start_len[k], hyperedges_to_vectices + intersection_start[l], intersection_start_len[l]);
-                        if(common_j_l > 0 && common_k_l > 0 && common_j_l < intersection_start_len[j] && common_j_l < intersection_start_len[l] && common_k_l < intersection_start_len[l] && common_k_l < intersection_start_len[k]){
-                            common_j_k_l = three_interaction_num(hyperedges_to_vectices + intersection_start[k], intersection_start_len[k], hyperedges_to_vectices + intersection_start[l], intersection_start_len[l], hyperedges_to_vectices + intersection_start[j], intersection_start_len[j]);
-                            type3_+=(common_j_k - common_j_k_l)*(common_j_l - common_j_k_l)*(common_k_l - common_j_k_l);
-                            
-                            
-                        }
-                    }
-                    type3+=type3_;
-                }
-                //                type2_ += (intersection_start_len[k] - common_j_k) * common_j_k * (intersection_start_len[j] - common_j_k) - type3_;
-                
-                
-            }
-            //            type1+=
-            
-        }
-        
-    }
-        
-    cout<<"type3:"<<type3<<endl;
-//    }
-}
 
 void Graph::to_pairwise(){
     clock_t startTime,endTime;
@@ -837,8 +485,6 @@ void Graph::to_pairwise(){
                 // if(vertex_len[hwyperedges[k]] == 1) continue;
                 pairwise_adgvex[hyperedges[j]].push_back({hyperedges[k], i});
                 pairwise_adgvex[hyperedges[k]].push_back({hyperedges[j], i});
-                
-                
             }
         }
         vertices_pairwise_edge_num+= (hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i] - 1);
@@ -912,531 +558,6 @@ void Graph::to_pairwise(){
     cout<<"vertices_pairwise_edge_num:"<<vertices_pairwise_edge_num<<endl;
 }
 
-void Graph::to_pairwise_minHash(){
-
-    clock_t startTime,endTime;
-
-    startTime = clock();//计时开始
-    // to_pairwise();
-    
-
-    srand((unsigned)time(NULL));
-    uint64_t vertices_pairwise_edge_num = 0;
-    // uint32_t *
-    int pos = -1;
-    for(uint32_t i = 0;i<e;i++){
-        // cout<<i<<endl;
-        for(uint32_t j = hyperedges_start[i]; j < hyperedges_start[i+1]; j++){
-            // if(vertex_len[hyperedges[j]] == 1) continue;
-            for(uint32_t k = j + 1; k < hyperedges_start[i+1]; k++){
-                // if(vertex_len[hwyperedges[k]] == 1) continue;
-                pairwise_adgvex[hyperedges[j]].push_back({hyperedges[k], i});
-                pairwise_adgvex[hyperedges[k]].push_back({hyperedges[j], i});
-
-                pos = hashMaps[hyperedges[j]]->find(hyperedges[k]);
-
-                if(pos == -1){
-                    hashMaps[hyperedges[j]]->insert(hyperedges[k], pairwise_adgvex_nei_num_i_minHash[hyperedges[j]]);
-                    pairwise_adgvex_nei_num_minHash[hyperedges[j]][pairwise_adgvex_nei_num_i_minHash[hyperedges[j]]] = 1;
-                    pairwise_adgvex_nei_num_i_minHash[hyperedges[j]]++;
-                }else {
-                    pairwise_adgvex_nei_num_minHash[hyperedges[j]][pos]++;
-                }
-
-                pos = hashMaps[hyperedges[k]]->find(hyperedges[j]);
-
-                if(pos == -1){
-                    
-                    hashMaps[hyperedges[k]]->insert(hyperedges[j], pairwise_adgvex_nei_num_i_minHash[hyperedges[k]]);
-                    pairwise_adgvex_nei_num_minHash[hyperedges[k]][pairwise_adgvex_nei_num_i_minHash[hyperedges[k]]] = 1;
-                    pairwise_adgvex_nei_num_i_minHash[hyperedges[k]]++;
-                }else {
-                    pairwise_adgvex_nei_num_minHash[hyperedges[k]][pos]++;
-                }
-            }
-        }
-        vertices_pairwise_edge_num+= (hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i] - 1);
-    }
-
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash part 1 time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-
-    startTime = clock();//计时开始
-    
-    uint32_t out_edges_num = 0;
-    uint32_t *nei_pos = new uint32_t[n];
-    // vector<uint32_t> nei_pos(n,0);
-    for(uint32_t i = 0; i< n; i++){
-        // cout<<i<<endl;
-        if(pairwise_adgvex[i].size()<1) continue;
-
-        pairwise_adgvex_start_minHash[i][0] = 0;
-        for(int j = 0; j < pairwise_adgvex_nei_num_i_minHash[i]; j++){
-            if(pairwise_adgvex_nei_num_minHash[i][j] > bucket) pairwise_adgvex_start_minHash[i][j+1] = pairwise_adgvex_start_minHash[i][j] + bucket;
-            else pairwise_adgvex_start_minHash[i][j+1] = pairwise_adgvex_start_minHash[i][j] + pairwise_adgvex_nei_num_minHash[i][j];
-        }
-
-        pairwise_adgvex_minHash[i].resize(pairwise_adgvex_start_minHash[i][pairwise_adgvex_nei_num_i_minHash[i]], {n, e});
-        memset(nei_pos, 0, sizeof(uint32_t)*pairwise_adgvex_nei_num_i_minHash[i]);
-        // nei_pos.resize(n,0);
-        // vector<uint32_t> nei_pos(n,0);
-        // fill(nei_pos.begin(), nei_pos.end(), 0);
-
-        for(uint32_t j = 0; j < pairwise_adgvex[i].size();j++){
-            int pos = hashMaps[i]->find(pairwise_adgvex[i][j].vertex);
-            if(pairwise_adgvex_nei_num_minHash[i][pos] > bucket){
-                uint32_t bucket_i = rand()%bucket;
-                if(pairwise_adgvex[i][j].hyperedge < pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][pos] + bucket_i].hyperedge){
-                    pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][pos] + bucket_i] = pairwise_adgvex[i][j];
-                }
-
-            }else {
-                pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][pos] + nei_pos[pos]++] = pairwise_adgvex[i][j];
-            }
-        }
-
-
-        std::sort(pairwise_adgvex_minHash[i].begin(), pairwise_adgvex_minHash[i].end(), [](const pairwise_edge& a, const pairwise_edge& b) {
-            if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-            return a.vertex < b.vertex;
-        });
-
-        // cout<<pairwise_adgvex_minHash[i].size()<<endl;
-        pairwise_adgvex_start_minHash[i][0] = 0;
-        uint32_t pairwise_adgvex_start_i = 1;
-        uint32_t last_vertex = pairwise_adgvex_minHash[i][0].vertex+1;
-        for(uint32_t j = 0; j < pairwise_adgvex_minHash[i].size();j++){
-            if(pairwise_adgvex_minHash[i][j].vertex == n){
-                pairwise_adgvex_minHash[i][j].vertex = pairwise_adgvex_minHash[i][j-1].vertex;
-                continue;
-            }
-            if(pairwise_adgvex_minHash[i][j].vertex != last_vertex){
-                pairwise_adgvex_start_minHash[i][pairwise_adgvex_start_i++] = j;
-                pairwise_adgvex_start_minHash[i][0]++;
-                last_vertex = pairwise_adgvex_minHash[i][j].vertex;
-            }
-        }
-        out_edges_num+=pairwise_adgvex_start_minHash[i][0];
-        pairwise_adgvex_start_minHash[i][pairwise_adgvex_start_i] = pairwise_adgvex_minHash[i].size();
-        
-        
-    }
-    
-    if(out_edge_start == NULL) out_edge_start = new uint32_t[n+1];
-    if(out_edges == NULL) out_edges = new out_edge_vertex_pos[out_edges_num];
-    
-    uint32_t out_edges_i = 0;
-    out_edge_start[0] = 0;
-
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash part 2 time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-
-    startTime = clock();//计时开始
-    
-    for(uint32_t i = 0;i<n;i++){
-        out_edge_start[i+1] = out_edge_start[i];
-    
-        
-        for(uint32_t j = 0; j<pairwise_adgvex_start_minHash[i][0]; j++){
-
-            if(pairwise_adgvex_start_minHash[i][0] > pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] || (pairwise_adgvex_start_minHash[i][0] == pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] && i > pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex)){
-                
-                out_edges[out_edges_i].vertex = pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex;
-                
-                out_edges[out_edges_i++].pos = j+1;
-                out_edge_start[i+1]++;
-                
-            }
-        }
-    }
-    
-
-    endTime = clock();//计时结束
-    cout << "The to_pairwise_minHash part 3 time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-    
-    
-    out_edge_start[n] = out_edges_i;
-    cout<<"vertices_pairwise_edge_num:"<<vertices_pairwise_edge_num<<endl;
-}
-
-void Graph::to_pairwise_minHash2(){
-        uint64_t vertices_pairwise_edge_num = 0;
-    for(uint32_t i = 0;i<e;i++){
-        // cout<<i<<endl;
-        for(uint32_t j = hyperedges_start[i]; j < hyperedges_start[i+1]; j++){
-            // if(vertex_len[hyperedges[j]] == 1) continue;
-            for(uint32_t k = j + 1; k < hyperedges_start[i+1]; k++){
-                // if(vertex_len[hyperedges[k]] == 1) continue;
-                pairwise_adgvex2[hyperedges[j]].push_back({hyperedges[k], i});
-                pairwise_adgvex2[hyperedges[k]].push_back({hyperedges[j], i});
-                
-                
-            }
-        }
-        vertices_pairwise_edge_num+= (hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i] - 1);
-    }
-    
-    uint32_t out_edges_num = 0;
-    
-    for(uint32_t i = 0; i< n; i++){
-        // cout<<i<<endl;
-        if(pairwise_adgvex2[i].size()<1) continue;
-        std::sort(pairwise_adgvex2[i].begin(), pairwise_adgvex2[i].end(), [](const pairwise_edge& a, const pairwise_edge& b) {
-            if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-            return a.vertex < b.vertex;
-        });
-        
-
-        pairwise_adgvex_start2[i][0] = 0;
-        uint32_t pairwise_adgvex_start_i = 1;
-        uint32_t last_vertex = pairwise_adgvex2[i][0].vertex+1;
-        for(uint32_t j = 0; j < pairwise_adgvex2[i].size();j++){
-            if(pairwise_adgvex2[i][j].vertex != last_vertex){
-                pairwise_adgvex_start2[i][pairwise_adgvex_start_i++] = j;
-                pairwise_adgvex_start2[i][0]++;
-                last_vertex = pairwise_adgvex2[i][j].vertex;
-            }
-        }
-        out_edges_num+=pairwise_adgvex_start2[i][0];
-        pairwise_adgvex_start2[i][pairwise_adgvex_start_i] = pairwise_adgvex2[i].size();
-
-        uint32_t pairwise_adgvex_min_i = 0;
-        pairwise_adgvex_start_minHash[i][0] = pairwise_adgvex_start2[i][0];
-        pairwise_adgvex_start_minHash[i][1] = 0;
-        for(uint32_t j = 0; j<pairwise_adgvex_start2[i][0]; j++){
-            if(pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1] <= bucket){
-                pairwise_adgvex_start_minHash[i][j+2] = pairwise_adgvex_start_minHash[i][j+1] + pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1];
-                for(uint32_t k = pairwise_adgvex_start2[i][j+1]; k < pairwise_adgvex_start2[i][j+2]; k++){
-                    pairwise_adgvex_minHash[i][pairwise_adgvex_min_i++] = pairwise_adgvex2[i][k];
-                }
-
-            }else{
-                pairwise_adgvex_start_minHash[i][j+2] = pairwise_adgvex_start_minHash[i][j+1] + bucket;
-
-                vector<bool> bucket_bool(bucket, false);
-
-                for(uint32_t k = pairwise_adgvex_start2[i][j+1]; k < pairwise_adgvex_start2[i][j+2]; k++){
-                    int bucket_i = pairwise_adgvex2[i][k].hyperedge & bucket_mask;
-                    // int bucket_i = rand()%bucket;
-
-                    if(bucket_bool[bucket_i]){
-                        if((pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i].hyperedge >> log_num_samples) > (pairwise_adgvex2[i][k].hyperedge >> log_num_samples)) pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i] = pairwise_adgvex2[i][k];
-                    }else{
-                        pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i] = pairwise_adgvex2[i][k];
-                    }
-
-                }
-                
-
-                std::sort(pairwise_adgvex_minHash[i].begin() + pairwise_adgvex_min_i, pairwise_adgvex_minHash[i].begin()+pairwise_adgvex_min_i + bucket, [](const pairwise_edge& a, const pairwise_edge& b) {
-                    if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-                    return a.vertex < b.vertex;
-                });
-
-                pairwise_adgvex_minHash[i][pairwise_adgvex_min_i].vertex = pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex;
-
-                pairwise_adgvex_min_i+=bucket;
-
-                
-            }
-        }
-        
-        
-    }
-    
-    if(out_edge_start == NULL) out_edge_start = new uint32_t[n+1];
-    if(out_edges == NULL) out_edges = new out_edge_vertex_pos[out_edges_num];
-    
-    uint32_t out_edges_i = 0;
-    out_edge_start[0] = 0;
-    
-    for(uint32_t i = 0;i<n;i++){
-        out_edge_start[i+1] = out_edge_start[i];
-
-        
-        for(uint32_t j = 0; j<pairwise_adgvex_start_minHash[i][0]; j++){
-            
-
-            if(pairwise_adgvex_start_minHash[i][0] > pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] || (pairwise_adgvex_start_minHash[i][0] == pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] && i > pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex)){
-                
-                out_edges[out_edges_i].vertex = pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex;
-                
-                out_edges[out_edges_i].pos = j+1;
-                out_edges[out_edges_i++].neighbor_num = pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1];
-
-                out_edge_start[i+1]++;
-                
-            }
-        }
-    }
-    
-    
-    
-    out_edge_start[n] = out_edges_i;
-    cout<<"vertices_pairwise_edge_num:"<<vertices_pairwise_edge_num<<endl;
-}
-
-void Graph::to_pairwise_minHash3(){
-        uint64_t vertices_pairwise_edge_num = 0;
-    for(uint32_t i = 0;i<e;i++){
-        // cout<<i<<endl;
-        for(uint32_t j = hyperedges_start[i]; j < hyperedges_start[i+1]; j++){
-            if(vertex_len[hyperedges[j]] == 1) continue;
-            for(uint32_t k = j + 1; k < hyperedges_start[i+1]; k++){
-                if(vertex_len[hyperedges[k]] == 1) continue;
-                pairwise_adgvex2[hyperedges[j]].push_back({hyperedges[k], i});
-                pairwise_adgvex2[hyperedges[k]].push_back({hyperedges[j], i});
-                
-                
-            }
-        }
-        vertices_pairwise_edge_num+= (hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i] - 1);
-    }
-    
-    uint32_t out_edges_num = 0;
-    
-    for(uint32_t i = 0; i< n; i++){
-        // cout<<i<<endl;
-        if(pairwise_adgvex2[i].size()<1) continue;
-        std::sort(pairwise_adgvex2[i].begin(), pairwise_adgvex2[i].end(), [](const pairwise_edge& a, const pairwise_edge& b) {
-            if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-            return a.vertex < b.vertex;
-        });
-        
-
-        pairwise_adgvex_start2[i][0] = 0;
-        uint32_t pairwise_adgvex_start_i = 1;
-        uint32_t last_vertex = pairwise_adgvex2[i][0].vertex+1;
-        for(uint32_t j = 0; j < pairwise_adgvex2[i].size();j++){
-            if(pairwise_adgvex2[i][j].vertex != last_vertex){
-                pairwise_adgvex_start2[i][pairwise_adgvex_start_i++] = j;
-                pairwise_adgvex_start2[i][0]++;
-                last_vertex = pairwise_adgvex2[i][j].vertex;
-            }
-        }
-        out_edges_num+=pairwise_adgvex_start2[i][0];
-        pairwise_adgvex_start2[i][pairwise_adgvex_start_i] = pairwise_adgvex2[i].size();
-
-        uint32_t pairwise_adgvex_min_i = 0;
-        pairwise_adgvex_start_minHash[i][0] = pairwise_adgvex_start2[i][0];
-        pairwise_adgvex_start_minHash[i][1] = 0;
-        for(uint32_t j = 0; j<pairwise_adgvex_start2[i][0]; j++){
-            if(pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1] <= bucket){
-                pairwise_adgvex_start_minHash[i][j+2] = pairwise_adgvex_start_minHash[i][j+1] + pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1];
-                for(uint32_t k = pairwise_adgvex_start2[i][j+1]; k < pairwise_adgvex_start2[i][j+2]; k++){
-                    pairwise_adgvex_minHash[i][pairwise_adgvex_min_i++] = pairwise_adgvex2[i][k];
-                }
-
-            }else{
-                pairwise_adgvex_start_minHash[i][j+2] = pairwise_adgvex_start_minHash[i][j+1] + bucket;
-
-                vector<bool> bucket_bool(bucket, false);
-
-                for(uint32_t k = pairwise_adgvex_start2[i][j+1]; k < pairwise_adgvex_start2[i][j+2]; k++){
-                    int bucket_i = pairwise_adgvex2[i][k].hyperedge & bucket_mask;
-
-                    if(bucket_bool[bucket_i]){
-                        if((pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i].hyperedge >> log_num_samples) > (pairwise_adgvex2[i][k].hyperedge >> log_num_samples)) pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i] = pairwise_adgvex2[i][k];
-                    }else{
-                        pairwise_adgvex_minHash[i][pairwise_adgvex_min_i + bucket_i] = pairwise_adgvex2[i][k];
-                    }
-
-                }
-                
-
-                std::sort(pairwise_adgvex_minHash[i].begin() + pairwise_adgvex_min_i, pairwise_adgvex_minHash[i].begin()+pairwise_adgvex_min_i + bucket, [](const pairwise_edge& a, const pairwise_edge& b) {
-                    if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-                    return a.vertex < b.vertex;
-                });
-
-                pairwise_adgvex_minHash[i][pairwise_adgvex_min_i].vertex = pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex;
-
-                pairwise_adgvex_min_i+=bucket;
-
-                
-            }
-        }
-        
-        
-    }
-    
-    if(out_edge_start == NULL) out_edge_start = new uint32_t[n+1];
-    if(out_edges == NULL) out_edges = new out_edge_vertex_pos[out_edges_num];
-
-    if(out_edge_start_minHash == NULL) out_edge_start_minHash = new uint32_t[n+1];
-    if(out_edges_minHash == NULL) out_edges_minHash = new out_edge_vertex_pos[out_edges_num];
-    
-    uint32_t out_edges_i = 0;
-    out_edge_start[0] = 0;
-    
-    for(uint32_t i = 0;i<n;i++){
-        out_edge_start[i+1] = out_edge_start[i];
-
-        for(uint32_t j = 0; j<pairwise_adgvex_start_minHash[i][0]; j++){
-            
-
-            if(pairwise_adgvex_start_minHash[i][0] > pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] || (pairwise_adgvex_start_minHash[i][0] == pairwise_adgvex_start_minHash[pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex][0] && i > pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex)){
-                
-                out_edges[out_edges_i].vertex = pairwise_adgvex_minHash[i][pairwise_adgvex_start_minHash[i][j+1]].vertex;
-                
-                out_edges[out_edges_i].pos = j+1;
-                out_edges[out_edges_i++].neighbor_num = pairwise_adgvex_start2[i][j+2] - pairwise_adgvex_start2[i][j+1];
-                out_edge_start[i+1]++;
-                
-            }
-        }
-
-        out_degree[i] = out_edge_start[i+1] - out_edge_start[i];
-
-    }
-    out_edges_i = 0;
-    out_edge_start_minHash[0] = 0;
-    for(uint32_t i = 0;i<n;i++){
-        if(out_edge_start[i+1] - out_edge_start[i] <= bucket){
-            out_edge_start_minHash[i+1] = out_edge_start_minHash[i] + out_edge_start[i+1] - out_edge_start[i];
-            for(uint32_t j = out_edge_start[i]; j< out_edge_start[i+1]; j++){
-                out_edges_minHash[out_edges_i++] = out_edges[j];
-            }
-        }
-        else {
-            vector<bool> bucket_bool(bucket, false);
-            out_edge_start_minHash[i+1] = out_edge_start_minHash[i] + bucket;
-            for(uint32_t j = out_edge_start[i]; j< out_edge_start[i+1]; j++){
-                // int bucket_i = out_edges[j].vertex & bucket_mask;
-                int bucket_i = rand()%bucket;
-                if(bucket_bool[bucket_i]){
-                    if((out_edges_minHash[out_edges_i + bucket_i].vertex >> log_num_samples) > (out_edges[j].vertex >> log_num_samples)) out_edges_minHash[out_edges_i + bucket_i] = out_edges[j];
-                }else{
-                    out_edges_minHash[out_edges_i + bucket_i] = out_edges[j];
-                    bucket_bool[bucket_i] = true;
-                }
-            }
-
-            for(int j = 0; j<bucket;j++){
-                if(bucket_bool[j] == false){
-                    out_edges_minHash[out_edges_i + j].vertex = n;
-                }
-            }
-            out_edges_i+=bucket;
-        
-        }
-
-    }
-    
-    
-    
-    out_edge_start[n] = out_edges_i;
-    cout<<"vertices_pairwise_edge_num:"<<vertices_pairwise_edge_num<<endl;
-}
-
-void Graph::to_pairwise_minHash4(){
-        uint64_t vertices_pairwise_edge_num = 0;
-    for(uint32_t i = 0;i<e;i++){
-        // cout<<i<<endl;
-        for(uint32_t j = hyperedges_start[i]; j < hyperedges_start[i+1]; j++){
-            if(vertex_len[hyperedges[j]] == 1) continue;
-            for(uint32_t k = j + 1; k < hyperedges_start[i+1]; k++){
-                if(vertex_len[hyperedges[k]] == 1) continue;
-                pairwise_adgvex2[hyperedges[j]].push_back({hyperedges[k], i});
-                pairwise_adgvex2[hyperedges[k]].push_back({hyperedges[j], i});
-                
-                
-            }
-        }
-        vertices_pairwise_edge_num+= (hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i] - 1);
-    }
-    
-    uint32_t out_edges_num = 0;
-    
-    for(uint32_t i = 0; i< n; i++){
-        // cout<<i<<endl;
-        if(pairwise_adgvex2[i].size()<1) continue;
-        std::sort(pairwise_adgvex2[i].begin(), pairwise_adgvex2[i].end(), [](const pairwise_edge& a, const pairwise_edge& b) {
-            if(a.vertex == b.vertex) return a.hyperedge < b.hyperedge;
-            return a.vertex < b.vertex;
-        });
-        
-
-        pairwise_adgvex_start2[i][0] = 0;
-        uint32_t pairwise_adgvex_start_i = 1;
-        uint32_t last_vertex = pairwise_adgvex2[i][0].vertex+1;
-        for(uint32_t j = 0; j < pairwise_adgvex2[i].size();j++){
-            if(pairwise_adgvex2[i][j].vertex != last_vertex){
-                pairwise_adgvex_start2[i][pairwise_adgvex_start_i++] = j;
-                pairwise_adgvex_start2[i][0]++;
-                last_vertex = pairwise_adgvex2[i][j].vertex;
-            }
-        }
-        out_edges_num+=pairwise_adgvex_start2[i][0];
-        pairwise_adgvex_start2[i][pairwise_adgvex_start_i] = pairwise_adgvex2[i].size();
-    }
-    
-    if(out_edge_start == NULL) out_edge_start = new uint32_t[n+1];
-    if(out_edges == NULL) out_edges = new out_edge_vertex_pos[out_edges_num];
-
-    if(out_edge_start_minHash == NULL) out_edge_start_minHash = new uint32_t[n+1];
-    if(out_edges_minHash == NULL) out_edges_minHash = new out_edge_vertex_pos[out_edges_num];
-    
-    uint32_t out_edges_i = 0;
-    out_edge_start[0] = 0;
-    
-    for(uint32_t i = 0;i<n;i++){
-        out_edge_start[i+1] = out_edge_start[i];
-
-        for(uint32_t j = 0; j<pairwise_adgvex_start2[i][0]; j++){
-            
-
-            if(pairwise_adgvex_start2[i][0] > pairwise_adgvex_start2[pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex][0] || (pairwise_adgvex_start2[i][0] == pairwise_adgvex_start2[pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex][0] && i > pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex)){
-                
-                out_edges[out_edges_i].vertex = pairwise_adgvex2[i][pairwise_adgvex_start2[i][j+1]].vertex;
-                out_edges[out_edges_i++].pos = j+1;
-                out_edge_start[i+1]++;
-                
-            }
-        }
-
-        out_degree[i] = out_edge_start[i+1] - out_edge_start[i];
-
-    }
-    out_edges_i = 0;
-    out_edge_start_minHash[0] = 0;
-    for(uint32_t i = 0;i<n;i++){
-        if(out_edge_start[i+1] - out_edge_start[i] <= bucket){
-            out_edge_start_minHash[i+1] = out_edge_start_minHash[i] + out_edge_start[i+1] - out_edge_start[i];
-            for(uint32_t j = out_edge_start[i]; j< out_edge_start[i+1]; j++){
-                out_edges_minHash[out_edges_i++] = out_edges[j];
-            }
-        }
-        else {
-            vector<bool> bucket_bool(bucket, false);
-            out_edge_start_minHash[i+1] = out_edge_start_minHash[i] + bucket;
-            for(uint32_t j = out_edge_start[i]; j< out_edge_start[i+1]; j++){
-                int bucket_i = out_edges[j].vertex & bucket_mask;
-                // int bucket_i = rand()%bucket;
-                if(bucket_bool[bucket_i]){
-                    if((out_edges_minHash[out_edges_i + bucket_i].vertex >> log_num_samples) > (out_edges[j].vertex >> log_num_samples)) out_edges_minHash[out_edges_i + bucket_i] = out_edges[j];
-                }else{
-                    out_edges_minHash[out_edges_i + bucket_i] = out_edges[j];
-                    bucket_bool[bucket_i] = true;
-                }
-            }
-
-            for(int j = 0; j<bucket;j++){
-                if(bucket_bool[j] == false){
-                    out_edges_minHash[out_edges_i + j].vertex = n;
-                }
-            }
-            out_edges_i+=bucket;
-        
-        }
-
-    }
-    
-    
-    
-    out_edge_start[n] = out_edges_i;
-    cout<<"vertices_pairwise_edge_num:"<<vertices_pairwise_edge_num<<endl;
-}
 
 bool compare_by_hyperedge(const pairwise_edge& a, const pairwise_edge& b) {
     if(a.hyperedge == b.hyperedge) return a.vertex < b.vertex;
@@ -1448,145 +569,30 @@ bool compare_by_hyperedge2(const pairwise_edge& a, const pairwise_edge& b) {
     return a.vertex < b.vertex;
 }
 
-void Graph::to_hyperedge_based_pairwise2(){
+void Graph::to_hyperedge_based_pairwise(){
+
     uint32_t last = 0;
     uint32_t hyperedges_to_vectices_i = 0;
     uint32_t intersection_start_i = 0;
     uint32_t hyperedges_to_vectices_start_i = 0;
-    for(uint32_t i = 0; i<e;i++){
-//        cout<<i<<endl;
-//        for(uint32_t j = i+1; j<e;j++){
-//            tett+= two_interaction_num2(hyperedges + hyperedges_start[i], hyperedges_start[i+1] - hyperedges_start[i], hyperedges + hyperedges_start[j], hyperedges_start[j+1] - hyperedges_start[j]);
-//        }
-        
-        for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
-            
-            for(uint32_t k = 0; k<vertices[hyperedges[j]].size();k++){
-                if(vertices[hyperedges[j]][k] == i) continue;
-//                if(i < vertices[hyperedges[j]][k]){
-//
-//
-                    hyperedges_to_vectices[hyperedges_to_vectices_i].hyperedge = vertices[hyperedges[j]][k];
-                    hyperedges_to_vectices[hyperedges_to_vectices_i++].vertex = hyperedges[j];
-//                }
+    uint64_t vertices_pairwise_edge_num = 0;
+    for(uint32_t i = 0; i<n;i++){
+        for(uint32_t j = 0;j<vertices[i].size();j++){
+            for(uint32_t k = j+1;k<vertices[i].size();k++){
+                pairwise_edge_adgvex[vertices[i][j]].push_back({i,vertices[i][k]});
+                pairwise_edge_adgvex[vertices[i][k]].push_back({i,vertices[i][j]});
             }
         }
-        sort(hyperedges_to_vectices + last, hyperedges_to_vectices + hyperedges_to_vectices_i, compare_by_hyperedge);
-        hyperedges_to_vectices_start[hyperedges_to_vectices_start_i++] = intersection_start_i;
-        int len = 1;
-        for(uint32_t j = last+1; j<hyperedges_to_vectices_i;j++){
-            if(hyperedges_to_vectices[j].hyperedge != hyperedges_to_vectices[j-1].hyperedge){
-                if(len>1){
-                    intersection_start[intersection_start_i] = j - len;
-                    intersection_start_len[intersection_start_i++] = len;
-                    len = 1;
-                }
-            }else len++;
-        }
-        
-        if(len>1){
-            intersection_start[intersection_start_i] = hyperedges_to_vectices_i - len;
-            intersection_start_len[intersection_start_i++] = len;
-            len = 1;
-        }
-        
-        last = hyperedges_to_vectices_i;
-        
+        vertices_pairwise_edge_num+=vertices[i].size()*(vertices[i].size()-1);
+
     }
-    
-    intersection_start[intersection_start_i++] = hyperedges_to_vectices_i;
-    hyperedges_to_vectices_start[hyperedges_to_vectices_start_i++] = intersection_start_i;
-    
-    cout<<hyperedges_to_vectices_i<<" "<<intersection_start_i<<" "<<hyperedges_to_vectices_start_i<<endl;
-    
-//    for(int i = 0;i<10;i++){
-//        for(int j = hyperedges_to_vectices_start[i]; j<hyperedges_to_vectices_start[i+1];j++){
-//            for(int k = intersection_start[j];k<intersection_start[j]+intersection_start_len[j];k++)
-//                cout<<hyperedges_to_vectices[k].hyperedge<<" "<<hyperedges_to_vectices[k].vertex<<"||";
-//            cout<<endl;
-//        }
-//        cout<<endl;
-//    }
-    
-    
-}
-
-void Graph::to_hyperedge_based_pairwise(){
-
-    uint32_t *pairwise_edge_adgvex_i = new uint32_t[e];
-    memset(pairwise_edge_adgvex_i, 0, sizeof(uint32_t)*e);
-
-    uint64_t all_num = 0;
 
     for(uint32_t i = 0;i<e;i++){
-        for(uint32_t j = hyperedges_start[i];j<hyperedges_start[i+1];j++){
-            for(uint32_t j2 = 0;j2<vertex_len[hyperedges[j]];j2++){
-            if(i<vertices[hyperedges[j]][j2] && pairwise_edge_adgvex_i[vertices[hyperedges[j]][j2]] != e+1){
-                pairwise_edge_adgvex_i[vertices[hyperedges[j]][j2]] = e+1;
-
-                for(uint32_t k1 = hyperedges_start[i], k2 = hyperedges_start[vertices[hyperedges[j]][j2]];k1<hyperedges_start[i+1] && k2 < hyperedges_start[vertices[hyperedges[j]][j2]+1];){
-                    if(hyperedges[k1] == hyperedges[k2]){
-                        k1++;
-                        k2++;
-                        all_num++;
-                        // pairwise_edge_adgvex[i][pairwise_edge_adgvex_i[i]++] = pairwise_edge{hyperedges[k1], i};
-                        // pairwise_edge_adgvex[vertices[hyperedges[j]][j2]][pairwise_edge_adgvex_i[vertices[hyperedges[j]][j2]]++] = pairwise_edge{hyperedges[k2], vertices[hyperedges[j]][j2]};
-
-                    }
-                    else if (hyperedges[k1] < hyperedges[k2]) {
-                        k1++;
-                    }
-                    else{
-                        k2++;
-                    }
-                }
-            }
-            }
-        
-        }
 
     }
 
-    cout<<"all_num:"<<all_num<<endl;
-
     
-    // for(uint32_t i = 0; i <n;i++){
-    //     // cout<<vertex_len[i]<<endl;
-    //     for(uint32_t j = 0; j < vertex_len[i]; j++){
-    //         for(uint32_t k = j + 1; k<vertex_len[i];k++){
-                // pairwise_edge_adgvex[vertices[i][j]][pairwise_edge_adgvex_i[vertices[i][j]]++] = pairwise_edge{i, vertices[i][k]};
-                // pairwise_edge_adgvex[vertices[i][k]][pairwise_edge_adgvex_i[vertices[i][k]]++] = pairwise_edge{i, vertices[i][j]};
-    //         }
-    //     }
-    // }
-    
-    // for(uint32_t i = 0; i<e;i++){
-    //     pairwise_edge_adgvex_start[i][0] = 0;
-        
-    //     if(pairwise_edge_adgvex_i[i] < 1) continue;
-    //     sort(pairwise_edge_adgvex[i].begin(), pairwise_edge_adgvex[i].begin() + pairwise_edge_adgvex_i[i], [](const pairwise_edge& a, const pairwise_edge& b) {
-    //         if(a.hyperedge == b.hyperedge) return a.vertex < b.vertex;
-    //         return a.hyperedge < b.hyperedge;
-    //     });
-        
-        
-    //     uint32_t pairwise_adgvex_start_i = 1;
-    //     uint32_t last_hyperedge = pairwise_edge_adgvex[i][0].hyperedge+1;
-    //     for(uint32_t j = 0; j < pairwise_edge_adgvex_i[i];j++){
-    //         if(pairwise_edge_adgvex[i][j].hyperedge != last_hyperedge){
-    //             pairwise_edge_adgvex_start[i][pairwise_adgvex_start_i++] = j;
-    //             pairwise_edge_adgvex_start[i][0]++;
-    //             last_hyperedge = pairwise_edge_adgvex[i][j].hyperedge;
-    //         }
-    //     }
-    //     pairwise_edge_num += pairwise_edge_adgvex_start[i][0];
-    //     // cout<<pairwise_edge_adgvex_start[i][0]<<endl;
-    //     pairwise_edge_adgvex_start[i][pairwise_adgvex_start_i] = pairwise_edge_adgvex_i[i];
-    
-    // }
-    
-    cout<<"pairwise_edge_num:"<<pairwise_edge_num<<endl;
-    cout<<"arg_edge_nei:"<<pairwise_edge_num/e<<endl;
+    cout<<vertices_pairwise_edge_num<<endl;
     
 }
 
@@ -1597,6 +603,59 @@ void Graph::judge_tri_type(uint32_t u, uint32_t u_pos, uint32_t v, uint32_t v_po
     common_num = 0;
     type = 0;
     tri_num = 1;
+    int tri_num1 = 0, tri_num2 = 0, tri_num3 = 0;
+    uint32_t u_i, v_i, w_i;
+    for(u_i = pairwise_adgvex_start[u][u_pos], v_i = pairwise_adgvex_start[v][v_pos], w_i = pairwise_adgvex_start[w][w_pos]; u_i < pairwise_adgvex_start[u][u_pos+1] && v_i < pairwise_adgvex_start[v][v_pos+1] && w_i < pairwise_adgvex_start[w][w_pos+1];){
+        
+        if(pairwise_adgvex[u][u_i].hyperedge == pairwise_adgvex[v][v_i].hyperedge && pairwise_adgvex[u][u_i].hyperedge == pairwise_adgvex[w][w_i].hyperedge){
+            u_i++;
+            v_i++;
+            w_i++;
+            common_num++;
+        }
+        else if (pairwise_adgvex[u][u_i].hyperedge < pairwise_adgvex[v][v_i].hyperedge && pairwise_adgvex[u][u_i].hyperedge < pairwise_adgvex[w][w_i].hyperedge){
+            u_i++;
+        }else if (pairwise_adgvex[u][u_i].hyperedge > pairwise_adgvex[v][v_i].hyperedge && pairwise_adgvex[v][v_i].hyperedge < pairwise_adgvex[w][w_i].hyperedge){
+            v_i++;
+        }else{
+            w_i++;
+        }
+        
+    }
+
+    tri_num = common_num;
+
+    // cout<<max(pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos], max(pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos], pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos]))<<endl;
+
+    // cout<<max(u_i - pairwise_adgvex_start[u][u_pos], max(v_i - pairwise_adgvex_start[v][v_pos], w_i - pairwise_adgvex[w][w_i].hyperedge))<<endl;
+    
+    if((pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num) > 0){
+        type=1;
+        tri_num1 = (pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num);
+    }
+    if((pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num) > 0){
+        type=1;
+        tri_num2 = (pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num);
+    }
+    if((pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num) > 0){
+        type=1;
+        tri_num3 = (pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num);
+    }
+    
+    if(common_num == 0){
+        type = 2;
+        tri_num = tri_num1*tri_num2*tri_num3;
+    } 
+    else if(type == 1){
+        tri_num = (tri_num1+tri_num2+tri_num3)*common_num;
+    }
+    // if(common_num>1000) cout<<common_num<<" "<<pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num<<" "<<pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num<<" "<<pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num<<endl;
+}
+
+void Graph::judge_tri_type_2(uint32_t u, uint32_t u_pos, uint32_t v, uint32_t v_pos,uint32_t w, uint32_t w_pos, uint32_t &type1_num, uint32_t &type2_num, uint32_t &common_num){
+
+    common_num = 0;
+    int tri_num1 = 0, tri_num2 = 0, tri_num3 = 0;
     uint32_t u_i, v_i, w_i;
     for(u_i = pairwise_adgvex_start[u][u_pos], v_i = pairwise_adgvex_start[v][v_pos], w_i = pairwise_adgvex_start[w][w_pos]; u_i < pairwise_adgvex_start[u][u_pos+1] && v_i < pairwise_adgvex_start[v][v_pos+1] && w_i < pairwise_adgvex_start[w][w_pos+1];){
         
@@ -1621,127 +680,29 @@ void Graph::judge_tri_type(uint32_t u, uint32_t u_pos, uint32_t v, uint32_t v_po
     // cout<<max(u_i - pairwise_adgvex_start[u][u_pos], max(v_i - pairwise_adgvex_start[v][v_pos], w_i - pairwise_adgvex[w][w_i].hyperedge))<<endl;
     
     if((pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num);
+        
+        tri_num1 = (pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num);
     }
     if((pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num);
+        
+        tri_num2 = (pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num);
     }
     if((pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num);
+        
+        tri_num3 = (pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num);
     }
     
-    if(common_num == 0) type++;
-    else tri_num = tri_num*common_num;
+
+    type2_num = tri_num1*tri_num2*tri_num3;
+
+    type1_num = (tri_num1+tri_num2+tri_num3)*common_num;
 
     // if(common_num>1000) cout<<common_num<<" "<<pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num<<" "<<pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num<<" "<<pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num<<endl;
 }
 
 
-int Graph::judge_tri_type_minHash(uint32_t u, uint32_t u_pos, uint32_t u_nei_num, uint32_t v, uint32_t v_pos, uint32_t v_nei_num,uint32_t w, uint32_t w_pos, uint32_t w_nei_num, uint32_t &type, uint32_t &tri_num, uint32_t &common_num){
-
-    // return;
-    
-    common_num = 0;
-    type = 0;
-    tri_num = 1;
-    uint32_t u_i, v_i, w_i;
-    for(u_i = pairwise_adgvex_start_minHash[u][u_pos], v_i = pairwise_adgvex_start_minHash[v][v_pos], w_i = pairwise_adgvex_start_minHash[w][w_pos]; u_i < pairwise_adgvex_start_minHash[u][u_pos+1] && v_i < pairwise_adgvex_start_minHash[v][v_pos+1] && w_i < pairwise_adgvex_start_minHash[w][w_pos+1];){
-        if(pairwise_adgvex_minHash[u][u_i].hyperedge == e || pairwise_adgvex_minHash[v][v_i].hyperedge == e || pairwise_adgvex_minHash[w][w_i].hyperedge == e) break;
-        if(pairwise_adgvex_minHash[u][u_i].hyperedge == pairwise_adgvex_minHash[v][v_i].hyperedge && pairwise_adgvex_minHash[u][u_i].hyperedge == pairwise_adgvex_minHash[w][w_i].hyperedge){
-            u_i++;
-            v_i++;
-            w_i++;
-            common_num++;
-        }
-        else if (pairwise_adgvex_minHash[u][u_i].hyperedge < pairwise_adgvex_minHash[v][v_i].hyperedge && pairwise_adgvex_minHash[u][u_i].hyperedge < pairwise_adgvex_minHash[w][w_i].hyperedge){
-            u_i++;
-        }else if (pairwise_adgvex_minHash[u][u_i].hyperedge > pairwise_adgvex_minHash[v][v_i].hyperedge && pairwise_adgvex_minHash[v][v_i].hyperedge < pairwise_adgvex_minHash[w][w_i].hyperedge){
-            v_i++;
-        }else{
-            w_i++;
-        }
-        
-    }
-    int origin_common = common_num;
-
-    // double sim = common_num/()
-
-    common_num = (int)(2*(double)common_num * (double)(u_nei_num + v_nei_num + w_nei_num)/(double)(pairwise_adgvex_start_minHash[u][u_pos+1] - pairwise_adgvex_start_minHash[u][u_pos] + pairwise_adgvex_start_minHash[v][v_pos+1] - pairwise_adgvex_start_minHash[v][v_pos] + pairwise_adgvex_start_minHash[w][w_pos+1] - pairwise_adgvex_start_minHash[w][w_pos]));
 
 
-    common_num = min(min(common_num, u_nei_num), min(v_nei_num, w_nei_num));
-
-    // common_num = (int)((double)common_num * (double)min(min(u_nei_num, v_nei_num), w_nei_num)/(double)min(min(pairwise_adgvex_start_minHash[u][u_pos+1] - pairwise_adgvex_start_minHash[u][u_pos], pairwise_adgvex_start_minHash[v][v_pos+1] - pairwise_adgvex_start_minHash[v][v_pos]), pairwise_adgvex_start_minHash[w][w_pos+1] - pairwise_adgvex_start_minHash[w][w_pos]));
-
-    // cout<<max(pairwise_adgvex_start_minHash[u][u_pos+1] - pairwise_adgvex_start_minHash[u][u_pos], max(pairwise_adgvex_start_minHash[v][v_pos+1] - pairwise_adgvex_start_minHash[v][v_pos], pairwise_adgvex_start_minHash[w][w_pos+1] - pairwise_adgvex_start_minHash[w][w_pos]))<<endl;
-
-    // cout<<max(u_i - pairwise_adgvex_start_minHash[u][u_pos], max(v_i - pairwise_adgvex_start_minHash[v][v_pos], w_i - pairwise_adgvex[w][w_i].hyperedge))<<endl;
-    
-    if((u_nei_num - common_num) > 0){
-        type++;
-        tri_num = tri_num*(u_nei_num - common_num);
-    }
-    if((v_nei_num - common_num) > 0){
-        type++;
-        tri_num = tri_num*(v_nei_num - common_num);
-    }
-    if((w_nei_num - common_num) > 0){
-        type++;
-        tri_num = tri_num*(w_nei_num - common_num);
-    }
-    
-    if(common_num == 0) type++;
-    else tri_num = tri_num*common_num;
-
-    return origin_common;
-
-    // if(common_num>1000) cout<<common_num<<" "<<pairwise_adgvex_start[u][u_pos+1] - pairwise_adgvex_start[u][u_pos] - common_num<<" "<<pairwise_adgvex_start[v][v_pos+1] - pairwise_adgvex_start[v][v_pos] - common_num<<" "<<pairwise_adgvex_start[w][w_pos+1] - pairwise_adgvex_start[w][w_pos] - common_num<<endl;
-}
-
-void Graph::judge_tri_type_minHash2(uint32_t u, uint32_t u_pos, uint32_t v, uint32_t v_pos,uint32_t w, uint32_t w_pos, uint32_t &type, uint32_t &tri_num, uint32_t &common_num){
-
-    common_num = 0;
-    type = 0;
-    tri_num = 1;
-    uint32_t u_i, v_i, w_i;
-    for(u_i = pairwise_adgvex_start2[u][u_pos], v_i = pairwise_adgvex_start2[v][v_pos], w_i = pairwise_adgvex_start2[w][w_pos]; u_i < pairwise_adgvex_start2[u][u_pos+1] && v_i < pairwise_adgvex_start2[v][v_pos+1] && w_i < pairwise_adgvex_start2[w][w_pos+1];){
-        if(pairwise_adgvex2[u][u_i].hyperedge == e || pairwise_adgvex2[v][v_i].hyperedge == e || pairwise_adgvex2[w][w_i].hyperedge == e) break;
-        if(pairwise_adgvex2[u][u_i].hyperedge == pairwise_adgvex2[v][v_i].hyperedge && pairwise_adgvex2[u][u_i].hyperedge == pairwise_adgvex2[w][w_i].hyperedge){
-            u_i++;
-            v_i++;
-            w_i++;
-            common_num++;
-        }
-        else if (pairwise_adgvex2[u][u_i].hyperedge < pairwise_adgvex2[v][v_i].hyperedge && pairwise_adgvex2[u][u_i].hyperedge < pairwise_adgvex2[w][w_i].hyperedge){
-            u_i++;
-        }else if (pairwise_adgvex2[u][u_i].hyperedge > pairwise_adgvex2[v][v_i].hyperedge && pairwise_adgvex2[v][v_i].hyperedge < pairwise_adgvex2[w][w_i].hyperedge){
-            v_i++;
-        }else{
-            w_i++;
-        }
-        
-    }
-
-    if((pairwise_adgvex_start2[u][u_pos+1] - pairwise_adgvex_start2[u][u_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start2[u][u_pos+1] - pairwise_adgvex_start2[u][u_pos] - common_num);
-    }
-    if((pairwise_adgvex_start2[v][v_pos+1] - pairwise_adgvex_start2[v][v_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start2[v][v_pos+1] - pairwise_adgvex_start2[v][v_pos] - common_num);
-    }
-    if((pairwise_adgvex_start2[w][w_pos+1] - pairwise_adgvex_start2[w][w_pos] - common_num) > 0){
-        type++;
-        tri_num = tri_num*(pairwise_adgvex_start2[w][w_pos+1] - pairwise_adgvex_start2[w][w_pos] - common_num);
-    }
-    
-    if(common_num == 0) type++;
-    else tri_num = tri_num*common_num;
-
-}
 
 int Graph::two_interaction_num(pairwise_edge *a, uint32_t la, pairwise_edge *b, uint32_t lb){
     int num = 0;
@@ -1798,5 +759,1566 @@ int Graph::three_interaction_num(pairwise_edge *a, uint32_t la, pairwise_edge *b
     
     return num;
 }
+
+
+void Graph::tc_inner_tri(){
+    uint64_t inner_tri1 = 0;
+    uint64_t inner_tri2 = 0;
+    vector<pairwise_edge> hyperedges_neighbors;
+    hyperedges_neighbors.reserve(n);
+    vector<uint32_t> vertices_same;
+    vector<uint32_t> vertices_diff;
+    uint64_t all_data=0;
+    uint32_t he_start = 0, he_end = 0;
+    for(uint32_t i = 0;i<e;i++){
+        if(hyperedges_start[i+1]-hyperedges_start[i] < 3) continue;
+        hyperedges_neighbors.clear();
+        triplets.clear();
+        // uniqueTriplets.clear();
+        he_start = 0;
+        he_end = 0;
+        for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+            for(uint32_t k = 0; k<vertices[hyperedges[j]].size();k++){
+                if(vertices[hyperedges[j]][k] == i) continue;
+                hyperedges_neighbors.push_back(pairwise_edge{hyperedges[j], vertices[hyperedges[j]][k]});
+            }
+
+        }
+        sort(hyperedges_neighbors.begin(), hyperedges_neighbors.end(), compare_by_hyperedge);
+
+        // for(int iii = 0;iii<hyperedges_neighbors.size();iii++){
+        //     cout<<hyperedges_neighbors[iii].hyperedge<<" "<<hyperedges_neighbors[iii].vertex<<endl;
+        // }
+        // cout<<endl;
+
+        while (he_start<hyperedges_neighbors.size()) {
+            he_end = he_start;
+            vertices_same.clear();
+            vertices_diff.clear();
+            while(he_end < hyperedges_neighbors.size() && hyperedges_neighbors[he_end].hyperedge == hyperedges_neighbors[he_start].hyperedge){
+                vertices_same.push_back(hyperedges_neighbors[he_end].vertex);
+                he_end++;
+            }
+
+            uint32_t he1 = i;
+            uint32_t he2 = hyperedges_neighbors[he_start].hyperedge;
+
+            if(he_end - he_start > 1){
+                uint32_t j = hyperedges_start[i], he_same_i = 0;
+                for(; j< hyperedges_start[i+1] && he_same_i<vertices_same.size();){
+                    if(hyperedges[j] == vertices_same[he_same_i]){
+                        j++;
+                        he_same_i++;
+                    }else {
+                        vertices_diff.push_back(hyperedges[j]);
+                        j++;
+                    }
+                }
+                while (j< hyperedges_start[i+1]) {
+                    vertices_diff.push_back(hyperedges[j]);
+                    j++;
+                
+                }
+                if(vertices_diff.size()>0){
+                    inner_tri2 += vertices_same.size()*(vertices_same.size()-1)/2*vertices_diff.size();
+                    for(uint32_t he_i = 0; he_i<vertices_same.size()-1;he_i++){
+                        for(uint32_t he_j = he_i+1;he_j < vertices_same.size();he_j++){
+                            for(uint32_t he_k = 0;he_k < vertices_diff.size();he_k++){
+                                if (triplets.find(Triplet(vertices_same[he_i], vertices_same[he_j], vertices_diff[he_k])) == triplets.end()) {
+                                    triplets.emplace(vertices_same[he_i], vertices_same[he_j], vertices_diff[he_k]);
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+            // cout<<hyperedges_start[i+1] - hyperedges_start[i]<<" "<<vertices_same.size()<<" "<<vertices_diff.size()<<endl;
+            he_start = he_end;
+
+        }
+
+        all_data += hyperedges_neighbors.size();
+        uint64_t all_vertices = hyperedges_start[i+1] - hyperedges_start[i];
+
+        inner_tri1 += all_vertices*(all_vertices-1)*(all_vertices-2)/6 - triplets.size();
+
+    }
+
+
+    cout<<"type-0:"<<inner_tri1<<endl;
+    cout<<"type-1:"<<inner_tri2<<endl;
+    cout<<all_data<<endl;
+
+
+}
+
+vector<uint64_t> Graph::tc_tri_stream_local(){
+    double tri_num_type1 = 0;
+    double tri_num_type1_2 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    uint32_t currentEdges = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int RS_sample_edge_l_i = 0;
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    int judge_type1 = 0;
+
+    std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+
+    for(uint32_t i = 0;i<e;i++){
+        currentEdges++;
+        // cout<<tri_num_type1<<" "<<tri_num_type2<<" "<<tri_num_type3<<endl;
+        double update_factor = 1;
+
+        if(hyperedges_start[i+1] - hyperedges_start[i] > 2) tri_num_type1_2+=((hyperedges_start[i+1] - hyperedges_start[i])*(hyperedges_start[i+1] - hyperedges_start[i]-1)*(hyperedges_start[i+1] - hyperedges_start[i]-2))/6;
+
+
+        if(currentEdges > Reservoir_size) update_factor = ((double)Reservoir_size/(double)currentEdges);
+        
+
+        for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+            for(uint32_t k = j+1; k<hyperedges_start[i+1];k++){
+                judge_type1 = 0;
+                auto judge = sample_pairwise_adgvex_local->data[hyperedges[j]].find(hyperedges[k]);
+                auto it1 = sample_pairwise_adgvex_local->data[hyperedges[j]].begin();
+                auto it2 = sample_pairwise_adgvex_local->data[hyperedges[k]].begin();
+                while (it1 != sample_pairwise_adgvex_local->data[hyperedges[j]].end() && it2 != sample_pairwise_adgvex_local->data[hyperedges[k]].end()) {
+                    if (it1->first == it2->first) {
+                        if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                            if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it1->first)){
+                                if(it1->first > hyperedges[j] && it1->first > hyperedges[k]){
+                                    judge_type1++;
+
+                                    intersect_three_sets(judge->second, it1->second, it2->second, tri_num_type1_, tri_num_type2_, tri_num_type3_, 1, update_factor);
+                                    tri_num_type1+=tri_num_type1_;
+                                    tri_num_type2+=tri_num_type2_;
+                                    tri_num_type3+=tri_num_type3_;
+                                }
+                            } 
+                            else {
+                                intersect_three_sets(judge->second, it1->second, it2->second, tri_num_type1_, tri_num_type2_, tri_num_type3_, 0, update_factor);
+                                tri_num_type1+=tri_num_type1_;
+                                tri_num_type2+=tri_num_type2_;
+                                tri_num_type3+=tri_num_type3_;
+                                
+                            }
+
+
+                        }else{
+                            if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it1->first)){
+                                if(it1->first > hyperedges[j] && it1->first > hyperedges[k]){
+                                    tri_num_type2+=(double)(it1->second.size()+it2->second.size())/update_factor;
+                                    judge_type1++;
+
+                                } 
+                            } 
+                            else tri_num_type3+=(double)(it1->second.size()*it2->second.size())/update_factor/update_factor;
+                        }
+                        ++it1;
+                        ++it2;
+                    } else if (it1->first < it2->first) {
+                        if(it1->first > hyperedges[j] && it1->first > hyperedges[k])
+                            if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it1->first)){
+                                judge_type1++;
+                                tri_num_type2+=(double)it1->second.size()/update_factor;
+                                if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                                    tri_num_type2+=(double)judge->second.size()/update_factor;
+                                }
+                                
+                            } 
+                                
+                        ++it1; 
+                    } else {
+                        if(it2->first > hyperedges[j] && it2->first > hyperedges[k])
+                            if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it2->first)){
+                                judge_type1++;
+                                tri_num_type2+=(double)it2->second.size()/update_factor;
+                                if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                                    tri_num_type2+=(double)judge->second.size()/update_factor;
+                                }
+                            }
+                                
+                        ++it2;
+                    }
+                }
+
+                while (it1 != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                    if(it1->first > hyperedges[j] && it1->first > hyperedges[k])
+                        if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it1->first)){
+                            judge_type1++;
+                            tri_num_type2+=(double)it1->second.size()/(update_factor);
+                            if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                                tri_num_type2+=(double)judge->second.size()/(update_factor);
+                            }
+                        } 
+                                
+                    ++it1;
+                }
+
+                while(it2 != sample_pairwise_adgvex_local->data[hyperedges[k]].end()){
+                    if(it2->first > hyperedges[j] && it2->first > hyperedges[k])
+                        if(binary_search(hyperedges, hyperedges_start[i], hyperedges_start[i+1], it2->first)){
+                            judge_type1++;
+                            tri_num_type2+=(double)it2->second.size()/update_factor;
+                            if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                                tri_num_type2+=(double)judge->second.size()/update_factor;
+                            }
+                        }
+                                
+                    ++it2;
+
+                }
+
+                // cout<<judge_type1<<endl;
+                // if((double)hyperedges_start[i+1]-(double)k-1.0-(double)judge_type1<0){
+                    // cout<<i<<" "<<hyperedges_start[i+1]<<" "<< k-1<< " "<<judge_type1<<endl;
+                // }
+
+                
+                if(judge != sample_pairwise_adgvex_local->data[hyperedges[j]].end()){
+                    tri_num_type2+=(((double)hyperedges_start[i+1]-(double)k-1.0-(double)judge_type1)*judge->second.size())/(update_factor);
+                }else{
+                    tri_num_type1+=((double)hyperedges_start[i+1]-(double)k-1.0-(double)judge_type1);
+                }
+
+                // cout<<"11111:"<<tri_num_type1<<" "<<tri_num_type2<<" "<<tri_num_type3<<endl;
+                
+            }
+        }
+
+        if(currentEdges <= Reservoir_size){
+            RS_sample_edge.push_back(i);
+            for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[i+1];k++){
+                    // sample_pairwise_adgvex[hyperedges[j]].push_back({hyperedges[k], i});
+                    // sample_pairwise_adgvex[hyperedges[k]].push_back({hyperedges[j], i});
+                    sample_pairwise_adgvex_local->insert(hyperedges[j], hyperedges[k], i);
+                    sample_pairwise_adgvex_local->insert(hyperedges[k], hyperedges[j], i);
+
+                }
+            }
+        }else if(dis(gen) < (double)Reservoir_size/(double)currentEdges){
+            uint32_t del_pos = rand() % Reservoir_size;
+            uint32_t del_edge = RS_sample_edge[del_pos];
+            RS_sample_edge[del_pos] = i;
+
+            for(uint32_t j = hyperedges_start[del_edge]; j< hyperedges_start[del_edge+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[del_edge+1];k++){
+                    // auto& del_adj_j = sample_pairwise_adgvex[hyperedges[j]];
+                    // pairwise_edge temp_j = {hyperedges[k], del_edge};
+                    // std::swap(del_adj_j.back(), *std::find(del_adj_j.begin(), del_adj_j.end(), temp_j));
+                    // del_adj_j.pop_back();
+                    
+
+                    // auto& del_adj_k = sample_pairwise_adgvex[hyperedges[k]];
+                    // pairwise_edge temp_k = {hyperedges[j], del_edge};
+                    // std::swap(del_adj_k.back(), *std::find(del_adj_k.begin(), del_adj_k.end(), temp_k));
+                    // del_adj_k.pop_back();
+
+                    sample_pairwise_adgvex_local->erase(hyperedges[j], hyperedges[k], del_edge);
+                    sample_pairwise_adgvex_local->erase(hyperedges[k], hyperedges[j], del_edge);
+                }
+            }
+
+            for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[i+1];k++){
+                    sample_pairwise_adgvex_local->insert(hyperedges[j], hyperedges[k], i);
+                    sample_pairwise_adgvex_local->insert(hyperedges[k], hyperedges[j], i);
+                }
+            }
+
+        }
+        
+    }
+
+    // cout<<tri_num_type1<<" "<<tri_num_type2<<" "<<tri_num_type3<<endl;
+
+    cout<<"type-1: "<<(int64_t)tri_num_type1_2<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1_2;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+
+
+}
+
+bool Graph::binary_search(uint32_t* arr, uint32_t begin, uint32_t end, uint32_t target) {
+    int left = begin;
+    int right = end - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2; 
+        if (arr[mid] == target) {
+            return true;  
+        } else if (arr[mid] < target) {
+            left = mid + 1;  
+        } else {
+            right = mid - 1;
+        }
+    }
+    return false;  // 未找到目标值
+}
+
+void Graph::intersect_three_sets(const std::set<uint32_t>& set1, const std::set<uint32_t>& set2, const std::set<uint32_t>& set3, double &tri_num_type1_, double &tri_num_type2_, double &tri_num_type3_, int common_num, double update_factor){
+    auto it1 = set1.begin();
+    auto it2 = set2.begin();
+    auto it3 = set3.begin();
+
+    double common_num_ = 0;
+    double tri_num1 = 0, tri_num2 = 0, tri_num3 = 0;
+
+
+    while (it1 != set1.end() && it2 != set2.end() && it3 != set3.end()) {
+        if (*it1 == *it2 && *it2 == *it3) {
+            ++it1;
+            ++it2;
+            ++it3;
+            common_num_++;
+        } else if (*it1 < *it2 && *it1 < *it3) {
+            ++it1;  
+        } else if (*it2 < *it3 && *it2 < *it1) {
+            ++it2;
+        } else {
+            ++it3;
+        }
+    }
+    tri_num1 = (double)set1.size() - common_num_;
+    tri_num2 = (double)set2.size() - common_num_;
+    tri_num3 = (double)set3.size() - common_num_;
+
+    if(common_num == 0){
+        if(common_num_ ==0 && tri_num1 > 0 && tri_num2 > 0 && tri_num3 > 0){
+            // tri_num_type1_ = 0;
+            tri_num_type2_ = 0;
+            tri_num_type3_ = tri_num2*tri_num3/update_factor/update_factor;
+        }else if(tri_num1 == 0 && tri_num2 == 0 && tri_num3 == 0){
+            // tri_num_type1_ = -common_num_/update_factor;
+            tri_num_type2_ = common_num_/update_factor;
+            tri_num_type3_ = 0;
+        }else{
+            // tri_num_type1_ = 0;
+            tri_num_type2_ = common_num_/update_factor;
+            // tri_num_type3_ = 0;
+            tri_num_type3_ = tri_num2*tri_num3/update_factor/update_factor;
+        }
+
+    }else if (common_num == 1) {
+        if(common_num_ ==0 && tri_num1 > 0 && tri_num2 > 0 && tri_num3 > 0){
+            tri_num_type1_ = 0;
+            tri_num_type2_ = (tri_num1+tri_num2+tri_num3)/update_factor;
+            // tri_num_type3_ = -(tri_num1*tri_num2*tri_num3)/update_factor/update_factor/update_factor;
+            tri_num_type3_ = 0;
+        }else if(tri_num1 == 0 && tri_num2 == 0 && tri_num3 == 0){
+            tri_num_type1_ = 1.0;
+            tri_num_type2_ = 0;
+            tri_num_type3_ = 0;
+        }else{
+            tri_num_type1_ = 0;
+            tri_num_type2_ = (tri_num1+tri_num2+tri_num3)/update_factor;
+            tri_num_type3_ = 0;
+        }
+    
+    }
+
+
+}
+
+vector<uint64_t> Graph::tc_tri_stream_global(){
+    double tri_num_type1 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    uint32_t currentEdges = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    int judge_type1 = 0;
+
+    std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+
+    for(uint32_t i = 0;i<e;i++){
+        currentEdges++;
+        if(currentEdges <= Reservoir_size){
+            RS_sample_edge.push_back(i);
+            RS_sample_edge_num.push_back(hyperedges_start[i+1] - hyperedges_start[i]);
+            for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[i+1];k++){
+                    sample_pairwise_adgvex_global->insert(hyperedges[j], hyperedges[k], i);
+                    sample_pairwise_adgvex_global->insert(hyperedges[k], hyperedges[j], i);
+
+                }
+            }
+        }else if(dis(gen) < (double)Reservoir_size/(double)currentEdges){
+            uint32_t del_pos = rand() % Reservoir_size;
+            uint32_t del_edge = RS_sample_edge[del_pos];
+            RS_sample_edge[del_pos] = i;
+            RS_sample_edge_num[del_pos] = hyperedges_start[i+1] - hyperedges_start[i];
+
+            for(uint32_t j = hyperedges_start[del_edge]; j< hyperedges_start[del_edge+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[del_edge+1];k++){
+                    sample_pairwise_adgvex_global->erase(hyperedges[j], hyperedges[k], del_edge);
+                    sample_pairwise_adgvex_global->erase(hyperedges[k], hyperedges[j], del_edge);
+                }
+            }
+
+            for(uint32_t j = hyperedges_start[i]; j< hyperedges_start[i+1]; j++){
+                for(uint32_t k = j+1; k<hyperedges_start[i+1];k++){
+                    sample_pairwise_adgvex_global->insert(hyperedges[j], hyperedges[k], i);
+                    sample_pairwise_adgvex_global->insert(hyperedges[k], hyperedges[j], i);
+                }
+            }
+
+        }
+        
+    }
+
+    double update_factor = 1;
+    if(currentEdges > Reservoir_size) update_factor = ((double)Reservoir_size/(double)currentEdges);
+        
+
+    for(uint32_t i = 0; i < min(Reservoir_size, currentEdges); i++) if(RS_sample_edge_num[i] > 2) tri_num_type1+=(double)(RS_sample_edge_num[i])*(double)(RS_sample_edge_num[i]-1)*(double)(RS_sample_edge_num[i]-2)/6.0/update_factor;
+
+    for (uint32_t i = 0;i<n;i++){
+        if(sample_pairwise_adgvex_global->data[i].size()>1){
+            for (const auto& pair : sample_pairwise_adgvex_global->data[i]) {
+                if(pair.first > i){
+                    for(auto v1 = sample_pairwise_adgvex_global->data[i].begin(), v2 = sample_pairwise_adgvex_global->data[pair.first].begin(); v1 != sample_pairwise_adgvex_global->data[i].end() && v2 != sample_pairwise_adgvex_global->data[pair.first].end();){
+                        if(v1->first == v2->first){
+                            if(v1->first > i && v1->first > pair.first){
+                                intersect_three_sets2(v1->second, v2->second, pair.second, tri_num_type2_, tri_num_type3_,  update_factor);
+                                tri_num_type2+=tri_num_type2_;
+                                tri_num_type3+=tri_num_type3_;
+                            }
+                            ++v1;
+                            ++v2;
+
+                        }else if (v1->first < v2->first) {
+                            ++v1;
+                        }else {
+                            ++v2;
+                        }
+                    }
+
+                }
+            }
+        }
+
+    }
+    cout<<"type-1: "<<(int64_t)tri_num_type1<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+}
+
+void Graph::intersect_three_sets2(const std::set<uint32_t>& set1, const std::set<uint32_t>& set2, const std::set<uint32_t>& set3, double &tri_num_type2_, double &tri_num_type3_, double update_factor){
+    auto it1 = set1.begin();
+    auto it2 = set2.begin();
+    auto it3 = set3.begin();
+
+    double common_num_ = 0;
+    double tri_num1 = 0, tri_num2 = 0, tri_num3 = 0;
+
+
+    while (it1 != set1.end() && it2 != set2.end() && it3 != set3.end()) {
+        if (*it1 == *it2 && *it2 == *it3) {
+            ++it1;
+            ++it2;
+            ++it3;
+            common_num_++;
+        } else if (*it1 < *it2 && *it1 < *it3) {
+            ++it1;  
+        } else if (*it2 < *it3 && *it2 < *it1) {
+            ++it2;
+        } else {
+            ++it3;
+        }
+    }
+    tri_num1 = (double)set1.size() - common_num_;
+    tri_num2 = (double)set2.size() - common_num_;
+    tri_num3 = (double)set3.size() - common_num_;
+
+    tri_num_type2_ = (tri_num1+tri_num2+tri_num3)*common_num_/update_factor/update_factor;
+    tri_num_type3_ = (tri_num1*tri_num2*tri_num3)/update_factor/update_factor/update_factor;
+}
+
+vector<uint64_t> Graph::tc_tri_stream_local2(){
+    double tri_num_type1 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    uint32_t currentEdges = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int RS_sample_edge_l_i = 0;
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    int judge_type1 = 0;
+    double update_factor = 1;
+
+    std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+    vector<uint32_t> edge_nei(e);
+    uint32_t edge_nei_i = 0;
+    vector<int> edge_nei_exist(e,-1);
+    
+
+    for(int i = 0;i<e;i++){
+
+        // cout<<i<<endl;
+        
+        currentEdges++;
+        if(all_hyperedges[i].size() > 2) tri_num_type1 += (all_hyperedges[i].size()*(all_hyperedges[i].size()-1)*(all_hyperedges[i].size()-2))/6;
+
+        update_factor = 1.0;
+        if(currentEdges > Reservoir_size) update_factor = ((double)Reservoir_size/(double)(currentEdges));
+
+        uint32_t max_edge = min(currentEdges-1,Reservoir_size);
+
+        edge_nei_i = 0;
+
+        for(uint32_t v = 0;v<all_hyperedges[i].size();v++){
+            for(uint32_t v2 = 0; v2 < sample_vertices[all_hyperedges[i][v]].size(); v2++){ 
+                if(edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] < i){
+                    edge_nei[edge_nei_i++] = sample_vertices[all_hyperedges[i][v]][v2];
+                    edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] = i;
+                } 
+            }
+            
+        }
+
+        // for(uint32_t j = 0;j<edge_nei_i;j++) cout<<edge_nei[j]<<" ";
+        // cout<<endl;
+
+        for(uint32_t j = 0;j<edge_nei_i;j++){
+            intersect_two_sets3(all_hyperedges[i], sample_hyperedges[edge_nei[j]], tri_num_type2_, update_factor);
+            tri_num_type2+=tri_num_type2_;
+
+            for(uint32_t k = j+1;k<edge_nei_i;k++){
+                intersect_three_sets3(all_hyperedges[i], sample_hyperedges[edge_nei[j]], sample_hyperedges[edge_nei[k]], tri_num_type3_, update_factor);
+                tri_num_type3+=tri_num_type3_;
+            }
+        }
+        if (currentEdges <= Reservoir_size) {
+            sample_hyperedges[currentEdges - 1] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++)
+                sample_vertices[all_hyperedges[i][v]].push_back(currentEdges - 1);
+        } else if (dis(gen) < (double)Reservoir_size / (double)currentEdges) {
+            uint32_t del_edge = rand() % Reservoir_size;
+    
+            for (uint32_t v = 0; v < sample_hyperedges[del_edge].size(); v++) {
+                uint32_t vertex = sample_hyperedges[del_edge][v];
+                auto& vertex_edges = sample_vertices[vertex];
+                auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                if (it != vertex_edges.end()) {
+                    std::swap(*it, vertex_edges.back());
+                    vertex_edges.pop_back();
+                }
+                // else cout<<"error"<<endl;
+            }
+            sample_hyperedges[del_edge] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++)
+                sample_vertices[all_hyperedges[i][v]].push_back(del_edge);
+        }
+    }
+
+
+    cout<<"type-1: "<<(int64_t)tri_num_type1<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+}
+
+void Graph::intersect_three_sets3(
+    std::vector<uint32_t> &set1, 
+    std::vector<uint32_t> &set2, 
+    std::vector<uint32_t> &set3, 
+    double &tri_num_type3_, 
+    double update_factor
+) {
+    double common_num_ = 0;
+    double common_num_1 = 0, common_num_2 = 0, common_num_3 = 0;
+
+    // 计算三个集合的交集数量
+    for(uint32_t i = 0, j = 0, k = 0; i < set1.size() && j < set2.size() && k < set3.size();) {
+        if (set1[i] == set2[j] && set2[j] == set3[k]) {
+            ++i;
+            ++j;
+            ++k;
+            common_num_++;
+        } else {
+            uint32_t min_val = std::min({set1[i], set2[j], set3[k]});
+            if (set1[i] == min_val) ++i;
+            if (set2[j] == min_val) ++j;
+            if (set3[k] == min_val) ++k;
+        }
+    }
+
+    // 计算 set1 和 set2 的交集数量
+    for(uint32_t i = 0, j = 0; i < set1.size() && j < set2.size();) {
+        if(set1[i] == set2[j]) {
+            common_num_1++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set2[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    // 计算 set1 和 set3 的交集数量
+    for(uint32_t i = 0, j = 0; j < set1.size() && i < set3.size();) {
+        if(set1[i] == set3[j]) {
+            common_num_2++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set3[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    // 计算 set2 和 set3 的交集数量
+    for(uint32_t i = 0, j = 0; i < set2.size() && j < set3.size();) {
+        if(set2[j] == set3[i]) {
+            common_num_3++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set2[j], set3[i]);
+            if (set2[j] == min_val) j++;
+            else i++;
+        }
+    }
+
+    // cout<<common_num_1<<" "<<common_num_2<<" "<<common_num_3<<" "<<common_num_<<endl;
+
+    // 确保 update_factor 不为零
+    if (update_factor != 0) {
+        tri_num_type3_ = ((common_num_1 - common_num_) * (common_num_2 - common_num_) * (common_num_3 - common_num_)) / (update_factor * update_factor);
+    } else {
+        // 处理除以零的情况
+        tri_num_type3_ = 0;
+    }
+}
+
+void Graph::intersect_two_sets3(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor){
+    double common_num_ = 0;
+    for(uint32_t i = 0, j = 0; i < set1.size() && j < set2.size();) {
+        if(set1[i] == set2[j]) {
+            common_num_++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set2[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    tri_num_type2_=(set1.size() - common_num_ + set2.size() - common_num_)*common_num_*(common_num_-1)/2/update_factor;
+
+}
+
+void Graph::intersect_three_sets_fixed(
+    std::vector<uint32_t> &set1, 
+    std::vector<uint32_t> &set2, 
+    std::vector<uint32_t> &set3, 
+    double &tri_num_type3_, 
+    double update_factor1,
+    double update_factor2
+) {
+    double common_num_ = 0;
+    double common_num_1 = 0, common_num_2 = 0, common_num_3 = 0;
+
+    // 计算三个集合的交集数量
+    for(uint32_t i = 0, j = 0, k = 0; i < set1.size() && j < set2.size() && k < set3.size();) {
+        if (set1[i] == set2[j] && set2[j] == set3[k]) {
+            ++i;
+            ++j;
+            ++k;
+            common_num_++;
+        } else {
+            uint32_t min_val = std::min({set1[i], set2[j], set3[k]});
+            if (set1[i] == min_val) ++i;
+            if (set2[j] == min_val) ++j;
+            if (set3[k] == min_val) ++k;
+        }
+    }
+
+    // 计算 set1 和 set2 的交集数量
+    for(uint32_t i = 0, j = 0; i < set1.size() && j < set2.size();) {
+        if(set1[i] == set2[j]) {
+            common_num_1++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set2[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    // 计算 set1 和 set3 的交集数量
+    for(uint32_t i = 0, j = 0; j < set1.size() && i < set3.size();) {
+        if(set1[i] == set3[j]) {
+            common_num_2++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set3[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    // 计算 set2 和 set3 的交集数量
+    for(uint32_t i = 0, j = 0; i < set2.size() && j < set3.size();) {
+        if(set2[j] == set3[i]) {
+            common_num_3++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set2[j], set3[i]);
+            if (set2[j] == min_val) j++;
+            else i++;
+        }
+    }
+
+    // cout<<common_num_1<<" "<<common_num_2<<" "<<common_num_3<<" "<<common_num_<<endl;
+
+    // 确保 update_factor 不为零
+    if (update_factor1 != 0) {
+        tri_num_type3_ = ((common_num_1 - common_num_) * (common_num_2 - common_num_) * (common_num_3 - common_num_)) / (update_factor1 * update_factor2);
+    } else {
+        // 处理除以零的情况
+        tri_num_type3_ = 0;
+    }
+}
+
+void Graph::intersect_two_sets_fixed(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor){
+    double common_num_ = 0;
+    for(uint32_t i = 0, j = 0; i < set1.size() && j < set2.size();) {
+        if(set1[i] == set2[j]) {
+            common_num_++;
+            i++;
+            j++;
+        } else {
+            uint32_t min_val = std::min(set1[i], set2[j]);
+            if (set1[i] == min_val) i++;
+            else j++;
+        }
+    }
+
+    tri_num_type2_=(set1.size() - common_num_ + set2.size() - common_num_)*common_num_*(common_num_-1)/2/update_factor;
+
+}
+
+vector<uint64_t> Graph::tc_tri_stream_local2_fixed(){
+    double tri_num_type1 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    uint32_t currentEdges = 0;
+    uint32_t currentVertices = 0;
+    uint32_t sampleVertices = 0;
+    uint32_t Reservoir_size_ = Reservoir_size*4;
+
+    double Reservoir_size_now = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int RS_sample_edge_l_i = 0;
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    int judge_type1 = 0;
+    double update_factor = 1;
+
+    std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+    vector<uint32_t> edge_nei(e);
+    uint32_t edge_nei_i = 0;
+    vector<int> edge_nei_exist(e,-1);
+    vector<int> edge_nei_dup(e,-1);
+    vector<pairwise_edge> sample_all_vertices;
+    sample_all_vertices.reserve(Reservoir_size_);
+    vector<double> sample_rates(e, 1.0);
+    bool r_full = false;
+    
+
+    for(int i = 0;i<e;i++){
+
+
+        // if(i%100 == 0) cout<<sampleVertices<<" "<<Reservoir_size_<<endl;
+        currentEdges++;
+        currentVertices+=all_hyperedges[i].size();
+        if(all_hyperedges[i].size() > 2) tri_num_type1 += (all_hyperedges[i].size()*(all_hyperedges[i].size()-1)*(all_hyperedges[i].size()-2))/6;
+
+        update_factor = 1.0;
+        if(r_full) update_factor = ((double)Reservoir_size_now/(double)(currentEdges));
+
+        edge_nei_i = 0;
+
+        for(uint32_t v = 0;v<all_hyperedges[i].size();v++){
+            for(uint32_t v2 = 0; v2 < sample_vertices[all_hyperedges[i][v]].size(); v2++){ 
+                if(edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] < i){
+                    edge_nei[edge_nei_i++] = sample_vertices[all_hyperedges[i][v]][v2];
+                    edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] = i;
+                } 
+            }
+            
+        }
+
+        // for(uint32_t j = 0;j<edge_nei_i;j++) cout<<edge_nei[j]<<" ";
+        // cout<<endl;
+
+
+
+        for(uint32_t j = 0;j<edge_nei_i;j++){
+            intersect_two_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], tri_num_type2_, update_factor);
+            tri_num_type2+=tri_num_type2_;
+            // tri_num_type2+=tri_num_type2_;
+            // cout<<sample_rates[edge_nei[j]]<<" ";
+
+            for(uint32_t k = j+1;k<edge_nei_i;k++){
+                intersect_three_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, update_factor, update_factor);
+                tri_num_type3+=tri_num_type3_;
+            }
+        }
+
+        // cout<<endl;
+        if (currentEdges + all_hyperedges[i].size() <= Reservoir_size_) {
+
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+            
+            sample_hyperedges_fixed[(uint32_t)Reservoir_size_now - 1] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++){
+                sample_vertices[all_hyperedges[i][v]].push_back((uint32_t)Reservoir_size_now - 1);
+            }
+
+            // sample_rates[(uint32_t)Reservoir_size_now - 1] = (double)Reservoir_size_now/(double)(currentEdges);
+                
+        } else if (dis(gen) < (double)Reservoir_size_now / (double)currentEdges) {
+
+            if(!r_full) r_full = true;
+
+            // cout<<1<<endl;
+            double del_num = 1.0;
+
+        
+
+            double new_edge_sample_rate = (double)Reservoir_size_now / (double)currentEdges;
+            double origin_sample = (double)Reservoir_size_now;
+
+            
+
+            uint32_t del_edge = rand() % (uint32_t)Reservoir_size_now;
+            sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+    
+            for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                auto& vertex_edges = sample_vertices[vertex];
+                auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                if (it != vertex_edges.end()) {
+                    std::swap(*it, vertex_edges.back());
+                    vertex_edges.pop_back();
+                }
+                else cout<<"error1"<<endl;
+            }
+
+            // edge_nei_dup[del_edge] = i;
+
+            // cout<<2<<endl;
+            if(del_edge != (uint32_t)Reservoir_size_now-1){
+                // sample_rates[del_edge] = sample_rates[(uint32_t)Reservoir_size_now-1];
+                sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1];
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)Reservoir_size_now-1);
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error2"<<endl;
+                    sample_vertices[vertex].push_back(del_edge);
+
+                }
+
+            }
+            Reservoir_size_now--;
+
+            sample_hyperedges_fixed[(uint32_t)Reservoir_size_now] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++)
+                sample_vertices[all_hyperedges[i][v]].push_back((uint32_t)Reservoir_size_now);
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+
+            // sample_rates[(uint32_t)Reservoir_size_now-1] = new_edge_sample_rate;
+
+            while (sampleVertices > Reservoir_size_) {
+                // while (edge_nei_dup[del_edge] == i) {
+                del_edge = rand() % (uint32_t)Reservoir_size_now;
+                    // cout<<del_edge<<" "<<Reservoir_size_now<<endl;
+                // }
+                edge_nei_dup[del_edge] = i;
+                
+                sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+                del_num++;
+
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error3"<<endl;
+                }
+                if(del_edge != (uint32_t)Reservoir_size_now-1){
+                    // sample_rates[del_edge] = sample_rates[(uint32_t)Reservoir_size_now-1];
+                    sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1];
+                    for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1].size(); v++) {
+                        uint32_t vertex = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1][v];
+                        auto& vertex_edges = sample_vertices[vertex];
+                        auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)Reservoir_size_now-1);
+                        if (it != vertex_edges.end()) {
+                            std::swap(*it, vertex_edges.back());
+                            vertex_edges.pop_back();
+                        }
+                        else cout<<"error4"<<endl;
+                        sample_vertices[vertex].push_back(del_edge);
+                    }
+                }
+
+                Reservoir_size_now--;
+
+                // cout<<3<<endl;
+            
+            }
+
+            // for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now; rate_i++){
+            //     sample_rates[rate_i] = sample_rates[rate_i]*((1-new_edge_sample_rate) + new_edge_sample_rate*(1 - del_num/origin_sample));
+            // }
+
+            // cout<<4<<endl;
+
+
+
+            // cout<<5<<endl;
+        }
+    }
+
+
+    cout<<"type-1: "<<(int64_t)tri_num_type1<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    cout<<"Reservoir_size_now:"<<Reservoir_size_now<<endl;
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+}
+
+
+
+
+vector<uint64_t> Graph::tc_tri_stream_local2_fixed2(){
+    double tri_num_type1 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    uint32_t currentEdges = 0;
+    uint32_t currentVertices = 0;
+    uint32_t sampleVertices = 0;
+    uint32_t Reservoir_size_ = Reservoir_size*4;
+
+    double Reservoir_size_now = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int RS_sample_edge_l_i = 0;
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    int judge_type1 = 0;
+    double update_factor = 1;
+
+    std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+    vector<uint32_t> edge_nei(e);
+    uint32_t edge_nei_i = 0;
+    vector<int> edge_nei_exist(e,-1);
+    vector<int> edge_nei_dup(e,-1);
+    vector<pairwise_edge> sample_all_vertices;
+    sample_all_vertices.reserve(Reservoir_size_);
+    vector<double> sample_rates(e, 1.0);
+    bool r_full = false;
+    int adjust = 0;
+
+    vector<int> sample_rates_molerator(e, 1.0);
+    vector<int> sample_rates_denominator(e, 1.0);
+    string test;
+    double judge;
+    
+
+    for(int i = 0;i<e;i++){
+
+        // cout<<currentVertices<<" "<<Reservoir_size_now<<" "<<all_hyperedges[i].size()<<endl;
+        currentEdges++;
+        currentVertices+=all_hyperedges[i].size();
+        if(all_hyperedges[i].size() > 2) tri_num_type1 += (all_hyperedges[i].size()*(all_hyperedges[i].size()-1)*(all_hyperedges[i].size()-2))/6;
+
+        update_factor = 1.0;
+        if(r_full) update_factor = ((double)Reservoir_size_now/(double)(currentEdges));
+        adjust = 0;
+        if(r_full) adjust = 1;
+
+        edge_nei_i = 0;
+
+        for(uint32_t v = 0;v<all_hyperedges[i].size();v++){
+            for(uint32_t v2 = 0; v2 < sample_vertices[all_hyperedges[i][v]].size(); v2++){ 
+                if(edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] < i){
+                    edge_nei[edge_nei_i++] = sample_vertices[all_hyperedges[i][v]][v2];
+                    edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] = i;
+                } 
+            }
+            
+        }
+
+        // for(uint32_t j = 0;j<edge_nei_i;j++) cout<<edge_nei[j]<<" ";
+        // cout<<endl;
+
+        for(uint32_t j = 0;j<edge_nei_i;j++){
+            intersect_two_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], tri_num_type2_, (double)sample_rates[edge_nei[j]]);
+            // intersect_two_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], tri_num_type2_, update_factor);
+            
+            tri_num_type2+=tri_num_type2_;
+            // cout<<currentEdges<<" "<<Reservoir_size_now<<" "<<sample_rates[edge_nei[j]]<<" "<<update_factor<<endl;
+
+            for(uint32_t k = j+1;k<edge_nei_i;k++){
+                intersect_three_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, (double)sample_rates[edge_nei[j]], (double)sample_rates[edge_nei[k]]);
+                // intersect_three_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, update_factor, update_factor);
+                tri_num_type3+=tri_num_type3_;
+            }
+        }
+
+        // if(currentEdges > 2000){
+        //     cout<<i<<endl;
+        //     if(r_full) cin>>test;
+        // }
+        if(sampleVertices+all_hyperedges[i].size() <= Reservoir_size_) judge = (double)(Reservoir_size_now + 1) / (double)currentEdges;
+        else judge = (double)Reservoir_size_now / (double)currentEdges;
+        
+        
+        if (currentVertices <= Reservoir_size_) {
+
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+            
+            sample_hyperedges_fixed[(uint32_t)Reservoir_size_now - 1] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++){
+                sample_vertices[all_hyperedges[i][v]].push_back((uint32_t)Reservoir_size_now - 1);
+            }
+
+            sample_rates[(uint32_t)Reservoir_size_now - 1] = 1.0;
+            sample_rates_molerator[(uint32_t)Reservoir_size_now - 1] = 1;
+            sample_rates_denominator[(uint32_t)Reservoir_size_now - 1] = 1;
+
+                
+        } else if (dis(gen) < judge) {
+            // string ddd;
+            // cout<<Reservoir_size_now<<" "<<currentEdges<<endl;
+            // for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now; rate_i++){
+            //             cout<<sample_rates_molerator[rate_i]<<" "<<sample_rates_denominator[rate_i]<<"|";
+            //         }
+            //         cout<<endl;
+
+            
+            // cin>>ddd;
+
+            if(!r_full) r_full = true;
+
+            // cout<<1<<endl;
+            int del_num = 0;
+            uint32_t del_edge;
+
+        
+
+
+            double new_edge_sample_rate = judge;
+            // double origin_sample = (double)Reservoir_size_now;
+/*
+            
+
+            uint32_t del_edge = rand() % (uint32_t)Reservoir_size_now;
+            sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+    
+            for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                auto& vertex_edges = sample_vertices[vertex];
+                auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                if (it != vertex_edges.end()) {
+                    std::swap(*it, vertex_edges.back());
+                    vertex_edges.pop_back();
+                }
+                else cout<<"error1"<<endl;
+            }
+
+            // edge_nei_dup[del_edge] = i;
+
+            // cout<<2<<endl;
+            if(del_edge != (uint32_t)Reservoir_size_now-1){
+                // sample_rates[del_edge] = sample_rates[(uint32_t)Reservoir_size_now-1];
+                sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1];
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)Reservoir_size_now-1);
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error2"<<endl;
+                    sample_vertices[vertex].push_back(del_edge);
+
+                }
+
+            }
+            Reservoir_size_now--;
+*/
+            sample_hyperedges_fixed[(uint32_t)Reservoir_size_now] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++)
+                sample_vertices[all_hyperedges[i][v]].push_back((uint32_t)Reservoir_size_now);
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+
+            sample_rates[(uint32_t)Reservoir_size_now-1] = new_edge_sample_rate;
+            sample_rates_molerator[(uint32_t)Reservoir_size_now-1] = (int)Reservoir_size_now-1;
+            sample_rates_denominator[(uint32_t)Reservoir_size_now-1] = currentEdges;
+
+            while (sampleVertices > Reservoir_size_) {
+                
+                if(del_num<1){
+                    del_edge = rand() % ((uint32_t)Reservoir_size_now-1);
+                    
+                    for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now-1; rate_i++){
+                        sample_rates[rate_i] = sample_rates[rate_i]*((double)(currentEdges-1)/(double)currentEdges);
+                        sample_rates_molerator[rate_i] = sample_rates_molerator[rate_i]*(currentEdges-1)/sample_rates_denominator[rate_i];
+                        // if(sample_rates_molerator[rate_i]!=(int)Reservoir_size_now-1)
+                        //     cout<<"rrrrrtttttgg                gdgdgdggdgd"<<" "<<rate_i<<" "<<(currentEdges-1)<<" "<<sample_rates_denominator[rate_i]<<endl;
+                        sample_rates_denominator[rate_i] = currentEdges;
+                        
+                    }
+                }else{
+                    del_edge = rand() % ((uint32_t)Reservoir_size_now);
+                    for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now; rate_i++){
+                        sample_rates[rate_i] = sample_rates[rate_i]*((Reservoir_size_now-1)/Reservoir_size_now);
+                    }
+                }
+
+                
+                sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+                del_num++;
+
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error3"<<endl;
+                }
+
+                if(del_edge != (uint32_t)Reservoir_size_now-1){
+                    sample_rates[del_edge] = sample_rates[(uint32_t)Reservoir_size_now-1];
+                    sample_rates_molerator[del_edge] = sample_rates_molerator[(uint32_t)Reservoir_size_now-1];
+                    sample_rates_denominator[del_edge] = sample_rates_denominator[(uint32_t)Reservoir_size_now-1];
+                    sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1];
+                    for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1].size(); v++) {
+                        uint32_t vertex = sample_hyperedges_fixed[(uint32_t)Reservoir_size_now-1][v];
+                        auto& vertex_edges = sample_vertices[vertex];
+                        auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)Reservoir_size_now-1);
+                        if (it != vertex_edges.end()) {
+                            std::swap(*it, vertex_edges.back());
+                            vertex_edges.pop_back();
+                        }
+                        else cout<<"error4"<<endl;
+                        sample_vertices[vertex].push_back(del_edge);
+                    }
+                }
+
+                // cout<<"del_edge:"<<del_edge<<endl;
+
+                Reservoir_size_now--;
+
+                // for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now; rate_i++){
+                //     cout<<sample_rates_molerator[rate_i]<<" "<<sample_rates_denominator[rate_i]<<endl;
+                // }
+
+                // cout<<3<<endl;
+            
+            }
+            if(del_num == 0){
+                // sample_rates[(uint32_t)Reservoir_size_now-1] = sample_rates[(uint32_t)Reservoir_size_now-1]*Reservoir_size_now/(Reservoir_size_now-1);
+                for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now-1; rate_i++){
+                    sample_rates[rate_i] = sample_rates[rate_i]*((double)(Reservoir_size_now)/((double)Reservoir_size_now-1));
+                    sample_rates_molerator[rate_i] = sample_rates_molerator[rate_i]*(currentEdges-1)/sample_rates_denominator[rate_i];
+                    sample_rates_denominator[rate_i] = currentEdges;
+                }
+            }
+
+            
+
+            // cout<<4<<endl;
+
+
+
+            // cout<<5<<endl;
+        }
+        else{
+            for(uint32_t rate_i = 0; rate_i < (uint32_t)Reservoir_size_now-1; rate_i++){
+                sample_rates[rate_i] = sample_rates[rate_i]*((double)(currentEdges-1)/(double)currentEdges);
+                sample_rates_molerator[rate_i] = sample_rates_molerator[rate_i]*(currentEdges-1)/sample_rates_denominator[rate_i];
+                sample_rates_denominator[rate_i] = currentEdges;
+            }
+        }
+    }
+
+
+    cout<<"type-1: "<<(int64_t)tri_num_type1<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    cout<<"Reservoir_size_now:"<<Reservoir_size_now<<endl;
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+}
+
+
+
+void Graph::init(){
+    for(int i = 0;i<n;i++) sample_vertices[i].clear();
+}
+
+vector<uint64_t> Graph::tc_tri_stream_local2_fixed_muti_Reservoir(){
+    double tri_num_type1 = 0;
+    double tri_num_type2 = 0;
+    double tri_num_type3 = 0;
+    // uint32_t currentEdges = 0;
+    // uint32_t currentVertices = 0;
+    // uint32_t sampleVertices = 0;
+    uint32_t Reservoir_size_2 = Reservoir_size*4;
+
+    // double Reservoir_size_now = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int RS_sample_edge_l_i = 0;
+
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    std::uniform_int_distribution<> dis_int(0, Reservoir_size_2);
+    double tri_num_type1_, tri_num_type2_, tri_num_type3_;
+
+    // int judge_type1 = 0;
+    // double update_factor = 1;
+
+    // std::cout<<"Reservoir_size:"<<Reservoir_size<<std::endl;
+    vector<uint32_t> edge_nei(e);
+    uint32_t edge_nei_i = 0;
+    vector<int> edge_nei_exist(e,-1);
+    vector<int> edge_nei_dup(e,-1);
+    vector<pairwise_edge> sample_all_vertices;
+    sample_all_vertices.reserve(Reservoir_size_2);
+    vector<double> sample_rates(e, 1.0);
+    // bool r_full = false;
+
+    vector<uint32_t> reservoir_ownership(e);
+    uint32_t Reservoir_num = 1;
+    vector<uint32_t> Reservoir_size_muti(10);
+    Reservoir_size_muti[0] = Reservoir_size_2;
+    vector<double> Reservoir_size_now_muti(11);
+    vector<int> r_full_muti(10, 0);
+    vector<uint32_t> sample_hyperedges_fixed_muti_start(11);
+    sample_hyperedges_fixed_muti_start[0] = 0;
+    vector<double> update_factor_muti(10);
+    uint32_t sampleVertices_all = 0;
+    vector<uint32_t> sampleVertices_muti(10);
+    sampleVertices_muti[0] = 0;
+    vector<uint32_t> currentEdges_muti(10,0);
+    uint32_t Reservoir_size_muti_old = 0;
+    uint32_t accumulated_weight = 0;
+    uint32_t current_Reservoir_id;
+    
+
+    for(int i = 0;i<e;i++){
+        if((double)sampleVertices_all/(double)Reservoir_size_2 < 0.9 && r_full_muti[Reservoir_num-1] == 1 && Reservoir_num < 10){
+            cout<<sampleVertices_all<<" "<<Reservoir_size_2<<endl;
+            Reservoir_num++;
+            sampleVertices_muti[Reservoir_num-1] = 0;
+            currentEdges_muti[Reservoir_num - 1] = 0;
+            
+            for(int Reservoir_i = 0; Reservoir_i<Reservoir_num-1; Reservoir_i++){
+                Reservoir_size_muti[Reservoir_i] = sampleVertices_muti[Reservoir_i]*1.05;
+                Reservoir_size_muti_old+=Reservoir_size_muti[Reservoir_i];
+            } 
+            Reservoir_size_muti[Reservoir_num-1] = Reservoir_size_2 - Reservoir_size_muti_old;
+            Reservoir_size_now_muti[Reservoir_num - 1] = 0;
+            sample_hyperedges_fixed_muti_start[Reservoir_num - 1] = sample_hyperedges_fixed_muti_start[Reservoir_num - 2] + Reservoir_size_now_muti[Reservoir_num - 2];
+        }
+
+        int rand_val = dis_int(gen);
+        accumulated_weight = 0;
+
+        for (size_t Reservoir_i = 0; Reservoir_i < 10; ++Reservoir_i) {
+            accumulated_weight += Reservoir_size_muti[Reservoir_i];
+            if (rand_val <= accumulated_weight) {
+                current_Reservoir_id = Reservoir_i;
+                break;
+            }
+        }
+
+        uint32_t& currentEdges = currentEdges_muti[current_Reservoir_id];
+        uint32_t& Reservoir_size_ = Reservoir_size_muti[current_Reservoir_id];
+        double& Reservoir_size_now = Reservoir_size_now_muti[current_Reservoir_id];
+        uint32_t& sampleVertices = sampleVertices_muti[current_Reservoir_id];
+        int& r_full = r_full_muti[current_Reservoir_id];
+
+
+
+
+
+
+
+        // cout<<currentVertices<<" "<<Reservoir_size_now<<" "<<all_hyperedges[i].size()<<endl;
+        currentEdges++;
+        if(all_hyperedges[i].size() > 2) tri_num_type1 += (all_hyperedges[i].size()*(all_hyperedges[i].size()-1)*(all_hyperedges[i].size()-2))/6;
+        for (uint32_t update_factor_i = 0; update_factor_i < Reservoir_num; update_factor_i++){
+            update_factor_muti[update_factor_i] = 1.0;
+            if(r_full_muti[update_factor_i] == 1) update_factor_muti[update_factor_i] = ((double)Reservoir_size_now_muti[update_factor_i]/(double)(currentEdges_muti[update_factor_i]));
+        }
+
+        edge_nei_i = 0;
+
+        for(uint32_t v = 0;v<all_hyperedges[i].size();v++){
+            for(uint32_t v2 = 0; v2 < sample_vertices[all_hyperedges[i][v]].size(); v2++){ 
+                if(edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] < i){
+                    edge_nei[edge_nei_i++] = sample_vertices[all_hyperedges[i][v]][v2];
+                    edge_nei_exist[sample_vertices[all_hyperedges[i][v]][v2]] = i;
+                } 
+            }
+            
+        }
+
+        // for(uint32_t j = 0;j<edge_nei_i;j++) cout<<edge_nei[j]<<" ";
+        // cout<<endl;
+
+        for(uint32_t j = 0;j<edge_nei_i;j++){
+            intersect_two_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], tri_num_type2_, update_factor_muti[reservoir_ownership[edge_nei[j]]]);
+            tri_num_type2+=tri_num_type2_;
+            for(uint32_t k = j+1;k<edge_nei_i;k++){
+                intersect_three_sets_fixed(all_hyperedges[i], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, update_factor_muti[reservoir_ownership[edge_nei[j]]], update_factor_muti[reservoir_ownership[edge_nei[k]]]);
+                tri_num_type3+=tri_num_type3_;
+            }
+        }
+
+
+
+        // cout<<endl;
+        if (currentEdges + all_hyperedges[i].size() <= Reservoir_size_) {
+
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+            sampleVertices_all+=all_hyperedges[i].size();
+            
+            sample_hyperedges_fixed[sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now - 1] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++){
+                sample_vertices[all_hyperedges[i][v]].push_back(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now - 1);
+            }
+
+            reservoir_ownership[sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now - 1] = current_Reservoir_id;
+
+
+
+            // sample_rates[(uint32_t)Reservoir_size_now - 1] = (double)Reservoir_size_now/(double)(currentEdges);
+                
+        } else if (dis(gen) < (double)Reservoir_size_now / (double)currentEdges) {
+
+            if(r_full == 0) r_full = 1;
+
+            // cout<<1<<endl;
+            double del_num = 1.0;
+
+
+            uint32_t del_edge = sample_hyperedges_fixed_muti_start[current_Reservoir_id] + rand() % (uint32_t)Reservoir_size_now;
+            sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+            sampleVertices_all-=sample_hyperedges_fixed[del_edge].size();
+    
+            for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                auto& vertex_edges = sample_vertices[vertex];
+                auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                if (it != vertex_edges.end()) {
+                    std::swap(*it, vertex_edges.back());
+                    vertex_edges.pop_back();
+                }
+                else cout<<"error1"<<endl;
+            }
+
+            if(del_edge != (uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)){
+                
+                reservoir_ownership[del_edge] = reservoir_ownership[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)];
+                sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)];
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1));
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error2"<<endl;
+                    sample_vertices[vertex].push_back(del_edge);
+
+                }
+
+            }
+            Reservoir_size_now--;
+
+            sample_hyperedges_fixed[sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now] = all_hyperedges[i];
+            for (uint32_t v = 0; v < all_hyperedges[i].size(); v++)
+                sample_vertices[all_hyperedges[i][v]].push_back(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now);
+            Reservoir_size_now++;
+            sampleVertices+=all_hyperedges[i].size();
+            sampleVertices_all+=all_hyperedges[i].size();
+            reservoir_ownership[sample_hyperedges_fixed_muti_start[current_Reservoir_id] + (uint32_t)Reservoir_size_now - 1] = current_Reservoir_id;
+
+            while (sampleVertices > Reservoir_size_) {
+                
+                uint32_t del_edge = sample_hyperedges_fixed_muti_start[current_Reservoir_id] + rand() % (uint32_t)Reservoir_size_now;
+
+                
+                sampleVertices-=sample_hyperedges_fixed[del_edge].size();
+                sampleVertices_all-=sample_hyperedges_fixed[del_edge].size();
+                del_num++;
+
+                for (uint32_t v = 0; v < sample_hyperedges_fixed[del_edge].size(); v++) {
+                    uint32_t vertex = sample_hyperedges_fixed[del_edge][v];
+                    auto& vertex_edges = sample_vertices[vertex];
+                    auto it = std::find(vertex_edges.begin(), vertex_edges.end(), del_edge);
+                    if (it != vertex_edges.end()) {
+                        std::swap(*it, vertex_edges.back());
+                        vertex_edges.pop_back();
+                    }
+                    else cout<<"error3"<<endl;
+                }
+                if(del_edge != (uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)){
+                    
+                    reservoir_ownership[del_edge] = reservoir_ownership[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)];
+                    sample_hyperedges_fixed[del_edge] = sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)];
+                    for (uint32_t v = 0; v < sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)].size(); v++) {
+                        uint32_t vertex = sample_hyperedges_fixed[(uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1)][v];
+                        auto& vertex_edges = sample_vertices[vertex];
+                        auto it = std::find(vertex_edges.begin(), vertex_edges.end(), (uint32_t)(sample_hyperedges_fixed_muti_start[current_Reservoir_id] + Reservoir_size_now-1));
+                        if (it != vertex_edges.end()) {
+                            std::swap(*it, vertex_edges.back());
+                            vertex_edges.pop_back();
+                        }
+                        else cout<<"error4"<<endl;
+                        sample_vertices[vertex].push_back(del_edge);
+                    }
+                }
+
+                Reservoir_size_now--;
+            
+            }
+        }
+    }
+
+
+    cout<<"type-1: "<<(int64_t)tri_num_type1<<endl;
+    cout<<"type-2: "<<(int64_t)tri_num_type2<<endl;
+    cout<<"type-3: "<<(int64_t)tri_num_type3<<endl;
+
+    uint32_t all_Reservoir_size_now = 0;
+    for(int Reservoir_i = 0; Reservoir_i<Reservoir_num; Reservoir_i++){
+        all_Reservoir_size_now+=(uint32_t)Reservoir_size_now_muti[Reservoir_i];
+        cout<<"Reservoir_size_now-"<<Reservoir_i<<":"<<Reservoir_size_now_muti[Reservoir_i]<<endl;
+    } 
+
+    cout<<"Reservoir_size_now:"<<all_Reservoir_size_now<<endl;
+
+
+    vector<uint64_t> type_num(3);
+    type_num[0] = (int64_t)tri_num_type1;
+    type_num[1] = (int64_t)tri_num_type2;
+    type_num[2] = (int64_t)tri_num_type3;
+
+    return type_num;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 

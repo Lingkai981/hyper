@@ -1,4 +1,4 @@
-g++ -std=c++11 -o main *.cpp -O3
+g++ -std=c++17 -o main *.cpp -O3
 
 ./main $1
 
