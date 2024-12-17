@@ -37,3 +37,1051 @@ The stream_value_global time is: 0.045297
 type-1 error: 0.0190498
 type-2 error: 0.897914
 type-3 error: 0.689361
+Reservoir_size:4096
+results_dym_2024_12_15/NDC12_result.txt
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.033162
+The to_pairwise_minHash part 1 time is: 0.004714s
+The to_pairwise_minHash part 2 time is: 0.060364s
+The to_pairwise_minHash part 3 time is: 0.001649s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.066761
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+Reservoir_size:4096
+r_full:1138
+type-1: 1990261
+type-2: 154078140
+type-3: 10685064299
+Reservoir_size_now:854 3697
+
+muti_rate:0.0410483 add rate:14.7117
+r_full:1138
+r_full:60
+r_full:54
+r_full:60
+r_full:45
+r_full:41
+r_full:31
+r_full:28
+r_full:31
+r_full:19
+type-1: 1990261
+type-2: 152385663
+type-3: 11309493154
+Reservoir_size_now-0:638
+Reservoir_size_now-1:33
+Reservoir_size_now-2:28
+Reservoir_size_now-3:29
+Reservoir_size_now-4:28
+Reservoir_size_now-5:24
+Reservoir_size_now-6:14
+Reservoir_size_now-7:18
+Reservoir_size_now-8:14
+Reservoir_size_now-9:12
+Reservoir_size_now:838 3625
+3.12079,3.15879,0.0734447,0.0616535,-0.0737316,-0.019601,854,838,3697,3625
+Reservoir_size:4096
+r_full:1138
+type-1: 1990261
+type-2: 128352868
+type-3: 11024997171
+Reservoir_size_now:876 3828
+
+muti_rate:0.0410483 add rate:14.7117
+r_full:1138
+r_full:48
+r_full:53
+r_full:50
+r_full:44
+r_full:44
+r_full:36
+r_full:33
+r_full:15
+r_full:12
+type-1: 1990261
+type-2: 150523399
+type-3: 13373813390
+Reservoir_size_now-0:668
+Reservoir_size_now-1:19
+Reservoir_size_now-2:22
+Reservoir_size_now-3:24
+Reservoir_size_now-4:26
+Reservoir_size_now-5:23
+Reservoir_size_now-6:12
+Reservoir_size_now-7:16
+Reservoir_size_now-8:5
+Reservoir_size_now-9:3
+Reservoir_size_now:818 3576
+2.93101,3.37751,-0.10578,0.0486793,-0.0442635,0.159351,876,818,3828,3576
+Reservoir_size:4096
+r_full:1138
+type-1: 1990261
+type-2: 142117899
+type-3: 10732339783
+Reservoir_size_now:859 3866
+
+muti_rate:0.0410483 add rate:14.7117
+r_full:1138
+r_full:80
+r_full:52
+r_full:47
+r_full:29
+r_full:14
+r_full:38
+r_full:27
+Reservoir_size:8192
+results_dym_2024_12_15/NDC13_result.txt
+5557 29296 307853
+read degree over
+r_full:23
+read edges over
+read graph over
+The read_graph time is: 0.030605
+The to_pairwise_minHash part 1 time is: 0.004694s
+The to_pairwise_minHash part 2 time is: 0.060316s
+The to_pairwise_minHash part 3 time is: 0.001622s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.066667
+r_full:14
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 155119953
+type-3: 11863488412
+Reservoir_size_now-0:639
+Reservoir_size_now-1:33
+Reservoir_size_now-2:16
+Reservoir_size_now-3:29
+Reservoir_size_now-4:18
+Reservoir_size_now-5:12
+Reservoir_size_now-6:23
+Reservoir_size_now-7:11
+Reservoir_size_now-8:11
+Reservoir_size_now-9:9
+Reservoir_size_now:801 3447
+2.85106,3.34934,-0.00988088,0.0807029,-0.0696334,0.0284238,859,801,3866,3447
+Reservoir_size:4096
+r_full:1138
+type-1: 1990261
+type-2: 133044839
+type-3: 12105432210
+Reservoir_size_now:904 3753
+
+muti_rate:0.0410483 add rate:14.7117
+r_full:1138
+r_full:57
+r_full:58
+r_full:54
+r_full:40
+r_full:19
+r_full:35
+r_full:14
+r_full:18
+r_full:13
+type-1: 1990261
+type-2: 150513004
+type-3: 11219332414
+Reservoir_size_now-0:660
+Reservoir_size_now-1:43
+Reservoir_size_now-2:26
+Reservoir_size_now-3:40
+Reservoir_size_now-4:18
+Reservoir_size_now-5:17
+Reservoir_size_now-6:17
+Reservoir_size_now-7:8
+Reservoir_size_now-8:14
+Reservoir_size_now-9:9
+Reservoir_size_now:852 3740
+3.05783,3.35359,-0.0730919,0.0486069,0.0493974,-0.0274169,904,852,3753,3740
+Reservoir_size:4096
+r_full:1138
+type-1: 1990261
+type-2: 145067910
+type-3: 11845239012
+Reservoir_size_now:1778 7526
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:62
+r_full:64
+r_full:44
+r_full:46
+r_full:33
+r_full:34
+Reservoir_size:16384
+results_dym_2024_12_15/NDC14_result.txt
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.030709
+The to_pairwise_minHash part 1 time is: 0.004726s
+The to_pairwise_minHash part 2 time is: 0.060555s
+The to_pairwise_minHash part 3 time is: 0.001642s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.066959
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+Reservoir_size:16384
+r_full:30
+r_full:12
+r_full:17
+r_full:5230
+type-1: 1990261
+type-2: 153002237
+type-3: 11219837087
+Reservoir_size_now-0:1536
+Reservoir_size_now-1:39
+Reservoir_size_now-2:38
+Reservoir_size_now-3:23
+Reservoir_size_now-4:29
+Reservoir_size_now-5:21
+Reservoir_size_now-6:19
+Reservoir_size_now-7:24
+Reservoir_size_now-8:10
+Reservoir_size_now-9:7
+Reservoir_size_now:1746 7510
+12.5272,13.4303,0.0106715,0.0659491,0.0268418,-0.0273732,1778,1746,7526,7510
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 143310429
+type-3: 11692318993
+Reservoir_size_now:1701 7525
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:57
+r_full:50
+r_full:61
+r_full:49
+r_full:39
+r_full:32
+r_full:27
+r_full:22
+r_full:13
+type-1: 1990261
+type-2: 137457474
+type-3: 11602223256
+Reservoir_size_now-0:1542
+Reservoir_size_now-1:33
+Reservoir_size_now-2:31
+Reservoir_size_now-3:25
+Reservoir_size_now-4:24
+Reservoir_size_now-5:28
+Reservoir_size_now-6:20
+Reservoir_size_now-7:14
+Reservoir_size_now-8:4
+Reservoir_size_now-9:12
+Reservoir_size_now:1733 7337
+11.525,12.5647,-0.00157266,-0.0423495,0.0135854,0.00577519,1701,1733,7525,7337
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 145112296
+type-3: 11074142707
+Reservoir_size_now:1710 7330
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+type-1: 1990261
+type-2: 142735082
+type-3: 11300460225
+Reservoir_size_now:3529 15381
+
+muti_rate:0.0102621 add rate:14.7117
+r_full:58
+r_full:56
+r_full:57
+r_full:39
+r_full:38
+r_full:29
+r_full:23
+r_full:23
+r_full:21
+r_full:5230
+r_full:55
+r_full:30
+r_full:46
+r_full:42
+r_full:37
+r_full:27
+r_full:16
+type-1: 1990261
+type-2: 147324700
+type-3: 11553488666
+Reservoir_size_now-0:1489
+Reservoir_size_now-1:27
+Reservoir_size_now-2:34
+Reservoir_size_now-3:29
+Reservoir_size_now-4:16
+Reservoir_size_now-5:23
+Reservoir_size_now-6:12
+Reservoir_size_now-7:18
+Reservoir_size_now-8:18
+Reservoir_size_now-9:14
+Reservoir_size_now:1680 7225
+11.0299,12.9198,0.0109807,0.0263943,-0.0400031,0.00155048,1710,1680,7330,7225
+Reservoir_size:8192
+r_full:2486
+r_full:24
+r_full:9
+type-1: 1990261
+type-2: 137325752
+type-3: 11694025663
+Reservoir_size_now:1768 7386
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:55
+r_full:58
+r_full:48
+r_full:32
+r_full:40
+r_full:25
+r_full:22
+r_full:25
+r_full:16
+type-1: 1990261
+type-2: 149889480
+type-3: 11319661509
+Reservoir_size_now-0:1559
+Reservoir_size_now-1:33
+Reservoir_size_now-2:39
+Reservoir_size_now-3:37
+Reservoir_size_now-4:20
+Reservoir_size_now-5:24
+Reservoir_size_now-6:12
+Reservoir_size_now-7:8
+Reservoir_size_now-8:19
+Reservoir_size_now-9:8
+Reservoir_size_now:1759 7382
+11.3682,13.3014,-0.0432672,0.0442628,0.0137334,-0.0187196,1768,1759,7386,7382
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 149819526
+type-3: 11028537022
+Reservoir_size_now-0:3273
+Reservoir_size_now-1:37
+Reservoir_size_now-2:27
+Reservoir_size_now-3:28
+Reservoir_size_now-4:29
+Reservoir_size_now-5:26
+Reservoir_size_now-6:21
+Reservoir_size_now-7:13
+Reservoir_size_now-8:23
+Reservoir_size_now-9:8
+Reservoir_size_now:3485 14955
+44.3194,48.035,-0.00558104,0.0437755,-0.0203841,-0.0439566,3529,3485,15381,14955
+Reservoir_size:16384
+type-1: 1990261
+type-2: 152277637
+type-3: 11864087185
+Reservoir_size_now:1698 7179
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:52
+r_full:62
+r_full:61
+r_full:57
+r_full:34
+r_full:29
+r_full:5230
+r_full:31
+r_full:25
+r_full:12
+type-1: 1990261
+type-2: 136757833
+type-3: 11791175175
+Reservoir_size_now-0:1559
+Reservoir_size_now-1:33
+Reservoir_size_now-2:43
+Reservoir_size_now-3:37
+Reservoir_size_now-4:27
+Reservoir_size_now-5:27
+Reservoir_size_now-6:24
+Reservoir_size_now-7:18
+Reservoir_size_now-8:12
+Reservoir_size_now-9:4
+Reservoir_size_now:1784 7183
+11.6345,13.2878,0.0609008,-0.0472238,0.0284757,0.0221551,1698,1784,7179,7183
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 146247488
+type-3: 12409128272
+Reservoir_size_now:1770 7608
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:56
+r_full:58
+r_full:57
+r_full:37
+r_full:37
+r_full:36
+r_full:27
+r_full:16
+r_full:15
+type-1: 1990261
+type-2: 149423620
+type-3: 12480581903
+Reservoir_size_now-0:1458
+Reservoir_size_now-1:34
+Reservoir_size_now-2:36
+Reservoir_size_now-3:32
+Reservoir_size_now-4:21
+Reservoir_size_now-5:18
+Reservoir_size_now-6:17
+Reservoir_size_now-7:20
+Reservoir_size_now-8:14
+Reservoir_size_now-9:11
+Reservoir_size_now:1661 7297
+12.3802,13.1607,0.0188895,0.0410172,0.0757243,0.0819185,1770,1661,7608,7297
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 143697869
+type-3: 11678543682
+Reservoir_size_now:3560 15058
+
+muti_rate:0.0102621 add rate:14.7117
+r_full:5230
+r_full:70
+r_full:39
+r_full:55
+type-1: 1990261
+type-2: 154126846
+type-3: 12692662695
+Reservoir_size_now:1750 7339
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:53
+r_full:49
+r_full:59
+r_full:59
+r_full:42
+r_full:35
+r_full:33
+r_full:29
+r_full:38
+r_full:26
+r_full:17
+r_full:28
+r_full:30
+r_full:18
+r_full:13
+type-1: 1990261
+type-2: 138227023
+type-3: 12123414513
+Reservoir_size_now-0:1539
+Reservoir_size_now-1:38
+Reservoir_size_now-2:35
+Reservoir_size_now-3:31
+Reservoir_size_now-4:34
+Reservoir_size_now-5:18
+Reservoir_size_now-6:21
+Reservoir_size_now-7:15
+Reservoir_size_now-8:18
+Reservoir_size_now-9:11
+Reservoir_size_now:1760 7572
+11.8978,13.8221,0.0737841,-0.0369882,0.100303,0.0509563,1750,1760,7339,7572
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 145028134
+type-3: 12009941121
+Reservoir_size_now:1753 7453
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:55
+r_full:64
+r_full:44
+r_full:31
+r_full:35
+r_full:28
+r_full:25
+r_full:7
+r_full:3
+type-1: 1990261
+type-2: 151136793
+type-3: 12592386081
+Reservoir_size_now-0:1524
+Reservoir_size_now-1:31
+Reservoir_size_now-2:38
+Reservoir_size_now-3:36
+Reservoir_size_now-4:26
+Reservoir_size_now-5:16
+Reservoir_size_now-6:19
+Reservoir_size_now-7:13
+Reservoir_size_now-8:7
+Reservoir_size_now-9:1
+Reservoir_size_now:1711 7047
+11.319,13.5115,0.0103944,0.0529527,0.0411195,0.0916106,1753,1711,7453,7047
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 145308549
+type-3: 12105867192
+Reservoir_size_now-0:3310
+Reservoir_size_now-1:39
+Reservoir_size_now-2:34
+Reservoir_size_now-3:34
+Reservoir_size_now-4:18
+Reservoir_size_now-5:34
+Reservoir_size_now-6:19
+Reservoir_size_now-7:13
+Reservoir_size_now-8:18
+Reservoir_size_now-9:13
+Reservoir_size_now:3532 14817
+44.9317,50.2926,0.00112659,0.012348,0.0123913,0.0494351,3560,3532,15058,14817
+Reservoir_size:16384
+r_full:5230
+type-1: 1990261
+type-2: 146878332
+type-3: 12342749471
+Reservoir_size_now:1761 7609
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:50
+r_full:63
+r_full:60
+r_full:51
+r_full:33
+r_full:24
+r_full:26
+r_full:18
+r_full:14
+type-1: 1990261
+type-2: 141542962
+type-3: 12328762851
+Reservoir_size_now-0:1536
+Reservoir_size_now-1:33
+Reservoir_size_now-2:37
+Reservoir_size_now-3:48
+Reservoir_size_now-4:27
+Reservoir_size_now-5:25
+Reservoir_size_now-6:8
+Reservoir_size_now-7:19
+Reservoir_size_now-8:14
+Reservoir_size_now-9:9
+Reservoir_size_now:1756 7386
+13.0172,14.0815,0.0232845,-0.0138864,0.06997,0.0687576,1761,1756,7609,7386
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 130295049
+type-3: 11070131478
+Reservoir_size_now:1817 7395
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:65
+r_full:61
+r_full:45
+r_full:49
+r_full:32
+r_full:31
+r_full:30
+r_full:16
+r_full:15
+type-1: 1990261
+type-2: 149063414
+type-3: 11670072264
+Reservoir_size_now:3412 15004
+
+muti_rate:0.0102621 add rate:14.7117
+type-1: 1990261
+type-2: 132791384
+type-3: 10099317609
+Reservoir_size_now-0:1576
+Reservoir_size_now-1:30
+Reservoir_size_now-2:42
+Reservoir_size_now-3:29
+Reservoir_size_now-4:33
+Reservoir_size_now-5:23
+Reservoir_size_now-6:19
+Reservoir_size_now-7:15
+Reservoir_size_now-8:16
+Reservoir_size_now-9:11
+Reservoir_size_now:1794 7478
+12.0237,12.8297,-0.0922493,-0.0748576,-0.0403509,-0.124509,1817,1794,7395,7478
+Reservoir_size:8192
+r_full:2486
+r_full:5230
+r_full:66
+r_full:54
+r_full:45
+r_full:44
+r_full:24
+r_full:28
+type-1: 1990261
+type-2: 151461523
+type-3: 11657064433
+Reservoir_size_now:1753 7284
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:70
+r_full:68
+r_full:55
+r_full:45
+r_full:38
+r_full:26
+r_full:23
+r_full:32
+r_full:14
+r_full:19
+r_full:9
+r_full:16
+type-1: 1990261
+type-2: 152634391
+type-3: 11236750291
+Reservoir_size_now-0:1493
+Reservoir_size_now-1:40
+Reservoir_size_now-2:51
+Reservoir_size_now-3:33
+Reservoir_size_now-4:31
+Reservoir_size_now-5:24
+Reservoir_size_now-6:11
+Reservoir_size_now-7:13
+Reservoir_size_now-8:7
+Reservoir_size_now-9:5
+Reservoir_size_now:1708 7372
+11.2563,12.9706,0.0552151,0.0633863,0.0105293,-0.025907,1753,1708,7284,7372
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 137084625
+type-3: 10325947551
+Reservoir_size_now:1742 7307
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:47
+r_full:55
+r_full:61
+r_full:42
+r_full:41
+r_full:38
+r_full:24
+r_full:21
+r_full:22
+type-1: 1990261
+type-2: 134869503
+type-3: 11449852024
+Reservoir_size_now-0:3384
+Reservoir_size_now-1:30
+Reservoir_size_now-2:34
+Reservoir_size_now-3:15
+Reservoir_size_now-4:32
+Reservoir_size_now-5:21
+Reservoir_size_now-6:17
+Reservoir_size_now-7:18
+Reservoir_size_now-8:8
+Reservoir_size_now-9:7
+Reservoir_size_now:3566 14908
+45.2493,48.0145,0.0385077,-0.0603796,0.0116569,-0.00743359,3412,3566,15004,14908
+Reservoir_size:16384
+type-1: 1990261
+type-2: 153685175
+type-3: 12151976060
+Reservoir_size_now-0:1540
+Reservoir_size_now-1:35
+Reservoir_size_now-2:23
+Reservoir_size_now-3:36
+Reservoir_size_now-4:15
+Reservoir_size_now-5:22
+Reservoir_size_now-6:19
+Reservoir_size_now-7:11
+Reservoir_size_now-8:11
+Reservoir_size_now-9:10
+Reservoir_size_now:1722 7408
+11.2948,13.3512,-0.0449471,0.070707,-0.104863,0.0534322,1742,1722,7307,7408
+Reservoir_size:8192
+r_full:2486
+r_full:5230
+type-1: 1990261
+type-2: 150420285
+type-3: 10989439950
+Reservoir_size_now:1725 7323
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:42
+r_full:68
+r_full:57
+r_full:24
+r_full:44
+r_full:10
+r_full:34
+r_full:20
+r_full:18
+type-1: 1990261
+type-2: 134200763
+type-3: 11898754576
+Reservoir_size_now-0:1543
+Reservoir_size_now-1:32
+Reservoir_size_now-2:37
+Reservoir_size_now-3:41
+Reservoir_size_now-4:18
+Reservoir_size_now-5:17
+Reservoir_size_now-6:4
+Reservoir_size_now-7:23
+Reservoir_size_now-8:18
+Reservoir_size_now-9:9
+Reservoir_size_now:1742 7415
+11.6324,14.0382,0.0479609,-0.0650387,-0.0473459,0.0314809,1725,1742,7323,7415
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 153619069
+type-3: 12307157418
+Reservoir_size_now:1695 7383
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:48
+r_full:64
+r_full:57
+r_full:52
+r_full:37
+r_full:31
+r_full:29
+type-1: 1990261
+type-2: 139334304
+type-3: 11055963827
+Reservoir_size_now:3478 15051
+
+muti_rate:0.0102621 add rate:14.7117
+r_full:22
+r_full:20
+r_full:5230
+r_full:54
+r_full:58
+r_full:42
+type-1: 1990261
+type-2: 144841686
+type-3: 11241584260
+Reservoir_size_now-0:1577
+Reservoir_size_now-1:29
+Reservoir_size_now-2:31
+Reservoir_size_now-3:34
+Reservoir_size_now-4:35
+Reservoir_size_now-5:22
+Reservoir_size_now-6:17
+Reservoir_size_now-7:16
+Reservoir_size_now-8:15
+Reservoir_size_now-9:7
+Reservoir_size_now:1783 7386
+11.8068,13.6017,0.0702465,0.00909543,0.0668846,-0.0254879,1695,1783,7383,7386
+Reservoir_size:8192
+r_full:2486
+r_full:36
+r_full:33
+r_full:15
+r_full:36
+r_full:20
+r_full:12
+type-1: 1990261
+type-2: 161160911
+type-3: 12085512607
+Reservoir_size_now:1724 7397
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:42
+r_full:57
+r_full:58
+r_full:25
+r_full:45
+r_full:35
+r_full:24
+r_full:14
+r_full:15
+type-1: 1990261
+type-2: 138796917
+type-3: 10683890819
+Reservoir_size_now-0:1534
+Reservoir_size_now-1:26
+Reservoir_size_now-2:33
+Reservoir_size_now-3:26
+Reservoir_size_now-4:13
+Reservoir_size_now-5:20
+Reservoir_size_now-6:28
+Reservoir_size_now-7:15
+Reservoir_size_now-8:8
+Reservoir_size_now-9:10
+Reservoir_size_now:1713 7259
+11.5954,12.7311,0.12279,-0.0330178,0.0476706,-0.0738333,1724,1713,7397,7259
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 140236303
+type-3: 11648871202
+Reservoir_size_now:1746 7524
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:56
+r_full:72
+r_full:44
+type-1: 1990261
+type-2: 143031416
+type-3: 11437326883
+Reservoir_size_now-0:3274
+Reservoir_size_now-1:42
+Reservoir_size_now-2:40
+Reservoir_size_now-3:28
+Reservoir_size_now-4:20
+Reservoir_size_now-5:23
+Reservoir_size_now-6:9
+Reservoir_size_now-7:29
+Reservoir_size_now-8:12
+Reservoir_size_now-9:11
+Reservoir_size_now:3488 15047
+44.1489,47.3961,-0.0292739,-0.00351651,-0.041579,-0.00851937,3478,3488,15051,15047
+Reservoir_size:16384
+r_full:48
+r_full:22
+r_full:25
+r_full:25
+r_full:22
+r_full:15
+r_full:5230
+type-1: 1990261
+type-2: 150223432
+type-3: 12190085645
+Reservoir_size_now-0:1457
+Reservoir_size_now-1:39
+Reservoir_size_now-2:40
+Reservoir_size_now-3:18
+Reservoir_size_now-4:28
+Reservoir_size_now-5:12
+Reservoir_size_now-6:20
+Reservoir_size_now-7:13
+Reservoir_size_now-8:12
+Reservoir_size_now-9:10
+Reservoir_size_now:1649 7044
+11.445,13.0421,-0.0229897,0.0465894,0.00981901,0.0567359,1746,1649,7524,7044
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 147362605
+type-3: 11997554955
+Reservoir_size_now:1810 7605
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:50
+r_full:53
+r_full:57
+r_full:52
+r_full:43
+r_full:34
+r_full:35
+r_full:20
+r_full:19
+type-1: 1990261
+type-2: 140804880
+type-3: 11943544751
+Reservoir_size_now-0:1576
+Reservoir_size_now-1:28
+Reservoir_size_now-2:31
+Reservoir_size_now-3:29
+Reservoir_size_now-4:31
+Reservoir_size_now-5:30
+Reservoir_size_now-6:12
+Reservoir_size_now-7:17
+Reservoir_size_now-8:14
+Reservoir_size_now-9:13
+Reservoir_size_now:1781 7646
+12.2383,14.6092,0.0266584,-0.0190285,0.0400458,0.0353637,1810,1781,7605,7646
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 154681647
+type-3: 12111686508
+Reservoir_size_now:3445 15092
+
+muti_rate:0.0102621 add rate:14.7117
+type-1: 1990261
+type-2: 144638411
+type-3: 12212792023
+Reservoir_size_now:1753 7449
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:5230
+r_full:2486
+r_full:56
+r_full:66
+r_full:67
+r_full:28
+r_full:42
+r_full:52
+r_full:36
+r_full:38
+r_full:37
+r_full:29
+r_full:29
+r_full:30
+r_full:30
+r_full:27
+r_full:21
+r_full:20
+r_full:19
+r_full:6
+type-1: 1990261
+type-2: 155720421
+type-3: 12235069051
+Reservoir_size_now-0:1464
+Reservoir_size_now-1:37
+Reservoir_size_now-2:37
+Reservoir_size_now-3:37
+Reservoir_size_now-4:27
+Reservoir_size_now-5:27
+Reservoir_size_now-6:20
+Reservoir_size_now-7:16
+Reservoir_size_now-8:10
+Reservoir_size_now-9:12
+Reservoir_size_now:1687 7238
+11.8709,13.7311,0.00767924,0.0848863,0.0587043,0.0606354,1753,1687,7449,7238
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 138732156
+type-3: 10233568321
+Reservoir_size_now:1803 7637
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:41
+r_full:63
+r_full:59
+r_full:39
+r_full:34
+r_full:31
+r_full:29
+r_full:25
+r_full:6
+type-1: 1990261
+type-2: 157718606
+type-3: 11527905190
+Reservoir_size_now-0:1523
+Reservoir_size_now-1:25
+Reservoir_size_now-2:29
+Reservoir_size_now-3:24
+Reservoir_size_now-4:17
+Reservoir_size_now-5:27
+Reservoir_size_now-6:14
+Reservoir_size_now-7:17
+Reservoir_size_now-8:9
+Reservoir_size_now-9:5
+Reservoir_size_now:1690 7412
+11.8111,13.2592,-0.033469,0.0988075,-0.112871,-0.000667305,1803,1690,7637,7412
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 145566136
+type-3: 11645058156
+Reservoir_size_now-0:3320
+Reservoir_size_now-1:43
+Reservoir_size_now-2:25
+Reservoir_size_now-3:27
+Reservoir_size_now-4:21
+Reservoir_size_now-5:24
+Reservoir_size_now-6:14
+Reservoir_size_now-7:20
+Reservoir_size_now-8:9
+Reservoir_size_now-9:5
+Reservoir_size_now:3508 14936
+45.1696,50.2164,0.0776493,0.0141426,0.0499396,0.00948847,3445,3508,15092,14936
+Reservoir_size:16384
+r_full:5230
+type-1: 1990261
+type-2: 146818609
+type-3: 12303541153
+Reservoir_size_now:1732 7502
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:68
+r_full:69
+r_full:44
+r_full:47
+r_full:42
+r_full:36
+r_full:28
+r_full:24
+r_full:11
+type-1: 1990261
+type-2: 145501407
+type-3: 11563590014
+Reservoir_size_now-0:1559
+Reservoir_size_now-1:29
+Reservoir_size_now-2:34
+Reservoir_size_now-3:26
+Reservoir_size_now-4:14
+Reservoir_size_now-5:17
+Reservoir_size_now-6:22
+Reservoir_size_now-7:17
+Reservoir_size_now-8:19
+Reservoir_size_now-9:3
+Reservoir_size_now:1740 7504
+12.1662,12.9293,0.0228684,0.0136916,0.0665711,0.00242615,1732,1740,7502,7504
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 143817554
+type-3: 10918946545
+Reservoir_size_now:1743 7614
+
+muti_rate:0.0205241 add rate:14.7117
+r_full:2486
+r_full:67
+r_full:66
+r_full:57
+r_full:43
+r_full:43
+r_full:28
+r_full:31
+r_full:26
+r_full:18
+type-1: 1990261
+type-2: 140261353
+type-3: 10742455010
+Reservoir_size_now-0:1551
+Reservoir_size_now-1:46
+Reservoir_size_now-2:38
+Reservoir_size_now-3:29
+Reservoir_size_now-4:22
+Reservoir_size_now-5:25
+Reservoir_size_now-6:23
+Reservoir_size_now-7:16
+Reservoir_size_now-8:17
+Reservoir_size_now-9:12
+Reservoir_size_now:1779 7532
+11.5167,13.6069,0.00196042,-0.0228152,-0.0534568,-0.0687565,1743,1779,7614,7532
+Reservoir_size:8192
+r_full:2486
+type-1: 1990261
+type-2: 152014500
+type-3: 11992224705
+Reservoir_size_now:3463 14977
+
+muti_rate:0.0102621 add rate:14.7117
+                                                                                                                                                                                                             

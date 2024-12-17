@@ -1,4 +1,4 @@
-g++ -std=c++17 -o main *.cpp -O3
+g++ -fopenmp -O3 -march=native -std=c++17 -o main2 *.cpp
 
-./main $1
+./main2 $1 $2
 

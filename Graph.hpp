@@ -1,6 +1,7 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+#include <bits/stdint-uintn.h>
 #include <fstream>
 #include <iostream>
 
@@ -141,10 +142,9 @@ private:
     vector<vector<uint32_t>> sample_hyperedges;
     vector<vector<uint32_t>> sample_hyperedges_fixed;
     vector<uint32_t> *sample_vertices;
-
-
-    
-    
+    vector<vector<uint32_t>> sample_common_vertices;
+    vector<uint32_t> common_set;
+    vector<uint32_t> common_set1_2;
 
 public:
     Graph(const char *_dir, uint32_t BUCKET_BITS);
@@ -170,28 +170,33 @@ public:
     int two_interaction_num(pairwise_edge *a, uint32_t la, pairwise_edge *b, uint32_t lb);
     int three_interaction_num(pairwise_edge *a, uint32_t la, pairwise_edge *b, uint32_t lb, pairwise_edge *c, uint32_t lc);
 
-    vector<uint64_t> tc_tri_stream_local();
+    vector<uint64_t> tc_tri_stream_local_time();
     bool binary_search(uint32_t* arr, uint32_t begin, uint32_t end, uint32_t target);
     void intersect_three_sets(const std::set<uint32_t>& set1, const std::set<uint32_t>& set2, const std::set<uint32_t>& set3, double &tri_num_type1_, double &tri_num_type2_, double &tri_num_type3_, int common_num, double update_factor);
 
-    vector<uint64_t> tc_tri_stream_global();
+    vector<uint64_t> tc_tri_stream_global_time();
     void intersect_three_sets2(const std::set<uint32_t>& set1, const std::set<uint32_t>& set2, const std::set<uint32_t>& set3, double &tri_num_type2_, double &tri_num_type3_, double update_factor);
 
-    vector<uint64_t> tc_tri_stream_local_fixed();
+    vector<uint64_t> tc_tri_stream_global_space();
 
-    vector<uint64_t> tc_tri_stream_local2();
+    vector<uint64_t> tc_tri_stream_local_space();
     void intersect_three_sets3(vector<uint32_t> &set1, vector<uint32_t> &set2, vector<uint32_t> &set3, double &tri_num_type3_, double update_factor);
     void intersect_two_sets3(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor);
 
-    vector<uint64_t> tc_tri_stream_local2_fixed();
-    void init();
-    void intersect_three_sets_fixed(vector<uint32_t> &set1, vector<uint32_t> &set2, vector<uint32_t> &set3, double &tri_num_type3_, double update_factor1,  double update_factor2);
-    void intersect_two_sets_fixed(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor);
+    vector<uint64_t> tc_tri_stream_local_space2();
 
-    vector<uint64_t> tc_tri_stream_local2_fixed2();
+    vector<uint64_t> tc_tri_stream_local_space_fixed();
+    void init();
+    int intersect_three_sets_fixed(vector<uint32_t> &set1, vector<uint32_t> &set2, vector<uint32_t> &set3, double &tri_num_type3_, double update_factor1,  double update_factor2);
+    void intersect_two_sets_fixed(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor, int &common_num);
+
+    int intersect_three_sets_fixed2(vector<uint32_t> &common_set1, vector<uint32_t> &common_set2, vector<uint32_t> &set3, vector<uint32_t> &set4, double &tri_num_type3_, double update_factor);
+    void intersect_two_sets_fixed2(vector<uint32_t> &set1, vector<uint32_t> &set2, double &tri_num_type2_, double update_factor, int &common_num, vector<uint32_t> &sample_common_vertices_single);
+
+    vector<uint64_t> tc_tri_stream_local_space_fixed2();
     
 
-    vector<uint64_t> tc_tri_stream_local2_fixed_muti_Reservoir();
+    vector<uint64_t> tc_tri_stream_local_space_fixed_muti_Reservoir();
 
 
 

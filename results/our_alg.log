@@ -1,0 +1,2476 @@
+Running ./main with parameters: NDC 12
+.............................................................................NDC 12
+Reservoir_size:4096
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.030178
+The to_pairwise_minHash part 1 time is: 0.004888s
+The to_pairwise_minHash part 2 time is: 0.061727s
+The to_pairwise_minHash part 3 time is: 0.001723s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068378
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.346386
+
+Reservoir_size:4096
+type-1: 1990261
+type-2: 158108561
+type-3: 10536209532
+Reservoir_size_now:861 3826
+type-1 error: 0
+type-2 error: 0.101524
+type-3 error: -0.0866356
+The tc_tri_stream_local_space_fixed time is: 2.92578
+The tc_tri_stream_local_space_fixed memory is: 260
+
+type-1: 1990261
+type-2: 138412434
+type-3: 10575236918
+Reservoir_size_now-0:704
+Reservoir_size_now-1:35
+Reservoir_size_now-2:45
+Reservoir_size_now-3:28
+Reservoir_size_now-4:23
+Reservoir_size_now-5:44
+Reservoir_size_now-6:26
+Reservoir_size_now-7:29
+Reservoir_size_now-8:47
+Reservoir_size_now-9:44
+Reservoir_size_now:1025 3965
+type-1 error: 0
+type-2 error: -0.0356964
+type-3 error: -0.0832523
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 3.24547
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 544
+
+Reservoir_size:4096
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.031726
+The to_pairwise_minHash part 1 time is: 0.004925s
+The to_pairwise_minHash part 2 time is: 0.061573s
+The to_pairwise_minHash part 3 time is: 0.001652s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068186
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.347484
+
+Reservoir_size:4096
+type-1: 1990261
+type-2: 142086353
+type-3: 9852001414
+Reservoir_size_now:839 3698
+type-1 error: 0
+type-2 error: -0.0101007
+type-3 error: -0.145948
+The tc_tri_stream_local_space_fixed time is: 2.80518
+The tc_tri_stream_local_space_fixed memory is: 260
+
+type-1: 1990261
+type-2: 140187943
+type-3: 11928877803
+Reservoir_size_now-0:715
+Reservoir_size_now-1:48
+Reservoir_size_now-2:26
+Reservoir_size_now-3:31
+Reservoir_size_now-4:22
+Reservoir_size_now-5:29
+Reservoir_size_now-6:40
+Reservoir_size_now-7:45
+Reservoir_size_now:956 3927
+type-1 error: 0
+type-2 error: -0.0233267
+type-3 error: 0.0340923
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 3.00758
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 528
+
+Reservoir_size:4096
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.031464
+The to_pairwise_minHash part 1 time is: 0.005009s
+The to_pairwise_minHash part 2 time is: 0.061756s
+The to_pairwise_minHash part 3 time is: 0.001636s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068442
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.34188
+
+Reservoir_size:4096
+type-1: 1990261
+type-2: 121049229
+type-3: 10432036974
+Reservoir_size_now:913 3659
+type-1 error: 0
+type-2 error: -0.156664
+type-3 error: -0.0956661
+The tc_tri_stream_local_space_fixed time is: 2.94589
+The tc_tri_stream_local_space_fixed memory is: 260
+
+type-1: 1990261
+type-2: 154771994
+type-3: 10643943842
+Reservoir_size_now-0:674
+Reservoir_size_now-1:37
+Reservoir_size_now-2:30
+Reservoir_size_now-3:32
+Reservoir_size_now-4:12
+Reservoir_size_now-5:28
+Reservoir_size_now-6:23
+Reservoir_size_now-7:16
+Reservoir_size_now-8:41
+Reservoir_size_now-9:24
+Reservoir_size_now:917 3929
+type-1 error: 0
+type-2 error: 0.0782787
+type-3 error: -0.0772963
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 3.12582
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 532
+
+Running ./main with parameters: walmart 12
+.............................................................................walmart 12
+Reservoir_size:4096
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.155795
+The to_pairwise_minHash part 1 time is: 0.027455s
+The to_pairwise_minHash part 2 time is: 0.135249s
+The to_pairwise_minHash part 3 time is: 0.05241s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.215187
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.47894
+
+Reservoir_size:4096
+type-1: 9933229
+type-2: 33368106
+type-3: 718627080
+Reservoir_size_now:548 3654
+type-1 error: 0
+type-2 error: 0.0161367
+type-3 error: 0.122893
+The tc_tri_stream_local_space_fixed time is: 0.824238
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 31755712
+type-3: 610836737
+Reservoir_size_now-0:452
+Reservoir_size_now-1:18
+Reservoir_size_now-2:13
+Reservoir_size_now-3:15
+Reservoir_size_now-4:12
+Reservoir_size_now-5:20
+Reservoir_size_now-6:16
+Reservoir_size_now-7:17
+Reservoir_size_now-8:16
+Reservoir_size_now-9:13
+Reservoir_size_now:592 3707
+type-1 error: 0
+type-2 error: -0.0329645
+type-3 error: -0.045535
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.720302
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 996
+
+Reservoir_size:4096
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.156858
+The to_pairwise_minHash part 1 time is: 0.027538s
+The to_pairwise_minHash part 2 time is: 0.135598s
+The to_pairwise_minHash part 3 time is: 0.052154s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.215358
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.49048
+
+Reservoir_size:4096
+type-1: 9933229
+type-2: 37024571
+type-3: 790296360
+Reservoir_size_now:571 3793
+type-1 error: 0
+type-2 error: 0.127485
+type-3 error: 0.23488
+The tc_tri_stream_local_space_fixed time is: 0.733248
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 37556829
+type-3: 738075334
+Reservoir_size_now-0:440
+Reservoir_size_now-1:14
+Reservoir_size_now-2:18
+Reservoir_size_now-3:24
+Reservoir_size_now-4:9
+Reservoir_size_now-5:9
+Reservoir_size_now-6:18
+Reservoir_size_now-7:7
+Reservoir_size_now-8:17
+Reservoir_size_now-9:15
+Reservoir_size_now:571 3740
+type-1 error: 0
+type-2 error: 0.143693
+type-3 error: 0.153282
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.844821
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 996
+
+Reservoir_size:4096
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.155722
+The to_pairwise_minHash part 1 time is: 0.027563s
+The to_pairwise_minHash part 2 time is: 0.135365s
+The to_pairwise_minHash part 3 time is: 0.052192s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.215177
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.4858
+
+Reservoir_size:4096
+type-1: 9933229
+type-2: 35297578
+type-3: 616941612
+Reservoir_size_now:570 3789
+type-1 error: 0
+type-2 error: 0.0748936
+type-3 error: -0.0359958
+The tc_tri_stream_local_space_fixed time is: 0.794417
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 34752242
+type-3: 702058227
+Reservoir_size_now-0:482
+Reservoir_size_now-1:20
+Reservoir_size_now-2:16
+Reservoir_size_now-3:19
+Reservoir_size_now-4:18
+Reservoir_size_now-5:15
+Reservoir_size_now-6:16
+Reservoir_size_now-7:13
+Reservoir_size_now-8:19
+Reservoir_size_now:618 4007
+type-1 error: 0
+type-2 error: 0.0582868
+type-3 error: 0.0970035
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.720378
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 996
+
+Running ./main with parameters: trivago-clicks 12
+.............................................................................trivago-clicks 12
+Reservoir_size:4096
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.239318
+The to_pairwise_minHash part 1 time is: 0.021407s
+The to_pairwise_minHash part 2 time is: 0.062177s
+The to_pairwise_minHash part 3 time is: 0.043758s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.127396
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.458744
+
+Reservoir_size:4096
+type-1: 3831132
+type-2: 3208680
+type-3: 10468622
+Reservoir_size_now:1275 3881
+type-1 error: 0
+type-2 error: -0.304082
+type-3 error: -0.377439
+The tc_tri_stream_local_space_fixed time is: 0.024726
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 5112586
+type-3: 15818971
+Reservoir_size_now-0:1228
+Reservoir_size_now-1:56
+Reservoir_size_now:1284 4030
+type-1 error: 0
+type-2 error: 0.108849
+type-3 error: -0.0592584
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.023727
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4032
+
+Reservoir_size:4096
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.237987
+The to_pairwise_minHash part 1 time is: 0.021222s
+The to_pairwise_minHash part 2 time is: 0.062091s
+The to_pairwise_minHash part 3 time is: 0.043661s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.127032
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.457397
+
+Reservoir_size:4096
+type-1: 3831132
+type-2: 4628536
+type-3: 17251597
+Reservoir_size_now:1261 3948
+type-1 error: 0
+type-2 error: 0.00386534
+type-3 error: 0.0259387
+The tc_tri_stream_local_space_fixed time is: 0.02595
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4528424
+type-3: 21179921
+Reservoir_size_now-0:1246
+Reservoir_size_now:1246 3948
+type-1 error: 0
+type-2 error: -0.0178476
+type-3 error: 0.259553
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.023546
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4036
+
+Reservoir_size:4096
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.237242
+The to_pairwise_minHash part 1 time is: 0.021239s
+The to_pairwise_minHash part 2 time is: 0.062392s
+The to_pairwise_minHash part 3 time is: 0.04378s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.127471
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.45982
+
+Reservoir_size:4096
+type-1: 3831132
+type-2: 4570947
+type-3: 14893845
+Reservoir_size_now:1277 3946
+type-1 error: 0
+type-2 error: -0.00862491
+type-3 error: -0.114275
+The tc_tri_stream_local_space_fixed time is: 0.025789
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4076855
+type-3: 12057780
+Reservoir_size_now-0:1259
+Reservoir_size_now-1:57
+Reservoir_size_now:1316 4079
+type-1 error: 0
+type-2 error: -0.115787
+type-3 error: -0.282933
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.024221
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4020
+
+Running ./main with parameters: dblp 12
+.............................................................................dblp 12
+Reservoir_size:4096
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.40468
+The to_pairwise_minHash part 1 time is: 0.245605s
+The to_pairwise_minHash part 2 time is: 0.658593s
+The to_pairwise_minHash part 3 time is: 0.345785s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.25007
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.16581
+
+Reservoir_size:4096
+type-1: 15421815
+type-2: 54737733
+type-3: 27650623
+Reservoir_size_now:1013 3451
+type-1 error: 0
+type-2 error: -0.174661
+type-3 error: -0.300728
+The tc_tri_stream_local_space_fixed time is: 1.03367
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 63407930
+type-3: 24795830
+Reservoir_size_now-0:905
+Reservoir_size_now-1:45
+Reservoir_size_now-2:44
+Reservoir_size_now-3:43
+Reservoir_size_now-4:30
+Reservoir_size_now-5:35
+Reservoir_size_now-6:43
+Reservoir_size_now-7:44
+Reservoir_size_now:1189 4000
+type-1 error: 0
+type-2 error: -0.0439313
+type-3 error: -0.372924
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.963322
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 35980
+
+Reservoir_size:4096
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.76393
+The to_pairwise_minHash part 1 time is: 0.236376s
+The to_pairwise_minHash part 2 time is: 0.658775s
+The to_pairwise_minHash part 3 time is: 0.3542s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.24944
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.23381
+
+Reservoir_size:4096
+type-1: 15421815
+type-2: 66836563
+type-3: 23542908
+Reservoir_size_now:1013 3601
+type-1 error: 0
+type-2 error: 0.00776587
+type-3 error: -0.40461
+The tc_tri_stream_local_space_fixed time is: 1.04151
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 68068345
+type-3: 27227423
+Reservoir_size_now-0:986
+Reservoir_size_now-1:49
+Reservoir_size_now-2:47
+Reservoir_size_now-3:44
+Reservoir_size_now:1126 3905
+type-1 error: 0
+type-2 error: 0.0263388
+type-3 error: -0.31143
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.952028
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 35980
+
+Reservoir_size:4096
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.56462
+The to_pairwise_minHash part 1 time is: 0.233772s
+The to_pairwise_minHash part 2 time is: 0.658505s
+The to_pairwise_minHash part 3 time is: 0.348173s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.24053
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.16184
+
+Reservoir_size:4096
+type-1: 15421815
+type-2: 69022926
+type-3: 52015007
+Reservoir_size_now:1013 3533
+type-1 error: 0
+type-2 error: 0.040732
+type-3 error: 0.315437
+The tc_tri_stream_local_space_fixed time is: 1.02662
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 61483433
+type-3: 32076806
+Reservoir_size_now-0:951
+Reservoir_size_now-1:46
+Reservoir_size_now-2:40
+Reservoir_size_now-3:40
+Reservoir_size_now-4:43
+Reservoir_size_now-5:47
+Reservoir_size_now:1167 3938
+type-1 error: 0
+type-2 error: -0.072949
+type-3 error: -0.188791
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.954461
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 35984
+
+Running ./main with parameters: DAWN 12
+.............................................................................DAWN 12
+Reservoir_size:4096
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.662502
+The to_pairwise_minHash part 1 time is: 0.057098s
+The to_pairwise_minHash part 2 time is: 0.398592s
+The to_pairwise_minHash part 3 time is: 0.001981s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.457762
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.74345
+
+Reservoir_size:4096
+type-1: 2457662
+type-2: 41812865231
+type-3: 728924973399383
+Reservoir_size_now:2492 3912
+type-1 error: 0
+type-2 error: 0.549898
+type-3 error: 127.102
+The tc_tri_stream_local_space_fixed time is: 1057.19
+The tc_tri_stream_local_space_fixed memory is: 9344
+
+type-1: 2457662
+type-2: 38073702768
+type-3: 869674626044358
+Reservoir_size_now-0:2435
+Reservoir_size_now-1:112
+Reservoir_size_now:2547 3956
+type-1 error: 0
+type-2 error: 0.411296
+type-3 error: 151.837
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1128.52
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44356
+
+Reservoir_size:4096
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.646161
+The to_pairwise_minHash part 1 time is: 0.048908s
+The to_pairwise_minHash part 2 time is: 0.391762s
+The to_pairwise_minHash part 3 time is: 0.002094s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.442813
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.72506
+
+Reservoir_size:4096
+type-1: 2457662
+type-2: 39342206772
+type-3: 752350231116924
+Reservoir_size_now:2432 3814
+type-1 error: 0
+type-2 error: 0.458317
+type-3 error: 131.219
+The tc_tri_stream_local_space_fixed time is: 1013.34
+The tc_tri_stream_local_space_fixed memory is: 9292
+
+type-1: 2457662
+type-2: 38501583637
+type-3: 784571738688483
+Reservoir_size_now-0:2429
+Reservoir_size_now-1:111
+Reservoir_size_now:2540 4071
+type-1 error: 0
+type-2 error: 0.427157
+type-3 error: 136.881
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1039.47
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44180
+
+Reservoir_size:4096
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.643355
+The to_pairwise_minHash part 1 time is: 0.048931s
+The to_pairwise_minHash part 2 time is: 0.452777s
+The to_pairwise_minHash part 3 time is: 0.002445s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.504217
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 3.09104
+
+Reservoir_size:4096
+type-1: 2457662
+type-2: 38500475837
+type-3: 782246442590205
+Reservoir_size_now:2459 3883
+type-1 error: 0
+type-2 error: 0.427116
+type-3 error: 136.473
+The tc_tri_stream_local_space_fixed time is: 997.366
+The tc_tri_stream_local_space_fixed memory is: 9328
+
+type-1: 2457662
+type-2: 40537860939
+type-3: 775727010150882
+Reservoir_size_now-0:2447
+Reservoir_size_now-1:112
+Reservoir_size_now:2559 4053
+type-1 error: 0
+type-2 error: 0.502636
+type-3 error: 135.327
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1045.91
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44320
+
+Running ./main with parameters: coauth-MAG-Geology-full 12
+.............................................................................coauth-MAG-Geology-full 12
+Reservoir_size:4096
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.83458
+The to_pairwise_minHash part 1 time is: 0.154054s
+The to_pairwise_minHash part 2 time is: 0.468301s
+The to_pairwise_minHash part 3 time is: 0.242219s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.864639
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.80404
+
+Reservoir_size:4096
+type-1: 26781695
+type-2: 103659280
+type-3: 245503215
+Reservoir_size_now:1378 3870
+type-1 error: 0
+type-2 error: 0.326028
+type-3 error: 2.06556
+The tc_tri_stream_local_space_fixed time is: 0.115133
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 178735262
+type-3: 37781245
+Reservoir_size_now-0:1268
+Reservoir_size_now-1:57
+Reservoir_size_now-2:60
+Reservoir_size_now-3:56
+Reservoir_size_now:1441 4003
+type-1 error: 0
+type-2 error: 1.28641
+type-3 error: -0.528231
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.135694
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27472
+
+Reservoir_size:4096
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.78031
+The to_pairwise_minHash part 1 time is: 0.15381s
+The to_pairwise_minHash part 2 time is: 0.473112s
+The to_pairwise_minHash part 3 time is: 0.245223s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.872234
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.84245
+
+Reservoir_size:4096
+type-1: 26781695
+type-2: 66752166
+type-3: 59381465
+Reservoir_size_now:1415 3810
+type-1 error: 0
+type-2 error: -0.146094
+type-3 error: -0.258512
+The tc_tri_stream_local_space_fixed time is: 0.116278
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 53198665
+type-3: 33738484
+Reservoir_size_now-0:1300
+Reservoir_size_now-1:60
+Reservoir_size_now-2:51
+Reservoir_size_now-3:50
+Reservoir_size_now:1461 3945
+type-1 error: 0
+type-2 error: -0.319473
+type-3 error: -0.578712
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.136612
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27488
+
+Reservoir_size:4096
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.6643
+The to_pairwise_minHash part 1 time is: 0.154419s
+The to_pairwise_minHash part 2 time is: 0.467692s
+The to_pairwise_minHash part 3 time is: 0.232257s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.854445
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.79778
+
+Reservoir_size:4096
+type-1: 26781695
+type-2: 79000469
+type-3: 34422789
+Reservoir_size_now:1388 3695
+type-1 error: 0
+type-2 error: 0.0105884
+type-3 error: -0.570167
+The tc_tri_stream_local_space_fixed time is: 0.114555
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 61267221
+type-3: 9459258
+Reservoir_size_now-0:1232
+Reservoir_size_now-1:54
+Reservoir_size_now-2:50
+Reservoir_size_now-3:50
+Reservoir_size_now:1386 3957
+type-1 error: 0
+type-2 error: -0.216259
+type-3 error: -0.881884
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.137913
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27468
+
+Running ./main with parameters: coauth-MAG-History-full 12
+.............................................................................coauth-MAG-History-full 12
+Reservoir_size:4096
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.972493
+The to_pairwise_minHash part 1 time is: 0.067695s
+The to_pairwise_minHash part 2 time is: 0.086861s
+The to_pairwise_minHash part 3 time is: 0.075233s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.229856
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 2.98792
+
+Reservoir_size:4096
+type-1: 202153529
+type-2: 9996245
+type-3: 434924
+Reservoir_size_now:3056 3982
+type-1 error: 0
+type-2 error: -0.0479266
+type-3 error: -0.787419
+The tc_tri_stream_local_space_fixed time is: 0.089727
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 4375062
+type-3: 0
+Reservoir_size_now-0:2859
+Reservoir_size_now-1:94
+Reservoir_size_now-2:133
+Reservoir_size_now:3086 4052
+type-1 error: 0
+type-2 error: -0.583306
+type-3 error: -1
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.115034
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34608
+
+Reservoir_size:4096
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.968505
+The to_pairwise_minHash part 1 time is: 0.066789s
+The to_pairwise_minHash part 2 time is: 0.086301s
+The to_pairwise_minHash part 3 time is: 0.074186s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.227338
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 2.98506
+
+Reservoir_size:4096
+type-1: 202153529
+type-2: 7337213
+type-3: 14766222
+Reservoir_size_now:3036 4034
+type-1 error: 0
+type-2 error: -0.301181
+type-3 error: 6.2174
+The tc_tri_stream_local_space_fixed time is: 0.089971
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 4773556
+type-3: 421136
+Reservoir_size_now-0:2866
+Reservoir_size_now-1:148
+Reservoir_size_now-2:123
+Reservoir_size_now:3137 4021
+type-1 error: 0
+type-2 error: -0.545352
+type-3 error: -0.794158
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.114149
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34608
+
+Reservoir_size:4096
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.966681
+The to_pairwise_minHash part 1 time is: 0.067469s
+The to_pairwise_minHash part 2 time is: 0.086741s
+The to_pairwise_minHash part 3 time is: 0.075376s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.229653
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 3.03391
+
+Reservoir_size:4096
+type-1: 202153529
+type-2: 3284255
+type-3: 245712
+Reservoir_size_now:3026 3939
+type-1 error: 0
+type-2 error: -0.687197
+type-3 error: -0.879902
+The tc_tri_stream_local_space_fixed time is: 0.093243
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 10768297
+type-3: 8684148
+Reservoir_size_now-0:2710
+Reservoir_size_now-1:124
+Reservoir_size_now-2:124
+Reservoir_size_now-3:155
+Reservoir_size_now:3113 4027
+type-1 error: 0
+type-2 error: 0.025606
+type-3 error: 3.24462
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.113875
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34620
+
+Running ./main with parameters: threads-stack 12
+.............................................................................threads-stack 12
+Reservoir_size:4096
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 8.30273
+The to_pairwise_minHash part 1 time is: 0.795388s
+The to_pairwise_minHash part 2 time is: 1.65645s
+The to_pairwise_minHash part 3 time is: 1.13227s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.5842
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 22.043
+
+Reservoir_size:4096
+type-1: 14892950
+type-2: 52831909
+type-3: 3124654069
+Reservoir_size_now:1537 4031
+type-1 error: 0
+type-2 error: 0.0426491
+type-3 error: -0.335839
+The tc_tri_stream_local_space_fixed time is: 1.15528
+The tc_tri_stream_local_space_fixed memory is: 7336
+
+type-1: 14892950
+type-2: 37479293
+type-3: 4645801138
+Reservoir_size_now-0:1536
+Reservoir_size_now:1536 4011
+type-1 error: 0
+type-2 error: -0.260338
+type-3 error: -0.0125113
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.10523
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 171960
+
+Reservoir_size:4096
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 8.6744
+The to_pairwise_minHash part 1 time is: 0.817386s
+The to_pairwise_minHash part 2 time is: 1.66139s
+The to_pairwise_minHash part 3 time is: 1.14342s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.62231
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 22.6421
+
+Reservoir_size:4096
+type-1: 14892950
+type-2: 57108066
+type-3: 6168436286
+Reservoir_size_now:1529 3975
+type-1 error: 0
+type-2 error: 0.12704
+type-3 error: 0.311133
+The tc_tri_stream_local_space_fixed time is: 1.1093
+The tc_tri_stream_local_space_fixed memory is: 7344
+
+type-1: 14892950
+type-2: 54078852
+type-3: 7351519217
+Reservoir_size_now-0:1522
+Reservoir_size_now:1522 4018
+type-1 error: 0
+type-2 error: 0.0672578
+type-3 error: 0.562603
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.17534
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 171980
+
+Reservoir_size:4096
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 8.42396
+The to_pairwise_minHash part 1 time is: 0.791374s
+The to_pairwise_minHash part 2 time is: 1.66446s
+The to_pairwise_minHash part 3 time is: 1.1344s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.59033
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 22.0109
+
+Reservoir_size:4096
+type-1: 14892950
+type-2: 55418581
+type-3: 4517647433
+Reservoir_size_now:1530 4062
+type-1 error: 0
+type-2 error: 0.0936977
+type-3 error: -0.0397511
+The tc_tri_stream_local_space_fixed time is: 1.09382
+The tc_tri_stream_local_space_fixed memory is: 7312
+
+type-1: 14892950
+type-2: 53700045
+type-3: 7211602525
+Reservoir_size_now-0:1537
+Reservoir_size_now:1537 4033
+type-1 error: 0
+type-2 error: 0.059782
+type-3 error: 0.532863
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.10076
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 171964
+
+Running ./main with parameters: NDC 13
+.............................................................................NDC 13
+Reservoir_size:8192
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.032133
+The to_pairwise_minHash part 1 time is: 0.005009s
+The to_pairwise_minHash part 2 time is: 0.061781s
+The to_pairwise_minHash part 3 time is: 0.001622s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068449
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.340064
+
+Reservoir_size:8192
+type-1: 1990261
+type-2: 155586412
+type-3: 13138795015
+Reservoir_size_now:1718 7366
+type-1 error: 0
+type-2 error: 0.0839527
+type-3 error: 0.138978
+The tc_tri_stream_local_space_fixed time is: 12.151
+The tc_tri_stream_local_space_fixed memory is: 488
+
+type-1: 1990261
+type-2: 144858180
+type-3: 11700334617
+Reservoir_size_now-0:1572
+Reservoir_size_now-1:76
+Reservoir_size_now-2:77
+Reservoir_size_now-3:124
+Reservoir_size_now-4:129
+Reservoir_size_now:1978 8095
+type-1 error: 0
+type-2 error: 0.00921034
+type-3 error: 0.0142803
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 12.2925
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 524
+
+Reservoir_size:8192
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.030842
+The to_pairwise_minHash part 1 time is: 0.00483s
+The to_pairwise_minHash part 2 time is: 0.062107s
+The to_pairwise_minHash part 3 time is: 0.00162s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068594
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.340288
+
+Reservoir_size:8192
+type-1: 1990261
+type-2: 140171023
+type-3: 11642897583
+Reservoir_size_now:1808 7625
+type-1 error: 0
+type-2 error: -0.0234445
+type-3 error: 0.00930117
+The tc_tri_stream_local_space_fixed time is: 11.7525
+The tc_tri_stream_local_space_fixed memory is: 504
+
+type-1: 1990261
+type-2: 152213854
+type-3: 10504293621
+Reservoir_size_now-0:1462
+Reservoir_size_now-1:55
+Reservoir_size_now-2:79
+Reservoir_size_now-3:85
+Reservoir_size_now-4:68
+Reservoir_size_now-5:124
+Reservoir_size_now:1873 7832
+type-1 error: 0
+type-2 error: 0.0604565
+type-3 error: -0.0894023
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 11.5355
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 524
+
+Reservoir_size:8192
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.031471
+The to_pairwise_minHash part 1 time is: 0.004973s
+The to_pairwise_minHash part 2 time is: 0.061862s
+The to_pairwise_minHash part 3 time is: 0.001652s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.068526
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.341094
+
+Reservoir_size:8192
+type-1: 1990261
+type-2: 140410121
+type-3: 11212042557
+Reservoir_size_now:1738 7285
+type-1 error: 0
+type-2 error: -0.0217788
+type-3 error: -0.0280489
+The tc_tri_stream_local_space_fixed time is: 11.8199
+The tc_tri_stream_local_space_fixed memory is: 500
+
+type-1: 1990261
+type-2: 140546713
+type-3: 11337540410
+Reservoir_size_now-0:1561
+Reservoir_size_now-1:69
+Reservoir_size_now-2:75
+Reservoir_size_now-3:122
+Reservoir_size_now-4:90
+Reservoir_size_now:1917 8093
+type-1 error: 0
+type-2 error: -0.0208272
+type-3 error: -0.0171697
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 12.176
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 524
+
+Running ./main with parameters: walmart 13
+.............................................................................walmart 13
+Reservoir_size:8192
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.198364
+The to_pairwise_minHash part 1 time is: 0.047103s
+The to_pairwise_minHash part 2 time is: 0.1865s
+The to_pairwise_minHash part 3 time is: 0.088339s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.32205
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.68771
+
+Reservoir_size:8192
+type-1: 9933229
+type-2: 37536599
+type-3: 833786632
+Reservoir_size_now:1171 7722
+type-1 error: 0
+type-2 error: 0.143077
+type-3 error: 0.302836
+The tc_tri_stream_local_space_fixed time is: 2.94836
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 32731205
+type-3: 632047168
+Reservoir_size_now-0:1174
+Reservoir_size_now-1:53
+Reservoir_size_now:1227 7949
+type-1 error: 0
+type-2 error: -0.00325846
+type-3 error: -0.0123925
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 3.46817
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 996
+
+Reservoir_size:8192
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.156391
+The to_pairwise_minHash part 1 time is: 0.027525s
+The to_pairwise_minHash part 2 time is: 0.135645s
+The to_pairwise_minHash part 3 time is: 0.052457s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.215689
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.48694
+
+Reservoir_size:8192
+type-1: 9933229
+type-2: 35315986
+type-3: 739064492
+Reservoir_size_now:1188 8159
+type-1 error: 0
+type-2 error: 0.0754542
+type-3 error: 0.154828
+The tc_tri_stream_local_space_fixed time is: 3.58197
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 33669060
+type-3: 692000042
+Reservoir_size_now-0:1108
+Reservoir_size_now-1:49
+Reservoir_size_now-2:52
+Reservoir_size_now:1209 7921
+type-1 error: 0
+type-2 error: 0.0253014
+type-3 error: 0.081287
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 3.07472
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 992
+
+Reservoir_size:8192
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.156352
+The to_pairwise_minHash part 1 time is: 0.027601s
+The to_pairwise_minHash part 2 time is: 0.136217s
+The to_pairwise_minHash part 3 time is: 0.052515s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.216386
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.49413
+
+Reservoir_size:8192
+type-1: 9933229
+type-2: 32478793
+type-3: 614719581
+Reservoir_size_now:1167 7325
+type-1 error: 0
+type-2 error: -0.010945
+type-3 error: -0.0394678
+The tc_tri_stream_local_space_fixed time is: 2.86006
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 28503128
+type-3: 511692324
+Reservoir_size_now-0:1142
+Reservoir_size_now-1:49
+Reservoir_size_now-2:49
+Reservoir_size_now-3:45
+Reservoir_size_now:1285 8060
+type-1 error: 0
+type-2 error: -0.132013
+type-3 error: -0.200453
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 2.85531
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 996
+
+Running ./main with parameters: trivago-clicks 13
+.............................................................................trivago-clicks 13
+Reservoir_size:8192
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.295076
+The to_pairwise_minHash part 1 time is: 0.025677s
+The to_pairwise_minHash part 2 time is: 0.082768s
+The to_pairwise_minHash part 3 time is: 0.056979s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.165494
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.60699
+
+Reservoir_size:8192
+type-1: 3831132
+type-2: 5465765
+type-3: 14170516
+Reservoir_size_now:2533 7972
+type-1 error: 0
+type-2 error: 0.185449
+type-3 error: -0.157291
+The tc_tri_stream_local_space_fixed time is: 0.061172
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4165099
+type-3: 17918784
+Reservoir_size_now-0:2566
+Reservoir_size_now:2566 7978
+type-1 error: 0
+type-2 error: -0.0966477
+type-3 error: 0.0656158
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.061637
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4092
+
+Reservoir_size:8192
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.256653
+The to_pairwise_minHash part 1 time is: 0.021286s
+The to_pairwise_minHash part 2 time is: 0.062134s
+The to_pairwise_minHash part 3 time is: 0.043683s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.127162
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.45824
+
+Reservoir_size:8192
+type-1: 3831132
+type-2: 4173813
+type-3: 15679112
+Reservoir_size_now:2541 8014
+type-1 error: 0
+type-2 error: -0.0947578
+type-3 error: -0.0675757
+The tc_tri_stream_local_space_fixed time is: 0.042061
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4988189
+type-3: 14919630
+Reservoir_size_now-0:2546
+Reservoir_size_now:2546 8086
+type-1 error: 0
+type-2 error: 0.0818691
+type-3 error: -0.112741
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.037127
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4116
+
+Reservoir_size:8192
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.303095
+The to_pairwise_minHash part 1 time is: 0.027061s
+The to_pairwise_minHash part 2 time is: 0.083335s
+The to_pairwise_minHash part 3 time is: 0.058264s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.168737
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.61577
+
+Reservoir_size:8192
+type-1: 3831132
+type-2: 4635332
+type-3: 22865654
+Reservoir_size_now:2580 8043
+type-1 error: 0
+type-2 error: 0.0053393
+type-3 error: 0.359802
+The tc_tri_stream_local_space_fixed time is: 0.046061
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 5273550
+type-3: 21343491
+Reservoir_size_now-0:2568
+Reservoir_size_now:2568 8078
+type-1 error: 0
+type-2 error: 0.14376
+type-3 error: 0.26928
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.03817
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4084
+
+Running ./main with parameters: dblp 13
+.............................................................................dblp 13
+Reservoir_size:8192
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.38621
+The to_pairwise_minHash part 1 time is: 0.243774s
+The to_pairwise_minHash part 2 time is: 0.64938s
+The to_pairwise_minHash part 3 time is: 0.354621s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.24786
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.1647
+
+Reservoir_size:8192
+type-1: 15421815
+type-2: 63256020
+type-3: 40694793
+Reservoir_size_now:2100 7075
+type-1 error: 0
+type-2 error: -0.0462218
+type-3 error: 0.029154
+The tc_tri_stream_local_space_fixed time is: 1.23255
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 64225204
+type-3: 48018489
+Reservoir_size_now-0:2007
+Reservoir_size_now-1:92
+Reservoir_size_now-2:92
+Reservoir_size_now-3:108
+Reservoir_size_now:2299 7851
+type-1 error: 0
+type-2 error: -0.0316084
+type-3 error: 0.214367
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.10751
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36000
+
+Reservoir_size:8192
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.3744
+The to_pairwise_minHash part 1 time is: 0.233886s
+The to_pairwise_minHash part 2 time is: 0.657103s
+The to_pairwise_minHash part 3 time is: 0.357441s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.2485
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.16438
+
+Reservoir_size:8192
+type-1: 15421815
+type-2: 66799928
+type-3: 47789361
+Reservoir_size_now:2104 7103
+type-1 error: 0
+type-2 error: 0.00721348
+type-3 error: 0.208573
+The tc_tri_stream_local_space_fixed time is: 1.24411
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 64970046
+type-3: 50370211
+Reservoir_size_now-0:2015
+Reservoir_size_now-1:86
+Reservoir_size_now-2:90
+Reservoir_size_now-3:109
+Reservoir_size_now-4:114
+Reservoir_size_now:2414 8058
+type-1 error: 0
+type-2 error: -0.0203776
+type-3 error: 0.273841
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.10564
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36008
+
+Reservoir_size:8192
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.85354
+The to_pairwise_minHash part 1 time is: 0.245744s
+The to_pairwise_minHash part 2 time is: 0.661176s
+The to_pairwise_minHash part 3 time is: 0.351065s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.25806
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.23718
+
+Reservoir_size:8192
+type-1: 15421815
+type-2: 65190928
+type-3: 39154288
+Reservoir_size_now:2085 7055
+type-1 error: 0
+type-2 error: -0.0170471
+type-3 error: -0.00980472
+The tc_tri_stream_local_space_fixed time is: 1.24566
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 63604878
+type-3: 51172413
+Reservoir_size_now-0:2035
+Reservoir_size_now-1:92
+Reservoir_size_now-2:97
+Reservoir_size_now-3:117
+Reservoir_size_now:2341 7938
+type-1 error: 0
+type-2 error: -0.0409617
+type-3 error: 0.294129
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.10692
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36004
+
+Running ./main with parameters: DAWN 13
+.............................................................................DAWN 13
+Reservoir_size:8192
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.497904
+The to_pairwise_minHash part 1 time is: 0.038258s
+The to_pairwise_minHash part 2 time is: 0.335969s
+The to_pairwise_minHash part 3 time is: 0.002063s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.376343
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.68364
+
+Reservoir_size:8192
+type-1: 2457662
+type-2: 40507695125
+type-3: 852391034185804
+Reservoir_size_now:4917 7876
+type-1 error: 0
+type-2 error: 0.501518
+type-3 error: 148.8
+The tc_tri_stream_local_space_fixed time is: 4795.67
+The tc_tri_stream_local_space_fixed memory is: 9520
+
+type-1: 2457662
+type-2: 39594642873
+type-3: 752280828345581
+Reservoir_size_now-0:4914
+Reservoir_size_now-1:239
+Reservoir_size_now:5153 8017
+type-1 error: 0
+type-2 error: 0.467674
+type-3 error: 131.206
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 4820.85
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44268
+
+Reservoir_size:8192
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.649148
+The to_pairwise_minHash part 1 time is: 0.049534s
+The to_pairwise_minHash part 2 time is: 0.37844s
+The to_pairwise_minHash part 3 time is: 0.001943s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.429978
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.74103
+
+Reservoir_size:8192
+type-1: 2457662
+type-2: 40620488334
+type-3: 811957376886390
+Reservoir_size_now:3149 8127
+type-1 error: 0
+type-2 error: 0.505699
+type-3 error: 141.694
+The tc_tri_stream_local_space_fixed time is: 10585.1
+The tc_tri_stream_local_space_fixed memory is: 9680
+
+type-1: 2457662
+type-2: 40136927327
+type-3: 788659109709256
+Reservoir_size_now-0:4902
+Reservoir_size_now-1:230
+Reservoir_size_now:5132 8031
+type-1 error: 0
+type-2 error: 0.487775
+type-3 error: 137.6
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 4769.53
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44528
+
+Reservoir_size:8192
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.655424
+The to_pairwise_minHash part 1 time is: 0.050371s
+The to_pairwise_minHash part 2 time is: 0.350405s
+The to_pairwise_minHash part 3 time is: 0.001952s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.402763
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.71883
+
+Reservoir_size:8192
+type-1: 2457662
+type-2: 41179065526
+type-3: 770241990554833
+Reservoir_size_now:3162 8122
+type-1 error: 0
+type-2 error: 0.526404
+type-3 error: 134.363
+The tc_tri_stream_local_space_fixed time is: 10377.9
+The tc_tri_stream_local_space_fixed memory is: 9688
+
+type-1: 2457662
+type-2: 43594131051
+type-3: 809431677905467
+Reservoir_size_now-0:4881
+Reservoir_size_now-1:226
+Reservoir_size_now:5107 8105
+type-1 error: 0
+type-2 error: 0.615925
+type-3 error: 141.25
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 5122.21
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 44460
+
+Running ./main with parameters: coauth-MAG-Geology-full 13
+.............................................................................coauth-MAG-Geology-full 13
+Reservoir_size:8192
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.73029
+The to_pairwise_minHash part 1 time is: 0.150221s
+The to_pairwise_minHash part 2 time is: 0.46309s
+The to_pairwise_minHash part 3 time is: 0.225203s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.83857
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.75702
+
+Reservoir_size:8192
+type-1: 26781695
+type-2: 76724432
+type-3: 99412911
+Reservoir_size_now:2156 8108
+type-1 error: 0
+type-2 error: -0.0185271
+type-3 error: 0.241355
+The tc_tri_stream_local_space_fixed time is: 0.119203
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 127641808
+type-3: 180121568
+Reservoir_size_now-0:2805
+Reservoir_size_now:2805 7921
+type-1 error: 0
+type-2 error: 0.632817
+type-3 error: 1.24915
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.150688
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27728
+
+Reservoir_size:8192
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.77629
+The to_pairwise_minHash part 1 time is: 0.155318s
+The to_pairwise_minHash part 2 time is: 0.464571s
+The to_pairwise_minHash part 3 time is: 0.233116s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.85306
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.8052
+
+Reservoir_size:8192
+type-1: 26781695
+type-2: 87941599
+type-3: 61172402
+Reservoir_size_now:2145 8140
+type-1 error: 0
+type-2 error: 0.124965
+type-3 error: -0.236149
+The tc_tri_stream_local_space_fixed time is: 0.12224
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 80975168
+type-3: 300068547
+Reservoir_size_now-0:2836
+Reservoir_size_now:2836 8170
+type-1 error: 0
+type-2 error: 0.0358491
+type-3 error: 2.74691
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.155513
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27712
+
+Reservoir_size:8192
+1261130 1591166 4448428
+read degree over
+read edges over
+read graph over
+The read_graph time is: 1.5746
+The to_pairwise_minHash part 1 time is: 0.150206s
+The to_pairwise_minHash part 2 time is: 0.459915s
+The to_pairwise_minHash part 3 time is: 0.230107s
+vertices_pairwise_edge_num:16388608
+The to_pairwise time is: 0.840282
+type-0: 26781695
+type-1: 78172744
+type-2: 80084190
+The triangle_enum time is: 2.76347
+
+Reservoir_size:8192
+type-1: 26781695
+type-2: 65633637
+type-3: 71563258
+Reservoir_size_now:2134 7977
+type-1 error: 0
+type-2 error: -0.160403
+type-3 error: -0.1064
+The tc_tri_stream_local_space_fixed time is: 0.117532
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 26781695
+type-2: 100763057
+type-3: 128520745
+Reservoir_size_now-0:2789
+Reservoir_size_now-1:129
+Reservoir_size_now:2918 7943
+type-1 error: 0
+type-2 error: 0.288979
+type-3 error: 0.60482
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.15061
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 27716
+
+Running ./main with parameters: coauth-MAG-History-full 13
+.............................................................................coauth-MAG-History-full 13
+Reservoir_size:8192
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.947097
+The to_pairwise_minHash part 1 time is: 0.066353s
+The to_pairwise_minHash part 2 time is: 0.085433s
+The to_pairwise_minHash part 3 time is: 0.074398s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.226237
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 2.9577
+
+Reservoir_size:8192
+type-1: 202153529
+type-2: 11923499
+type-3: 696803
+Reservoir_size_now:2713 7866
+type-1 error: 0
+type-2 error: 0.135631
+type-3 error: -0.659418
+The tc_tri_stream_local_space_fixed time is: 0.051419
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 3130597
+type-3: 154467
+Reservoir_size_now-0:6029
+Reservoir_size_now:6029 7825
+type-1 error: 0
+type-2 error: -0.701832
+type-3 error: -0.9245
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.118676
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34748
+
+Reservoir_size:8192
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.940077
+The to_pairwise_minHash part 1 time is: 0.065079s
+The to_pairwise_minHash part 2 time is: 0.084173s
+The to_pairwise_minHash part 3 time is: 0.073014s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.222321
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 3.25728
+
+Reservoir_size:8192
+type-1: 202153529
+type-2: 5792540
+type-3: 353566
+Reservoir_size_now:2784 8012
+type-1 error: 0
+type-2 error: -0.448301
+type-3 error: -0.827185
+The tc_tri_stream_local_space_fixed time is: 0.051337
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 5311140
+type-3: 1870251
+Reservoir_size_now-0:6125
+Reservoir_size_now:6125 8125
+type-1 error: 0
+type-2 error: -0.494151
+type-3 error: -0.0858635
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.120557
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34736
+
+Reservoir_size:8192
+1034877 1813147 2398702
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.95609
+The to_pairwise_minHash part 1 time is: 0.066648s
+The to_pairwise_minHash part 2 time is: 0.085646s
+The to_pairwise_minHash part 3 time is: 0.074428s
+vertices_pairwise_edge_num:5969588
+The to_pairwise time is: 0.226774
+type-0: 202153529
+type-1: 10499448
+type-2: 2045921
+The triangle_enum time is: 2.97418
+
+Reservoir_size:8192
+type-1: 202153529
+type-2: 25930746
+type-3: 1130818
+Reservoir_size_now:2711 8112
+type-1 error: 0
+type-2 error: 1.46972
+type-3 error: -0.447282
+The tc_tri_stream_local_space_fixed time is: 0.052584
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 202153529
+type-2: 2810338
+type-3: 95472
+Reservoir_size_now-0:6142
+Reservoir_size_now:6142 7934
+type-1 error: 0
+type-2 error: -0.732335
+type-3 error: -0.953335
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.122566
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 34728
+
+Running ./main with parameters: threads-stack 13
+.............................................................................threads-stack 13
+Reservoir_size:8192
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 7.99911
+The to_pairwise_minHash part 1 time is: 0.769703s
+The to_pairwise_minHash part 2 time is: 1.65319s
+The to_pairwise_minHash part 3 time is: 1.0756s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.49857
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 21.8731
+
+Reservoir_size:8192
+type-1: 14892950
+type-2: 60148590
+type-3: 3375217998
+Reservoir_size_now:3071 8033
+type-1 error: 0
+type-2 error: 0.187045
+type-3 error: -0.28258
+The tc_tri_stream_local_space_fixed time is: 1.71454
+The tc_tri_stream_local_space_fixed memory is: 7376
+
+type-1: 14892950
+type-2: 51388460
+type-3: 5642110061
+Reservoir_size_now-0:3070
+Reservoir_size_now:3070 8183
+type-1 error: 0
+type-2 error: 0.0141623
+type-3 error: 0.199259
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.65336
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 172036
+
+Reservoir_size:8192
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 8.34117
+The to_pairwise_minHash part 1 time is: 0.795759s
+The to_pairwise_minHash part 2 time is: 1.64163s
+The to_pairwise_minHash part 3 time is: 1.1105s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.54797
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 22.2011
+
+Reservoir_size:8192
+type-1: 14892950
+type-2: 49474245
+type-3: 5060427893
+Reservoir_size_now:3089 8089
+type-1 error: 0
+type-2 error: -0.0236151
+type-3 error: 0.0756197
+The tc_tri_stream_local_space_fixed time is: 1.71166
+The tc_tri_stream_local_space_fixed memory is: 7384
+
+type-1: 14892950
+type-2: 55529029
+type-3: 4386224768
+Reservoir_size_now-0:3065
+Reservoir_size_now:3065 8128
+type-1 error: 0
+type-2 error: 0.0958774
+type-3 error: -0.0676856
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.66351
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 172044
+
+Reservoir_size:8192
+3455074 11305343 25577823
+read degree over
+read edges over
+read graph over
+The read_graph time is: 8.15151
+The to_pairwise_minHash part 1 time is: 0.772242s
+The to_pairwise_minHash part 2 time is: 1.64617s
+The to_pairwise_minHash part 3 time is: 1.0736s
+vertices_pairwise_edge_num:46428508
+The to_pairwise time is: 3.49207
+type-0: 14892950
+type-1: 50670842
+type-2: 4704662732
+The triangle_enum time is: 21.8455
+
+Reservoir_size:8192
+type-1: 14892950
+type-2: 40475057
+type-3: 2788234934
+Reservoir_size_now:3057 7982
+type-1 error: 0
+type-2 error: -0.201216
+type-3 error: -0.407346
+The tc_tri_stream_local_space_fixed time is: 1.68041
+The tc_tri_stream_local_space_fixed memory is: 7376
+
+type-1: 14892950
+type-2: 39139045
+type-3: 2194477011
+Reservoir_size_now-0:3072
+Reservoir_size_now:3072 8032
+type-1 error: 0
+type-2 error: -0.227583
+type-3 error: -0.533553
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.56576
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 172036
+
+Running ./main with parameters: NDC 14
+.............................................................................NDC 14
+Reservoir_size:16384
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.031573
+The to_pairwise_minHash part 1 time is: 0.004856s
+The to_pairwise_minHash part 2 time is: 0.061431s
+The to_pairwise_minHash part 3 time is: 0.00162s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.067935
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.347397
+
+Reservoir_size:16384
+type-1: 1990261
+type-2: 148882090
+type-3: 12089822673
+Reservoir_size_now:3505 14555
+type-1 error: 0
+type-2 error: 0.0372445
+type-3 error: 0.0480443
+The tc_tri_stream_local_space_fixed time is: 45.1389
+The tc_tri_stream_local_space_fixed memory is: 684
+
+type-1: 1990261
+type-2: 145405982
+type-3: 12912100136
+Reservoir_size_now-0:3215
+Reservoir_size_now-1:138
+Reservoir_size_now-2:168
+Reservoir_size_now-3:265
+Reservoir_size_now:3786 15809
+type-1 error: 0
+type-2 error: 0.0130268
+type-3 error: 0.119326
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 48.7731
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 724
+
+Reservoir_size:16384
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.03046
+The to_pairwise_minHash part 1 time is: 0.004175s
+The to_pairwise_minHash part 2 time is: 0.061457s
+The to_pairwise_minHash part 3 time is: 0.001529s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.067186
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.343486
+
+Reservoir_size:16384
+type-1: 1990261
+type-2: 139033408
+type-3: 10644509786
+Reservoir_size_now:3545 15059
+type-1 error: 0
+type-2 error: -0.0313702
+type-3 error: -0.0772472
+The tc_tri_stream_local_space_fixed time is: 43.4833
+The tc_tri_stream_local_space_fixed memory is: 688
+
+type-1: 1990261
+type-2: 148306513
+type-3: 11740327868
+Reservoir_size_now-0:3266
+Reservoir_size_now-1:193
+Reservoir_size_now-2:248
+Reservoir_size_now:3707 15942
+type-1 error: 0
+type-2 error: 0.0332345
+type-3 error: 0.0177472
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 47.1552
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 724
+
+Reservoir_size:16384
+5557 29296 307853
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.031032
+The to_pairwise_minHash part 1 time is: 0.004654s
+The to_pairwise_minHash part 2 time is: 0.061196s
+The to_pairwise_minHash part 3 time is: 0.001578s
+vertices_pairwise_edge_num:917378
+The to_pairwise time is: 0.067452
+type-0: 1990261
+type-1: 143536163
+type-2: 11535602960
+The triangle_enum time is: 0.345128
+
+Reservoir_size:16384
+type-1: 1990261
+type-2: 138538029
+type-3: 11741741428
+Reservoir_size_now:3543 14772
+type-1 error: 0
+type-2 error: -0.0348214
+type-3 error: 0.0178698
+The tc_tri_stream_local_space_fixed time is: 45.0979
+The tc_tri_stream_local_space_fixed memory is: 688
+
+type-1: 1990261
+type-2: 146281416
+type-3: 11467476578
+Reservoir_size_now-0:3197
+Reservoir_size_now-1:166
+Reservoir_size_now-2:125
+Reservoir_size_now-3:198
+Reservoir_size_now:3686 15818
+type-1 error: 0
+type-2 error: 0.0191259
+type-3 error: -0.00590575
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 46.6998
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 724
+
+Running ./main with parameters: walmart 14
+.............................................................................walmart 14
+Reservoir_size:16384
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.181153
+The to_pairwise_minHash part 1 time is: 0.031739s
+The to_pairwise_minHash part 2 time is: 0.178016s
+The to_pairwise_minHash part 3 time is: 0.062494s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.272298
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.59523
+
+Reservoir_size:16384
+type-1: 9933229
+type-2: 32550333
+type-3: 659758510
+Reservoir_size_now:2412 16224
+type-1 error: 0
+type-2 error: -0.00876643
+type-3 error: 0.0309079
+The tc_tri_stream_local_space_fixed time is: 13.4834
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 9933229
+type-2: 32536896
+type-3: 587462126
+Reservoir_size_now-0:2381
+Reservoir_size_now-1:105
+Reservoir_size_now:2486 16011
+type-1 error: 0
+type-2 error: -0.00917562
+type-3 error: -0.082059
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 12.4142
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 1320
+
+Reservoir_size:16384
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.18382
+The to_pairwise_minHash part 1 time is: 0.032239s
+The to_pairwise_minHash part 2 time is: 0.178017s
+The to_pairwise_minHash part 3 time is: 0.064079s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.274388
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.60273
+
+Reservoir_size:16384
+type-1: 9933229
+type-2: 33345299
+type-3: 707280695
+Reservoir_size_now:2390 15858
+type-1 error: 0
+type-2 error: 0.0154421
+type-3 error: 0.105164
+The tc_tri_stream_local_space_fixed time is: 13.4622
+The tc_tri_stream_local_space_fixed memory is: 16
+
+type-1: 9933229
+type-2: 35928554
+type-3: 721336189
+Reservoir_size_now-0:2401
+Reservoir_size_now:2401 15796
+type-1 error: 0
+type-2 error: 0.0941083
+type-3 error: 0.127126
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 13.0117
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 1320
+
+Reservoir_size:16384
+88861 69906 460630
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.181782
+The to_pairwise_minHash part 1 time is: 0.031668s
+The to_pairwise_minHash part 2 time is: 0.177847s
+The to_pairwise_minHash part 3 time is: 0.062617s
+vertices_pairwise_edge_num:4534792
+The to_pairwise time is: 0.272181
+type-0: 9933229
+type-1: 32838207
+type-2: 639978120
+The triangle_enum time is: 1.5781
+
+Reservoir_size:16384
+type-1: 9933229
+type-2: 31754602
+type-3: 624679312
+Reservoir_size_now:2418 15948
+type-1 error: 0
+type-2 error: -0.0329983
+type-3 error: -0.0239052
+The tc_tri_stream_local_space_fixed time is: 12.7026
+The tc_tri_stream_local_space_fixed memory is: 8
+
+type-1: 9933229
+type-2: 29468345
+type-3: 552189783
+Reservoir_size_now-0:2372
+Reservoir_size_now-1:113
+Reservoir_size_now:2485 15965
+type-1 error: 0
+type-2 error: -0.10262
+type-3 error: -0.137174
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 12.6884
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 1320
+
+Running ./main with parameters: trivago-clicks 14
+.............................................................................trivago-clicks 14
+Reservoir_size:16384
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.286513
+The to_pairwise_minHash part 1 time is: 0.02501s
+The to_pairwise_minHash part 2 time is: 0.081834s
+The to_pairwise_minHash part 3 time is: 0.053964s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.160859
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.554781
+
+Reservoir_size:16384
+type-1: 3831132
+type-2: 4377860
+type-3: 15985273
+Reservoir_size_now:5226 16224
+type-1 error: 0
+type-2 error: -0.0505028
+type-3 error: -0.0493685
+The tc_tri_stream_local_space_fixed time is: 0.083143
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4047676
+type-3: 14711302
+Reservoir_size_now-0:5178
+Reservoir_size_now:5178 16051
+type-1 error: 0
+type-2 error: -0.122115
+type-3 error: -0.125131
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.068005
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4356
+
+Reservoir_size:16384
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.226864
+The to_pairwise_minHash part 1 time is: 0.021089s
+The to_pairwise_minHash part 2 time is: 0.061698s
+The to_pairwise_minHash part 3 time is: 0.041706s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.124547
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.440636
+
+Reservoir_size:16384
+type-1: 3831132
+type-2: 4282328
+type-3: 15530303
+Reservoir_size_now:5193 16360
+type-1 error: 0
+type-2 error: -0.0712224
+type-3 error: -0.0764252
+The tc_tri_stream_local_space_fixed time is: 0.081095
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4653088
+type-3: 15491024
+Reservoir_size_now-0:5205
+Reservoir_size_now:5205 16239
+type-1 error: 0
+type-2 error: 0.00919033
+type-3 error: -0.0787611
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.067513
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4380
+
+Reservoir_size:16384
+172739 233202 726861
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.232689
+The to_pairwise_minHash part 1 time is: 0.021726s
+The to_pairwise_minHash part 2 time is: 0.061798s
+The to_pairwise_minHash part 3 time is: 0.043026s
+vertices_pairwise_edge_num:2654184
+The to_pairwise time is: 0.126599
+type-0: 3831132
+type-1: 4610714
+type-2: 16815426
+The triangle_enum time is: 0.451999
+
+Reservoir_size:16384
+type-1: 3831132
+type-2: 4622821
+type-3: 15654410
+Reservoir_size_now:5197 16023
+type-1 error: 0
+type-2 error: 0.00262584
+type-3 error: -0.0690447
+The tc_tri_stream_local_space_fixed time is: 0.081332
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 3831132
+type-2: 4007718
+type-3: 12855908
+Reservoir_size_now-0:5221
+Reservoir_size_now:5221 16355
+type-1 error: 0
+type-2 error: -0.130781
+type-3 error: -0.235469
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 0.066148
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 4384
+
+Running ./main with parameters: dblp 14
+.............................................................................dblp 14
+Reservoir_size:16384
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.33121
+The to_pairwise_minHash part 1 time is: 0.232603s
+The to_pairwise_minHash part 2 time is: 0.651451s
+The to_pairwise_minHash part 3 time is: 0.340526s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.22464
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.12632
+
+Reservoir_size:16384
+type-1: 15421815
+type-2: 65377204
+type-3: 57039874
+Reservoir_size_now:4236 14608
+type-1 error: 0
+type-2 error: -0.0142384
+type-3 error: 0.442514
+The tc_tri_stream_local_space_fixed time is: 1.65439
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 69688939
+type-3: 42041694
+Reservoir_size_now-0:4013
+Reservoir_size_now-1:190
+Reservoir_size_now-2:217
+Reservoir_size_now-3:261
+Reservoir_size_now:4681 15761
+type-1 error: 0
+type-2 error: 0.0507742
+type-3 error: 0.0632166
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.52195
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36008
+
+Reservoir_size:16384
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.53555
+The to_pairwise_minHash part 1 time is: 0.239474s
+The to_pairwise_minHash part 2 time is: 0.649211s
+The to_pairwise_minHash part 3 time is: 0.352842s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.24158
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.18393
+
+Reservoir_size:16384
+type-1: 15421815
+type-2: 63417441
+type-3: 41023397
+Reservoir_size_now:4224 14505
+type-1 error: 0
+type-2 error: -0.0437879
+type-3 error: 0.0374643
+The tc_tri_stream_local_space_fixed time is: 1.63198
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 63282979
+type-3: 38142160
+Reservoir_size_now-0:4267
+Reservoir_size_now-1:223
+Reservoir_size_now-2:292
+Reservoir_size_now:4782 16299
+type-1 error: 0
+type-2 error: -0.0458153
+type-3 error: -0.035401
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.49355
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36012
+
+Reservoir_size:16384
+1930379 2169671 7429814
+read degree over
+read edges over
+read graph over
+The read_graph time is: 2.48878
+The to_pairwise_minHash part 1 time is: 0.232429s
+The to_pairwise_minHash part 2 time is: 0.647418s
+The to_pairwise_minHash part 3 time is: 0.342806s
+vertices_pairwise_edge_num:23752304
+The to_pairwise time is: 1.22273
+type-0: 15421815
+type-1: 66321519
+type-2: 39541986
+The triangle_enum time is: 3.1333
+
+Reservoir_size:16384
+type-1: 15421815
+type-2: 65589875
+type-3: 35445792
+Reservoir_size_now:4213 14372
+type-1 error: 0
+type-2 error: -0.0110318
+type-3 error: -0.103591
+The tc_tri_stream_local_space_fixed time is: 1.66003
+The tc_tri_stream_local_space_fixed memory is: 0
+
+type-1: 15421815
+type-2: 62661060
+type-3: 27057076
+Reservoir_size_now-0:4282
+Reservoir_size_now-1:228
+Reservoir_size_now-2:292
+Reservoir_size_now:4802 16304
+type-1 error: 0
+type-2 error: -0.0551926
+type-3 error: -0.315738
+The tc_tri_stream_local_space_fixed_muti_Reservoir time is: 1.50401
+The tc_tri_stream_local_space_fixed_muti_Reservoir memory is: 36028
+
+Running ./main with parameters: DAWN 14
+.............................................................................DAWN 14
+Reservoir_size:16384
+2559 2272433 3596794
+read degree over
+read edges over
+read graph over
+The read_graph time is: 0.4974
+The to_pairwise_minHash part 1 time is: 0.038185s
+The to_pairwise_minHash part 2 time is: 0.329966s
+The to_pairwise_minHash part 3 time is: 0.001902s
+vertices_pairwise_edge_num:4671610
+The to_pairwise time is: 0.37009
+type-0: 2457662
+type-1: 26977822768
+type-2: 5690197813804
+The triangle_enum time is: 2.66472
+
+Reservoir_size:16384
