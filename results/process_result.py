@@ -1,4 +1,3 @@
-import numpy as np
 import argparse
 
 def process_file(file_path):
@@ -17,16 +16,12 @@ def process_file(file_path):
             double_columns.append(double_values)
             int_columns.append(int_values)
     
-    # 将数据转换为 NumPy 数组以便计算平均值
-    double_array = np.array(double_columns)
-    int_array = np.array(int_columns)
-    
     # 计算每列的平均值
-    double_means = np.mean(double_array, axis=0)
-    int_means = np.mean(int_array, axis=0)
+    double_means = [sum(col) / len(col) for col in zip(*double_columns)]  # 对 double_columns 中每列求平均
+    int_means = [sum(col) / len(col) for col in zip(*int_columns)]  # 对 int_columns 中每列求平均
     
     # 合并所有列的平均值
-    all_means = np.concatenate((double_means, int_means))
+    all_means = double_means + int_means
     return all_means
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 #include "Graph.hpp"
 #include <algorithm>
 
-#include <bits/stdint-uintn.h>
+// #include <bits/stdint-uintn.h>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -1888,7 +1888,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed(){
     // int time_3_type_;
     
     for(int i = 0;i<e;i++){
-        if(all_hyperedges[i].size() < 2) continue;
+        // if(all_hyperedges[i].size() < 2) continue;
 
         // if(i%1000 == 0) 
         // cout<<i<<endl;
@@ -1951,7 +1951,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed(){
                     if(all_hyperedges[i].size() - sample_common_vertices[k].size() == 0 || sample_hyperedges_fixed[edge_nei[k]].size() - sample_common_vertices[k].size() == 0) continue;
                     time_3++;
                     intersect_three_sets_fixed2(sample_common_vertices[j], sample_common_vertices[k], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, update_factor*update_factor);
-                    tri_num_type3+=tri_num_type3_;
+                    tri_num_type3+=tri_num_type3_/1.0000;
                     // if(tri_num_type3_ == 0) time_3_0++;
                     // time_3_type[time_3_type_]++;
                 }
@@ -2441,7 +2441,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed_muti_Reservoir(){
 
     double update_factor = 1;
 
-    double muti_rate = 0.95;
+    double muti_rate = 0.9;
 
     // if(Reservoir_size_2 == 1024) muti_rate = 0.85;
 
@@ -2449,7 +2449,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed_muti_Reservoir(){
     
 
     for(int i = 0;i<e;i++){
-        if(all_hyperedges[i].size() < 2) continue;
+        // if(all_hyperedges[i].size() < 2) continue;
         // cout<< i<<endl;
         if((double)sampleVertices_all/(double)Reservoir_size_2 < muti_rate && r_full_muti[Reservoir_num-1] == 1 && Reservoir_num < max_Reservoir_size){
             // cout<<sampleVertices_all<<" "<<Reservoir_size_2<<endl;
@@ -2463,7 +2463,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed_muti_Reservoir(){
             Reservoir_size_muti_old = 0;
             
             for(int Reservoir_i = 0; Reservoir_i<Reservoir_num-1; Reservoir_i++){
-                Reservoir_size_muti[Reservoir_i] = sampleVertices_muti[Reservoir_i]+10;
+                Reservoir_size_muti[Reservoir_i] = sampleVertices_muti[Reservoir_i]+2;
                 Reservoir_size_muti_old+=Reservoir_size_muti[Reservoir_i];
             } 
             Reservoir_size_muti[Reservoir_num-1] = Reservoir_size_2 - Reservoir_size_muti_old;
@@ -2553,7 +2553,7 @@ vector<uint64_t> Graph::tc_tri_stream_local_space_fixed_muti_Reservoir(){
                     update_factor = update_factor_muti[reservoir_ownership[edge_nei[k]]]*update_factor_muti[reservoir_ownership[edge_nei[j]]];
                 }
                 intersect_three_sets_fixed2(sample_common_vertices[j], sample_common_vertices[k], sample_hyperedges_fixed[edge_nei[j]], sample_hyperedges_fixed[edge_nei[k]], tri_num_type3_, update_factor);
-                tri_num_type3+=tri_num_type3_;
+                tri_num_type3+=tri_num_type3_/1.0000;
                 // if(tri_num_type3_ == 0) time_3_0++;
                 // time_3_type[time_3_type_]++;
             }

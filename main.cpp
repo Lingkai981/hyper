@@ -23,7 +23,8 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    string str = "/home/data/mlk/data/hyperdata/";
+    // string str = "/home/data/mlk/data/hyperdata/";
+    string str = "/Users/milk/test_data/hypergraph/hyperdata/";
     
     if (argc > 1) str = str + string(argv[1]);
     else str = str + "NDC";
@@ -44,15 +45,27 @@ int main(int argc, const char * argv[]) {
     std::string filename = string("results2_2024_12_15/") + string(argv[1]) +string(argv[2]) + "_result.txt"; // 要写入的文件名
     cout<<filename<<endl;
     std::ofstream outfile(filename); 
+
+    vector<uint64_t> accurate_value;
     
     g->read_graph();
     
     endTime = clock();
     cout << "The read_graph time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC  << endl;
     
-    startTime = clock();
-    vector<uint64_t> accurate_value = g->triangle_enum();
-    endTime = clock();
+    if(argc > 3){
+        accurate_value.resize(3);
+        accurate_value[0] = 4918597796;
+        accurate_value[1] = 4212078994983;
+        accurate_value[2] = 498158762144407;
+
+    }else{
+        startTime = clock();
+        accurate_value = g->triangle_enum();
+        endTime = clock();
+
+    }
+    
     // cout << "The triangle_enum time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC  << endl;
     // cout<<endl;
     
@@ -110,7 +123,6 @@ int main(int argc, const char * argv[]) {
     // cout<<endl;
 
     // g->init();
-
     // start_memory = getMemoryUsage();
     // startTime = clock();
     // vector<uint64_t> stream_value_global2 = g->tc_tri_stream_global_space();
@@ -124,7 +136,7 @@ int main(int argc, const char * argv[]) {
     // cout << "The tc_tri_stream_global_space memory is: " <<(double)(end_memory - start_memory)  << endl;
     // cout<<endl;
     
-    for (int i = 0;i<50;i++){
+    for (int i = 0;i<10;i++){
     g->init();
 
     start_memory = getMemoryUsage();

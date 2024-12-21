@@ -1,7 +1,8 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
-#include <bits/stdint-uintn.h>
+// #include <bits/stdint-uintn.h>
+#include <stdint.h>
 #include <fstream>
 #include <iostream>
 
